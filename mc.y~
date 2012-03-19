@@ -77,7 +77,6 @@ colon_expr :   expr ':' expr {
   $<start>$ = new string(*$<source>1);
 	cout << *$<start>$ << endl;
   $<stride>$ = new string(*$<source>3);
-	cout << *$<start>$ << endl;
   $<stop>$ = new string(*$<source>3);
 cout << *$<start>$ << ":" << *$<stop>$ << endl;
 }
