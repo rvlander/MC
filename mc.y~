@@ -42,7 +42,7 @@ typedef struct tagYYSTYPE{
 %%
 
 input : scriptMFile {cout << endl<< *$1.source << endl;YYACCEPT;}
-      | functionMFile {cout << endl<< *$1.source << endl;YYACCEPT;}
+ //     | functionMFile {cout << endl<< *$1.source << endl;YYACCEPT;}
 ;
 
 scriptMFile : opt_delimiter {$$.source = new string();}
