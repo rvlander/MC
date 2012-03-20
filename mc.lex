@@ -28,6 +28,7 @@ newline  \n|\r|\f
 \.\^ {return(POWER);}
 : {return(':');}
 ; {return(';');}
+, {return(',');}
 {newline} {return(NEWLINE);}
 
 %%

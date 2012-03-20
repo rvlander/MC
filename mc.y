@@ -40,19 +40,37 @@ typedef struct tagYYSTYPE{
 %left '^' POWER
 %%
 
-input : instrs {cout << endl<< *$1.source << endl;YYACCEPT;}
+input : scriptMFile {cout << endl<< *$1.source << endl;YYACCEPT;}
 ;
 
-instrs : instr instrs {$$.source = new string(*$1.source+*$2.source);}
-	|             {$$.source = new string("");}
+scriptMFile : opt_delimiter {$$.source = new string();}
+            | opt_delimiter statement_list {$$.source = new string(*$2.source);}
 ;
 
-instr : instr_in ';' { $$.source = new string(*$1.source);}
-      | instr_in NEWLINE{ $$.source = new string(*$1.source);}
+opt_delimiter :
+	      |delimiter
+;
+delimiter :null_line
+          |empty_lines
+          |null_lines empty_lines
+;
+null_lines : null_line
+           | null_lines null_line
+;
+null_line :','
+          |';'
+          |empty_lines ','
+          |empty_lines ';'
+;
+empty_lines : NEWLINE
+            | empty_lines NEWLINE
 ;
 
-instr_in : expr { $$.source = new string(*$1.source+";\n");}
- 	 | {$$.source = new string("");}
+statement_list : statement opt_delimiter {$$.source = new string(*$1.source);}
+               |statement delimiter statement_list {$$.source = new string(*$1.source+*$3.source);}
+;
+
+statement : expr { $$.source = new string(*$1.source+";\n");}
 ;
        
 
