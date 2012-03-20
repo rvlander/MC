@@ -24,7 +24,8 @@ typedef struct tagYYSTYPE{
 
 
 %}
-
+%token END
+%token FUNCTION
 
 %token NBRE
 %token ID
@@ -41,15 +42,34 @@ typedef struct tagYYSTYPE{
 %%
 
 input : scriptMFile {cout << endl<< *$1.source << endl;YYACCEPT;}
+      | functionMFile {cout << endl<< *$1.source << endl;YYACCEPT;}
 ;
 
 scriptMFile : opt_delimiter {$$.source = new string();}
             | opt_delimiter statement_list {$$.source = new string(*$2.source);}
 ;
 
-opt_delimiter :
-	      |delimiter
+functionMFile : empty_lines f_def_line f_body {$$.source = new string(*$2.source+"{\n"+*$3.source+"}\n");}
+              | f_def_line f_body {$$.source = new string(*$1.source+"{\n"+*$2.source+"}\n");}
 ;
+
+f_def_line : FUNCTION ID f_input {$$.source = new string("void "+*$2.source + *$3.source);}
+;
+
+f_input : '('')' {$$.source = new string("()");}
+        | '(' f_arg_list ')' {$$.source = new string("("+*$2.source+")");}
+
+f_arg_list : ID {$$.source = new string(*$1.source);}
+           | ID ',' f_arg_list {$$.source = new string(*$1.source +","+*$3.source);};
+
+f_body : delimiter statement_list {$$.source = new string(*$2.source);} 
+       | opt_delimiter {$$.source = new string();} 
+;
+
+opt_delimiter :
+	      |delimiter              
+;
+
 delimiter :null_line
           |empty_lines
           |null_lines empty_lines

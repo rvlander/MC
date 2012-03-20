@@ -12,6 +12,9 @@ identifier [a-zA-Z][_a-zA-Z0-9]*
 newline  \n|\r|\f
 %%
 
+end {return(END);};
+function {return(FUNCTION);};
+
 [ ] {}
 {nombre} {yylval.source = new string(yytext);return(NBRE);}
 {identifier} {yylval.source = new string(yytext);return(ID);}
