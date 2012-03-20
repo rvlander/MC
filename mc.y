@@ -11,17 +11,20 @@ int yylex(void);
 void yyerror (char const *s);
 
 
-
-
-%}
-
-%union{
+typedef struct tagYYSTYPE{
   string *source;	
   //for colon expression;
   string *start;
   string *stride;
   string *stop;
-}
+} YYST;
+
+#define YYSTYPE YYST
+
+
+
+%}
+
 
 %token NBRE
 %token ID
@@ -37,58 +40,54 @@ void yyerror (char const *s);
 %left '^' POWER
 %%
 
-input : instrs {cout << endl<< *$<source>1 << endl;YYACCEPT;}
+input : instrs {cout << endl<< *$1.source << endl;YYACCEPT;}
 ;
 
-instrs : instr instrs {$<source>$ = new string(*$<source>1+*$<source>2);}
-	|             {$<source>$ = new string("");}
+instrs : instr instrs {$$.source = new string(*$1.source+*$2.source);}
+	|             {$$.source = new string("");}
 ;
 
-instr : instr_in ';' { $<source>$ = new string(*$<source>1);}
-      | instr_in NEWLINE{ $<source>$ = new string(*$<source>1);}
+instr : instr_in ';' { $$.source = new string(*$1.source);}
+      | instr_in NEWLINE{ $$.source = new string(*$1.source);}
 ;
 
-instr_in : expr { $<source>$ = new string(*$<source>1+";\n");}
- 	 | {$<source>$ = new string("");}
+instr_in : expr { $$.source = new string(*$1.source+";\n");}
+ 	 | {$$.source = new string("");}
 ;
        
 
-expr : expr '+' expr {$<source>$ = new string("add("+*$<source>1+","+*$<source>3+")");}
-     | expr '-' expr {$<source>$ = new string("minus("+*$<source>1+","+*$<source>3+")");}
-     | expr '*' expr {$<source>$ = new string("mtimes("+*$<source>1+","+*$<source>3+")");}
-     | expr TIMES expr {$<source>$ = new string("times("+*$<source>1+","+*$<source>3+")");}
-     | expr '/' expr {$<source>$ = new string("mdivide("+*$<source>1+","+*$<source>3+")");}
-     | expr DIVIDE expr {$<source>$ = new string("divide("+*$<source>1+","+*$<source>3+")");}
-     | expr '^' expr {$<source>$ = new string("mpow("+*$<source>1+","+*$<source>3+")");}
-     | expr POWER expr {$<source>$ = new string("pow("+*$<source>1+","+*$<source>3+")");}
-     | '(' expr ')' {$<source>$ = new string("("+*$<source>2+")");}
-     | '-' expr %prec MOINSUNAIRE { $<source>$ = new string("muminus("+*$<source>2+")");}
+expr : expr '+' expr {$$.source = new string("add("+*$1.source+","+*$3.source+")");}
+     | expr '-' expr {$$.source = new string("minus("+*$1.source+","+*$3.source+")");}
+     | expr '*' expr {$$.source = new string("mtimes("+*$1.source+","+*$3.source+")");}
+     | expr TIMES expr {$$.source = new string("times("+*$1.source+","+*$3.source+")");}
+     | expr '/' expr {$$.source = new string("mdivide("+*$1.source+","+*$3.source+")");}
+     | expr DIVIDE expr {$$.source = new string("divide("+*$1.source+","+*$3.source+")");}
+     | expr '^' expr {$$.source = new string("mpow("+*$1.source+","+*$3.source+")");}
+     | expr POWER expr {$$.source = new string("pow("+*$1.source+","+*$3.source+")");}
+     | '(' expr ')' {$$.source = new string("("+*$2.source+")");}
+     | '-' expr %prec MOINSUNAIRE { $$.source = new string("muminus("+*$2.source+")");}
      | colon_expr { 
-$<source>$ = new string("colon("+*$<start>1
-  +",1,"+*$<stop>1+")");}
-     | colon_expr1 {$<source>$ = new string("colon("+*$<start>1
-  +","+*$<stride>1+","+*$<stop>1+")");}				     
-     | NBRE { $<source>$ = new string(*$<source>1);}
-     | ID { $<source>$ = new string(*$<source>1);}     
+$$.source = new string("colon("+*$1.start
+  +",1,"+*$1.stop+")");}
+     | colon_expr1 {$$.source = new string("colon("+*$1.start
+  +","+*$1.stride+","+*$1.stop+")");}				     
+     | NBRE { $$.source = new string(*$1.source);}
+     | ID { $$.source = new string(*$1.source);}     
 ;
 
 
 
-colon_expr :   expr ':' expr { 
-  cout << *$<source>1 << ":" << *$<source>3 << endl; 
-  $<start>$ = new string(*$<source>1);
-	cout << *$<start>$ << endl;
-  $<stride>$ = new string(*$<source>3);
-	cout << *$<start>$ << endl;
-  $<stop>$ = new string(*$<source>3);
-cout << *$<start>$ << ":" << *$<stop>$ << endl;
+colon_expr :   expr ':' expr {  
+  $$.start = new string(*$1.source);
+  $$.stride = new string(*$3.source);
+  $$.stop = new string(*$3.source);
 }
 ;
 
 colon_expr1 : colon_expr ':' expr {
-$<start>$ = new string(*$<start>1);
-$<stride>$ = new string(*$<stride>1);
-$<stop>$ = new string(*$<source>3);
+$$.start = new string(*$1.start);
+$$.stride = new string(*$1.stride);
+$$.stop = new string(*$3.source);
 }
 ;
        
