@@ -32,6 +32,9 @@ function {return(FUNCTION);};
 : {return(':');}
 ; {return(';');}
 , {return(',');}
+\[ {return('[');}
+\] {return(']');}
+= {return('=');}
 {newline} {return(NEWLINE);}
 
 %%

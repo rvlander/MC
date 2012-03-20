@@ -54,14 +54,19 @@ functionMFile : empty_lines f_def_line f_body {$$.source = new string(*$2.source
 ;
 
 f_def_line : FUNCTION ID f_input {$$.source = new string("void "+*$2.source + *$3.source);}
+           | FUNCTION f_output '=' ID f_input{$$.source = new string(*$2.source+"="+*$4.source + *$5.source);}
 ;
 
 f_input : '('')' {$$.source = new string("()");}
         | '(' f_arg_list ')' {$$.source = new string("("+*$2.source+")");}
-
+;
 f_arg_list : ID {$$.source = new string(*$1.source);}
-           | ID ',' f_arg_list {$$.source = new string(*$1.source +","+*$3.source);};
+           | ID ',' f_arg_list {$$.source = new string(*$1.source +","+*$3.source);}
+;
 
+f_output : '['']' {$$.source = new string("[]");}
+         | '[' f_arg_list ']' {$$.source = new string("["+*$2.source+"]");}
+;
 f_body : delimiter statement_list {$$.source = new string(*$2.source);} 
        | opt_delimiter {$$.source = new string();} 
 ;
