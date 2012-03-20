@@ -72,6 +72,8 @@ $<source>$ = new string("colon("+*$<start>1
      | ID { $<source>$ = new string(*$<source>1);}     
 ;
 
+
+
 colon_expr :   expr ':' expr { 
   cout << *$<source>1 << ":" << *$<source>3 << endl; 
   $<start>$ = new string(*$<source>1);
