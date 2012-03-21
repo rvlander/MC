@@ -43,4 +43,5 @@ public class MCJBaseFunctions {
         double[][] a = new double[7][1];
         MCJUtils.printMatrix(size(a));
     }
+    
 }
