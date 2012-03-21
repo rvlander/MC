@@ -254,7 +254,14 @@ public class MCJOperators {
 
     public static void main(String args[]) {
         try {
-            printMatrix(vertcat(horzcat(matrixFromDouble(7),matrixFromDouble(5)),horzcat(matrixFromDouble(7),matrixFromDouble(6))));
+            double[][] A=vertcat(horzcat(matrixFromDouble(7),matrixFromDouble(5)),horzcat(matrixFromDouble(7),matrixFromDouble(6)));
+            double[][] B=matrixFromDouble(3);
+            double[][] C=mtimes(A,B);
+            A=matrixFromDouble(7);
+            printMatrix(A);
+            printMatrix(B);
+            printMatrix(C);
+
         } catch (MCJCMatrixDimensionsExceptions ex) {
             Logger.getLogger(MCJOperators.class.getName()).log(Level.SEVERE, null, ex);
         }

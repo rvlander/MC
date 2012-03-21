@@ -103,7 +103,7 @@ statement_list : statement opt_delimiter {$$.source = $1.source;}
 ;
 
 statement : expr { $$.source = $1.source+";\n";}
-          //| assignement { $$.source = new string(*$1.source+";\n");}
+          | assignement { $$.source = $1.source+";\n";}
 ;
        
 
@@ -153,17 +153,31 @@ rows : {$$.source = "new double[0][0]";}
 
 row : expr { $$.source = $1.source ;}
     | row_with_commas { $$.source = $1.source ;}
-    | row_with_commas expr { $$.source = "horzcat("+$1.source+","+$2.source+")"}
+    | row_with_commas expr { $$.source = "horzcat("+$1.source+","+$2.source+")";}
 ;
 
 row_with_commas : expr ',' { $$.source = $1.source ;}
-                |row_with_commas expr ',' { $$.source = "horzcat("+$1.source+","+$2.source+")"}
+                |row_with_commas expr ',' { $$.source = "horzcat("+$1.source+","+$2.source+")";}
 ;
 
 /*assignment : reference '=' expr {$$.source = new string(*$1.source +"="+*$2.source);}
            | s_assignee_matrix '=' expr {$$.source = new string(*$1.source +"="+*$2.source);}
            | m_assignee_matrix '=' reference {$$.source = new string(*$1.source +"="+*$2.source);}
-;*/  
+;*/
+
+//assignement simplifier !!!
+assignement : ID '=' expr {
+$$.source = "";
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ $$.source += "double[][] ";
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source += $1.source + "=" + $3.source;
+}
+;  
        
 %%
 #include "lex.yy.c"
