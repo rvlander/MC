@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <stdio.h>
+#include <map>
 
 using namespace std;
 
@@ -21,11 +22,6 @@ typedef struct tagYYSTYPE{
 } YYST;
 
 #define YYSTYPE YYST
-
-/*TODO
-->tds map simplifier tds.C
-->type value (inserer la traduction du symbole vers le langage cible
-*/
 
 
 %}
@@ -120,9 +116,8 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr '^' expr {$$.source = "mpow("+$1.source+","+$3.source+")";}
      | expr POWER expr {$$.source = "pow("+$1.source+","+$3.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}
-     | '-' expr %prec MOINSUNAIRE { $$.source = "muminus("+$2.source+")";}
-     | colon_expr { 
-$$.source = "colon("+$1.start+",1,"+$1.stop+")";}
+     | '-' expr %prec MOINSUNAIRE { $$.source = "uminus("+$2.source+")";}
+     | colon_expr {$$.source = "colon("+$1.start+",1,"+$1.stop+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | NBRE { $$.source = $1.source;}
      | ID { $$.source = $1.source;}     
