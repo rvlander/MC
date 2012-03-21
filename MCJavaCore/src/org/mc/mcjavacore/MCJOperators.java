@@ -5,6 +5,8 @@
 package org.mc.mcjavacore;
 
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.mc.mcjavacore.MCJBaseFunctions.*;
 import static org.mc.mcjavautils.MCJUtils.*;
 
@@ -233,10 +235,28 @@ public class MCJOperators {
         }
         return res;
     }
-    
+    public static double[][] horzcat(double[][] left, double[][] right) throws MCJCMatrixDimensionsExceptions{
+        double[][] res;
+        if(numel(left)[0][0]==0){
+            res = duplicate(right);
+        }else if (numel(right)[0][0]==0){
+            res = duplicate(left);
+        }else if(left.length == right.length){
+            res = new double[left.length][left[0].length+right[0].length];
+            copy(left,res,0,0);
+            copy(right,res,0,left[0].length);
+        }else{
+            throw new MCJCMatrixDimensionsExceptions();
+        }
+        return res;
+    }
     
 
     public static void main(String args[]) {
-        printMatrix(colon(matrixFromDouble(11), matrixFromDouble(2.1), matrixFromDouble(10)));
+        try {
+            printMatrix(vertcat(horzcat(matrixFromDouble(7),matrixFromDouble(5)),horzcat(matrixFromDouble(7),matrixFromDouble(6))));
+        } catch (MCJCMatrixDimensionsExceptions ex) {
+            Logger.getLogger(MCJOperators.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
