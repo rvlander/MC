@@ -16,8 +16,8 @@ end {return(END);};
 function {return(FUNCTION);};
 
 [ ] {}
-{nombre} {yylval.source = new string(yytext);return(NBRE);}
-{identifier} {yylval.source = new string(yytext);return(ID);}
+{nombre} {yylval.source = yytext;return(NBRE);}
+{identifier} {yylval.source = yytext;return(ID);}
 
 - {return('-');}
 \+ {return('+');}

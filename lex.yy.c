@@ -775,12 +775,12 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 19 "mc.lex"
-{yylval.source = new string(yytext);return(NBRE);}
+{yylval.source = yytext;return(NBRE);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 20 "mc.lex"
-{yylval.source = new string(yytext);return(ID);}
+{yylval.source = yytext;return(ID);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
