@@ -4,8 +4,9 @@
 #include <iostream>
 #include <stdio.h>
 
-
 using namespace std;
+
+#include "tds.cpp"
 
 int yylex(void);
 void yyerror (char const *s);
@@ -22,7 +23,6 @@ typedef struct tagYYSTYPE{
 #define YYSTYPE YYST
 
 /*TODO
-->essayer de passer de string* a string
 ->tds map simplifier tds.C
 ->type value (inserer la traduction du symbole vers le langage cible
 */

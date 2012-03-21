@@ -4,8 +4,9 @@
 #include <iostream>
 #include <stdio.h>
 
-
 using namespace std;
+
+#include "tds.cpp";
 
 int yylex(void);
 void yyerror (char const *s);
@@ -22,7 +23,6 @@ typedef struct tagYYSTYPE{
 #define YYSTYPE YYST
 
 /*TODO
-->essayer de passer de string* a string
 ->tds map simplifier tds.C
 ->type value (inserer la traduction du symbole vers le langage cible
 */
@@ -122,8 +122,8 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}
      | '-' expr %prec MOINSUNAIRE { $$.source = "muminus("+$2.source+")";}
      | colon_expr { 
-$$.source = "colon("+*$1.start+",1,"+$1.stop+")";}
-     | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")");}				     
+$$.source = "colon("+$1.start+",1,"+$1.stop+")";}
+     | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | NBRE { $$.source = $1.source;}
      | ID { $$.source = $1.source;}     
 ;
