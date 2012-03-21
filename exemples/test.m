@@ -1,12 +1,2 @@
-function [lol,mdr,wtf] = toto(titi,tata,tonton)
-5.*24;4+5
-5:10:45:6;
-
-
-
-,
-
-
-,
-end
+[7,8 , 5;7,6]
 

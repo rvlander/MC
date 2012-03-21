@@ -38,6 +38,15 @@ public class MCJBaseFunctions {
         }
         return res;
     }
+    
+    public static double[][] duplicate(double[][] m){
+        double[][] res = new double[m.length][m[0].length];
+        for(int i=0; i<m.length; i++){
+            for(int j=0;j<m[0].length;j++)
+                res[i][j] = m[i][j];
+        }
+        return res;
+    }
 
     public static void main(String args[]) {
         double[][] a = new double[7][1];

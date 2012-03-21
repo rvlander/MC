@@ -43,14 +43,14 @@ typedef struct tagYYSTYPE{
 %%
 
 input : scriptMFile {cout << endl<< $1.source << endl;YYACCEPT;}
-      | functionMFile {cout << endl<< $1.source << endl;YYACCEPT;}
+//      | functionMFile {cout << endl<< $1.source << endl;YYACCEPT;}
 ;
 
 scriptMFile : opt_delimiter {$$.source = "";}
             | opt_delimiter statement_list {$$.source = $2.source;}
 ;
 
-functionMFile : empty_lines f_def_line f_body {$$.source = $2.source+"{\n"+$3.source+"}\n";}
+/*functionMFile : empty_lines f_def_line f_body {$$.source = $2.source+"{\n"+$3.source+"}\n";}
               | f_def_line f_body {$$.source = $1.source+"{\n"+$2.source+"}\n";}
 ;
 
@@ -76,7 +76,7 @@ f_out_arg_list : ID {$$.source = $1.source;}
 f_body : delimiter statement_list {$$.source = $2.source;} 
        | opt_delimiter {$$.source = "";} 
 ;
-
+*/
 
 opt_delimiter :
 	      |delimiter              
@@ -119,7 +119,8 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | '-' expr %prec MOINSUNAIRE { $$.source = "uminus("+$2.source+")";}
      | colon_expr {$$.source = "colon("+$1.start+",1,"+$1.stop+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
-     | NBRE { $$.source = $1.source;}
+     | matrix {$$.source = $1.source;}
+     | NBRE { $$.source = "matrixFromDouble("+$1.source+")";}
      | ID { $$.source = $1.source;}     
 ;
 
@@ -137,6 +138,26 @@ $$.start = $1.start;
 $$.stride = $1.stride;
 $$.stop = $3.source;
 }
+;
+
+matrix : '[' rows ']' { $$.source = $2.source ;}
+;
+
+rows : {$$.source = "new double[0][0]";}
+     | row { $$.source = $1.source;}
+     | rows ';' { $$.source = $1.source;}
+     | rows ';' row { $$.source = "vertcat("+$1.source+","+$3.source+")"}
+     | rows NEWLINE
+     | rows NEWLINE row { $$.source = "vertcat("+$1.source+","+$3.source+")"}
+;
+
+row : expr { $$.source = $1.source ;}
+    | row_with_commas { $$.source = $1.source ;}
+    | row_with_commas expr { $$.source = "horzcat("+$1.source+","+$2.source+")"}
+;
+
+row_with_commas : expr ',' { $$.source = $1.source ;}
+                |row_with_commas expr ',' { $$.source = "horzcat("+$1.source+","+$2.source+")"}
 ;
 
 /*assignment : reference '=' expr {$$.source = new string(*$1.source +"="+*$2.source);}
