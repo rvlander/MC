@@ -41,7 +41,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] add(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsExceptions {
+    public static double[][] add(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = add(t2, t1[0][0]);
@@ -55,7 +55,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
 
         return res;
@@ -71,7 +71,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] mtimes(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsExceptions {
+    public static double[][] mtimes(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
@@ -87,13 +87,13 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
 
         return res;
     }
 
-    public static double[][] times(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsExceptions {
+    public static double[][] times(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
@@ -107,7 +107,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
 
         return res;
@@ -123,7 +123,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] minus(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsExceptions {
+    public static double[][] minus(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
         return add(t1, uminus(t2));
     }
 
@@ -146,7 +146,7 @@ public class MCJOperators {
         return res;
     }
     
-    public static double[][] power(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsExceptions {
+    public static double[][] power(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = power(t1[0][0],t2);
@@ -160,7 +160,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
 
         return res;
@@ -177,7 +177,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] eq(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsExceptions {
+    public static double[][] eq(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = eq(t2, t1[0][0]);
@@ -191,7 +191,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
 
         return res;
@@ -220,7 +220,7 @@ public class MCJOperators {
         return colon(start, matrixFromDouble(1), stop);
     }
     
-    public static double[][] vertcat(double[][] top, double[][] bottom) throws MCJCMatrixDimensionsExceptions{
+    public static double[][] vertcat(double[][] top, double[][] bottom) throws MCJCMatrixDimensionsException{
         double[][] res;
         if(numel(top)[0][0]==0){
             res = duplicate(bottom);
@@ -231,11 +231,11 @@ public class MCJOperators {
             copy(top,res,0,0);
             copy(bottom,res,top.length,0);
         }else{
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
         return res;
     }
-    public static double[][] horzcat(double[][] left, double[][] right) throws MCJCMatrixDimensionsExceptions{
+    public static double[][] horzcat(double[][] left, double[][] right) throws MCJCMatrixDimensionsException{
         double[][] res;
         if(numel(left)[0][0]==0){
             res = duplicate(right);
@@ -246,7 +246,7 @@ public class MCJOperators {
             copy(left,res,0,0);
             copy(right,res,0,left[0].length);
         }else{
-            throw new MCJCMatrixDimensionsExceptions();
+            throw new MCJCMatrixDimensionsException();
         }
         return res;
     }
@@ -262,7 +262,7 @@ public class MCJOperators {
             printMatrix(B);
             printMatrix(C);
 
-        } catch (MCJCMatrixDimensionsExceptions ex) {
+        } catch (MCJCMatrixDimensionsException ex) {
             Logger.getLogger(MCJOperators.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
