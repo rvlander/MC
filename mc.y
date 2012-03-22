@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <map>
+#include <fstream>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ using namespace std;
 
 int yylex(void);
 void yyerror (char const *s);
-
+void writeJavaFile(const string &s);
 
 typedef struct tagYYSTYPE{
   string source;	
@@ -42,7 +43,10 @@ typedef struct tagYYSTYPE{
 %left '^' POWER
 %%
 
-input : scriptMFile {cout << endl<< $1.source << endl;YYACCEPT;}
+input : scriptMFile {
+cout << endl<< $1.source << endl;
+writeJavaFile($1.source);
+YYACCEPT;}
 //      | functionMFile {cout << endl<< $1.source << endl;YYACCEPT;}
 ;
 
@@ -202,4 +206,31 @@ fclose(fid);
 }
 
  return res;
+}
+
+void writeJavaFile(const string &source){
+	ofstream outfile;
+	outfile.open("MatCode.java",fstream::out);
+
+	if (!outfile.is_open()){
+		cerr << "can't open file" << endl;	
+	}
+ 
+	
+	outfile << "import org.mc.mcjavacore.MCJCMatrixDimensionsException;" << endl;
+	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
+	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
+	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
+	outfile << "public class MatCode{" << endl;
+	outfile << "public static void main(String args[]) throws MCJCMatrixDimensionsException{" << endl;	
+	outfile << source << endl;
+	
+	map<string,symrec>::iterator it;
+	for (it = tds.begin(); it != tds.end(); it++){
+		outfile << "System.out.println(\""+it->first+"=\");"+"\nprintMatrix("+it->first +");"<<endl;
+		outfile << "System.out.println();" <<endl;			
+	}
+
+    outfile << "}\n}" << endl;
+	outfile.close();	
 }

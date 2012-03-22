@@ -8,7 +8,7 @@ package org.mc.mcjavacore;
  *
  * @author rvlander
  */
-class MCJCMatrixDimensionsException extends Exception {
+public class MCJCMatrixDimensionsException extends Exception {
 
     public MCJCMatrixDimensionsException() {
         System.err.println("Matrix dimensions must agree");
