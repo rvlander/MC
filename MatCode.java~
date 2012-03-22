@@ -1,0 +1,19 @@
+import org.mc.mcjavacore.MCJCMatrixDimensionsException;
+import static org.mc.mcjavacore.MCJOperators.*;
+import static org.mc.mcjavautils.MCJUtils.*;
+import static org.mc.mcjavacore.MCJBaseFunctions.*;
+public class MatCode{
+public static void main(String args[]) throws MCJCMatrixDimensionsException{
+double[][] A=vertcat(horzcat(matrixFromDouble(7),matrixFromDouble(5)),horzcat(matrixFromDouble(7),matrixFromDouble(6)));
+double[][] B=matrixFromDouble(3);
+double[][] C=mtimes(A,B);
+A=matrixFromDouble(7);
+
+System.out.println("A=");
+printMatrix(A);
+System.out.println("B=");
+printMatrix(B);
+System.out.println("C=");
+printMatrix(C);
+}
+}

@@ -117,15 +117,31 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr TIMES expr {$$.source = "times("+$1.source+","+$3.source+")";}
      | expr '/' expr {$$.source = "mdivide("+$1.source+","+$3.source+")";}
      | expr DIVIDE expr {$$.source = "divide("+$1.source+","+$3.source+")";}
-     | expr '^' expr {$$.source = "mpow("+$1.source+","+$3.source+")";}
-     | expr POWER expr {$$.source = "pow("+$1.source+","+$3.source+")";}
+     | expr '^' expr {$$.source = "mpower("+$1.source+","+$3.source+")";}
+     | expr POWER expr {$$.source = "power("+$1.source+","+$3.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}
      | '-' expr %prec MOINSUNAIRE { $$.source = "uminus("+$2.source+")";}
-     | colon_expr {$$.source = "colon("+$1.start+",1,"+$1.stop+")";}
+     | colon_expr {$$.source = "colon("+$1.start+",matrixFromDouble(1),"+$1.stop+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | matrix {$$.source = $1.source;}
      | NBRE { $$.source = "matrixFromDouble("+$1.source+")";}
-     | ID { $$.source = $1.source;}     
+     | ID { $$.source = $1.source;
+		symrec sr;
+		if(!(TDSget($1.source, &sr))){
+			cerr << " Symbol "+$1.source+" not declared" << endl;		
+		}
+		}
+	 | ID '(' ref_expr_list ')' {
+          symrec sr;
+		  if(!(TDSget($1.source, &sr))){
+			cerr << " Symbol "+$1.source+" not declared" << endl;		
+		  }
+          if(sr.idtype == VAR) {
+		  	$$.source = "subsref("+$1.source+","+$3.source+")";
+          }else{
+          	$$.source = $1.source+"(null,"+$3.source+")";
+          }
+		}      
 ;
 
 
@@ -142,6 +158,19 @@ $$.start = $1.start;
 $$.stride = $1.stride;
 $$.stop = $3.source;
 }
+;
+
+
+ref_index :':'  {$$.source = "null";}
+          | expr {$$.source = $1.source;}
+;
+
+ref_expr_list : {$$.source = "null";}
+			  | comma_ref_list {$$.source = "new double[][][]{"+ $1.source+"}";}
+;
+
+comma_ref_list : ref_index {$$.source = $1.source;}
+               | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;}
 ;
 
 matrix : '[' rows ']' { $$.source = $2.source ;}
@@ -169,12 +198,13 @@ row_with_commas : expr ',' { $$.source = $1.source ;}
            | m_assignee_matrix '=' reference {$$.source = new string(*$1.source +"="+*$2.source);}
 ;*/
 
-//assignement simplifier !!!
+//assignement simplifier!!!
 assignement : ID '=' expr {
 $$.source = "";
 symrec sr;
 if(!TDSget($1.source,&sr)){
  $$.source += "double[][] ";
+ sr.idtype = VAR;
  if(!TDSinsert($1.source,sr)){
   cerr << "pas possible assignement" << endl;
  }
@@ -217,12 +247,12 @@ void writeJavaFile(const string &source){
 	}
  
 	
-	outfile << "import org.mc.mcjavacore.MCJCMatrixDimensionsException;" << endl;
+	
 	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class MatCode{" << endl;
-	outfile << "public static void main(String args[]) throws MCJCMatrixDimensionsException{" << endl;	
+	outfile << "public static void main(String args[]) throws Exception{" << endl;	
 	outfile << source << endl;
 	
 	map<string,symrec>::iterator it;

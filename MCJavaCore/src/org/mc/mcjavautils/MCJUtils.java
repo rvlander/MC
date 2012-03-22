@@ -4,6 +4,9 @@
  */
 package org.mc.mcjavautils;
 
+
+import static org.mc.mcjavacore.MCJBaseFunctions.*;
+
 /**
  *
  * @author rvlander
@@ -28,6 +31,22 @@ public class MCJUtils {
             }
         }
         return res;
+    }
+    
+    public static boolean isVector(double[][] m){
+        double[][] s = size(m);
+        return (s[0][0] == 1 || s[0][1] ==1)&& (s[0][0]*s[0][1] >=1);
+    }
+    
+    public static double[] vectorToDoubleArray(double[][] m){
+        if( m.length == 1 ) return m[0];
+        else {
+            double[] r = new double[m.length];
+            for(int i=0;i<r.length;i++){
+                r[i] = m[i][0];
+            }
+            return r;
+        }
     }
     
         
