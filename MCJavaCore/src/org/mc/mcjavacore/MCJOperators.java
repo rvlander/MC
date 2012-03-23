@@ -252,6 +252,25 @@ public class MCJOperators {
             return duplicate(A);
         }
         if (indexes.length == 1) {
+            double[][] m;
+            if (indexes[0] == null) {
+                m = colon(matrixFromDouble(1), matrixFromDouble(1), numel(A));
+                m = transpose(m);
+            } else {
+                m = indexes[0];
+            }
+            double[][] res = new double[m.length][m[0].length];
+            int n = (int) numel(m)[0][0];
+            for (int i = 1; i <= n; i++) {
+                ElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
+                ElemPosition q = kthElemPosition(m, i);
+                res[q.i][q.j] = A[p.i][p.j]; 
+                
+            }
+
+            return res;
+        }
+        if (indexes.length == 1) {
             if (indexes[0] == null) {
                 return duplicate(A);
             } else {
@@ -309,7 +328,8 @@ public class MCJOperators {
         return new double[0][0];
     }
 
-    public static void subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJCMatrixDimensionsException, MCJCIndexExceedsMatrixDimensions {
+    public static double[][] subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJCMatrixDimensionsException, MCJCIndexExceedsMatrixDimensions {
+        
         if (indexes == null) {
             throw new MCJCMatrixDimensionsException();
         }
@@ -317,23 +337,24 @@ public class MCJOperators {
             double[][] m;
             if (indexes[0] == null) {
                 m = colon(matrixFromDouble(1), matrixFromDouble(1), numel(A));
+            } else {
+                m = indexes[0];
             }
-            m = indexes[0];
-            if(!isScalar(B) || numel(m)!=numel(B)){
+            if (!isScalar(B) && ( numel(m)[0][0] != numel(B)[0][0])) {
                 throw new MCJCMatrixDimensionsException();
             }
-            int n = (int)numel(m)[0][0];
-            for(int i=0; i<n; i++){
-                ElemPosition p = kthElemPosition(A,(int)kthElemValue(m,i));
-                if(isScalar(B)){
+            int n = (int) numel(m)[0][0];
+            for (int i = 1; i <= n; i++) {
+                ElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
+                if (isScalar(B)) {
                     A[p.i][p.j] = B[0][0];
-                }else{
-                    ElemPosition q = kthElemPosition(A,i);
+                } else {
+                    ElemPosition q = kthElemPosition(B, i);
                     A[p.i][p.j] = B[q.i][q.j];
                 }
             }
-            
-            return;
+
+            return A;
         }
         if (indexes.length == 2) {
             if (indexes[0] == null) {
@@ -344,15 +365,15 @@ public class MCJOperators {
             }
             //a corriger ?    
             if (numel(indexes[0])[0][0] == 0 || numel(indexes[1])[0][0] == 0) {
-                return;
+                return new double[0][0];
             }
             if (!isVector(indexes[0]) || !isVector(indexes[1])) {
                 throw new MCJCIndexExceedsMatrixDimensions();
             }
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
-            
-            if(!isScalar(B) ||iIndex.length != B.length || jIndex.length != B[0].length){
+
+            if (!isScalar(B) &&( iIndex.length != B.length || jIndex.length != B[0].length)) {
                 throw new MCJCIndexExceedsMatrixDimensions();
             }
 
@@ -360,29 +381,45 @@ public class MCJOperators {
                 for (int j = 0; j < jIndex.length; j++) {
                     if ((int) iIndex[i] > A.length) {
                         double[][] temp = new double[(int) iIndex[i]][A[0].length];
-                        copy(A,temp,0,0);
+                        copy(A, temp, 0, 0);
                         A = temp;
                     }
                     if ((int) jIndex[j] > A[0].length) {
-                        double[][] temp = new double[A.length][(int)jIndex[j]];
-                        copy(A,temp,0,0);
+                        double[][] temp = new double[A.length][(int) jIndex[j]];
+                        System.out.println("in"+ numel(A)[0][0]);
+                        copy(A, temp, 0, 0);
                         A = temp;
                     }
-                    if(isScalar(B)){
+                    if (isScalar(B)) {
                         A[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[0][0];
-                    }else{
+                    } else {
                         A[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[i][j];
                     }
                 }
             }
-            return;
+            return A;
         }
         if (indexes.length > 2) {
             throw new MCJCIndexExceedsMatrixDimensions();
         }
         //normally not here
         System.err.println("subsref : pas là");
-        return;
+        return new double[0][0];
+    }
+    
+    public static double[][] transpose(double[][] a){
+        if(numel(a)[0][0] == 0){
+            return new double[0][0];
+        }else{
+            double[][] res = new double[a[0].length][a.length];
+            for(int i=0;i<a.length;i++){
+                for(int j=0; j<a[0].length;j++){
+                    res[j][i] = a[i][j];
+                }
+            }
+            return res;
+        }
+        
     }
 
     public static void main(String args[]) {

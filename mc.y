@@ -215,13 +215,37 @@ $$.source += $1.source + "=" + $3.source;
 $$.source = "";
 symrec sr;
 if(!TDSget($1.source,&sr)){
- $$.source += "double[][] " + $1.source +";\n";
+ $$.source += "double[][] " + $1.source +" ;\n";
  sr.idtype = VAR;
  if(!TDSinsert($1.source,sr)){
   cerr << "pas possible assignement" << endl;
  }
 }
-$$.source += "subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
+$$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
+}
+              |'[' ID ']' '=' expr {
+$$.source = "";
+symrec sr;
+if(!TDSget($2.source,&sr)){
+ $$.source += "double[][] ";
+ sr.idtype = VAR;
+ if(!TDSinsert($2.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source += $2.source + "=" + $5.source;
+}
+            |  '[' ID '('ref_expr_list ')' ']' '=' expr{
+$$.source = "";
+symrec sr;
+if(!TDSget($2.source,&sr)){
+ $$.source += "double[][] " + $2.source +" ;\n";
+ sr.idtype = VAR;
+ if(!TDSinsert($2.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.source+")";
 } 
 ;  
        
