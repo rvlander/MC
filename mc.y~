@@ -121,7 +121,7 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr POWER expr {$$.source = "power("+$1.source+","+$3.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}
      | '-' expr %prec MOINSUNAIRE { $$.source = "uminus("+$2.source+")";}
-     | colon_expr {$$.source = "colon("+$1.start+",1,"+$1.stop+")";}
+     | colon_expr {$$.source = "colon("+$1.start+",matrixFromDouble(1),"+$1.stop+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | matrix {$$.source = $1.source;}
      | NBRE { $$.source = "matrixFromDouble("+$1.source+")";}
@@ -211,6 +211,18 @@ if(!TDSget($1.source,&sr)){
 }
 $$.source += $1.source + "=" + $3.source;
 }
+            | ID '('ref_expr_list ')'  '=' expr{
+$$.source = "";
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ $$.source += "double[][] " + $1.source +";\n";
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source += "subsasgn("+$1.source + "," + $3.source ","+$6.source+")";
+} 
 ;  
        
 %%

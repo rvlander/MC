@@ -5,6 +5,7 @@
 package org.mc.mcjavautils;
 
 
+import org.mc.mcjavacore.ElemPosition;
 import static org.mc.mcjavacore.MCJBaseFunctions.*;
 
 /**
@@ -55,5 +56,31 @@ public class MCJUtils {
             for(int j=0;j<src[0].length && j+offj<dest[0].length;j++)
                 dest[i+offi][j+offj] = src[i][j];
         }
+    }
+    
+    public static void copy(double src,double[][] dest){
+        for(int i=0;i<dest.length; i++){
+            for(int j=0;j<dest[0].length;j++)
+                dest[i][j] = src;
+        }
+    }
+    
+    public static double kthElemValue(double[][] a, int i){
+        int j = i-1;
+        int m = j/a.length;
+        int k = j%a.length;
+        return a[k][m];
+    }
+    
+    public static ElemPosition kthElemPosition(double[][] a, int i){
+        ElemPosition p = new ElemPosition();
+        int j = i-1;
+        p.j = j/a.length;
+        p.i= j%a.length;
+        return p;
+    }
+    
+    public static boolean isScalar(double[][] m){
+        return numel(m)[0][0] == 1;
     }
 }

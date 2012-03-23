@@ -261,47 +261,128 @@ public class MCJOperators {
                 if (numel(m)[0][0] >= 1) {
                     for (int i = 0; i < m.length; i++) {
                         for (int j = 0; j < m[0].length; j++) {
-                            if(i>=A.length || (int)indexes[0][i][j] > A[0].length)
+                            if (i >= A.length || (int) indexes[0][i][j] > A[0].length) {
                                 throw new MCJCIndexExceedsMatrixDimensions();
-                            res[i][j] = A[i][(int)( indexes[0][i][j])-1];
+                            }
+                            res[i][j] = A[i][(int) (indexes[0][i][j]) - 1];
                         }
                     }
                 }
                 return res;
             }
         }
-        if(indexes.length ==2 ){
-            if(indexes[0] == null) indexes[0] = colon(matrixFromDouble(1),matrixFromDouble(1),matrixFromDouble(A.length));
-            if(indexes[1] == null) indexes[1] = colon(matrixFromDouble(1),matrixFromDouble(1),matrixFromDouble(A[0].length));    
-            //a corriger ?    
-            if(numel(indexes[0])[0][0] == 0 || numel(indexes[1])[0][0] == 0){
-                return new double[0][(int)numel(indexes[1])[0][0]];
+        if (indexes.length == 2) {
+            if (indexes[0] == null) {
+                indexes[0] = colon(matrixFromDouble(1), matrixFromDouble(1), matrixFromDouble(A.length));
             }
-            if(!isVector(indexes[0])||!isVector(indexes[1])){
+            if (indexes[1] == null) {
+                indexes[1] = colon(matrixFromDouble(1), matrixFromDouble(1), matrixFromDouble(A[0].length));
+            }
+            //a corriger ?    
+            if (numel(indexes[0])[0][0] == 0 || numel(indexes[1])[0][0] == 0) {
+                return new double[0][(int) numel(indexes[1])[0][0]];
+            }
+            if (!isVector(indexes[0]) || !isVector(indexes[1])) {
                 throw new MCJCIndexExceedsMatrixDimensions();
             }
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
-            
+
             double[][] res = new double[iIndex.length][jIndex.length];
-            
-            for(int i=0; i < iIndex.length; i++){
-                for(int j=0; j<jIndex.length; j++){
-                    if((int)iIndex[i] > A.length || (int)jIndex[j] > A[0].length ){
+
+            for (int i = 0; i < iIndex.length; i++) {
+                for (int j = 0; j < jIndex.length; j++) {
+                    if ((int) iIndex[i] > A.length || (int) jIndex[j] > A[0].length) {
                         throw new MCJCIndexExceedsMatrixDimensions();
                     }
-                    res[i][j] = A[(int)iIndex[i]-1][(int)jIndex[j]-1];
+                    res[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1];
                 }
             }
             return res;
-            
+
         }
-        if(indexes.length >2){
+        if (indexes.length > 2) {
             throw new MCJCIndexExceedsMatrixDimensions();
         }
         //normally not here
         System.err.println("subsref : pas là");
         return new double[0][0];
+    }
+
+    public static void subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJCMatrixDimensionsException, MCJCIndexExceedsMatrixDimensions {
+        if (indexes == null) {
+            throw new MCJCMatrixDimensionsException();
+        }
+        if (indexes.length == 1) {
+            double[][] m;
+            if (indexes[0] == null) {
+                m = colon(matrixFromDouble(1), matrixFromDouble(1), numel(A));
+            }
+            m = indexes[0];
+            if(!isScalar(B) || numel(m)!=numel(B)){
+                throw new MCJCMatrixDimensionsException();
+            }
+            int n = (int)numel(m)[0][0];
+            for(int i=0; i<n; i++){
+                ElemPosition p = kthElemPosition(A,(int)kthElemValue(m,i));
+                if(isScalar(B)){
+                    A[p.i][p.j] = B[0][0];
+                }else{
+                    ElemPosition q = kthElemPosition(A,i);
+                    A[p.i][p.j] = B[q.i][q.j];
+                }
+            }
+            
+            return;
+        }
+        if (indexes.length == 2) {
+            if (indexes[0] == null) {
+                indexes[0] = colon(matrixFromDouble(1), matrixFromDouble(1), matrixFromDouble(A.length));
+            }
+            if (indexes[1] == null) {
+                indexes[1] = colon(matrixFromDouble(1), matrixFromDouble(1), matrixFromDouble(A[0].length));
+            }
+            //a corriger ?    
+            if (numel(indexes[0])[0][0] == 0 || numel(indexes[1])[0][0] == 0) {
+                return;
+            }
+            if (!isVector(indexes[0]) || !isVector(indexes[1])) {
+                throw new MCJCIndexExceedsMatrixDimensions();
+            }
+            double[] iIndex = vectorToDoubleArray(indexes[0]);
+            double[] jIndex = vectorToDoubleArray(indexes[1]);
+            
+            if(!isScalar(B) ||iIndex.length != B.length || jIndex.length != B[0].length){
+                throw new MCJCIndexExceedsMatrixDimensions();
+            }
+
+            for (int i = 0; i < iIndex.length; i++) {
+                for (int j = 0; j < jIndex.length; j++) {
+                    if ((int) iIndex[i] > A.length) {
+                        double[][] temp = new double[(int) iIndex[i]][A[0].length];
+                        copy(A,temp,0,0);
+                        A = temp;
+                    }
+                    if ((int) jIndex[j] > A[0].length) {
+                        double[][] temp = new double[A.length][(int)jIndex[j]];
+                        copy(A,temp,0,0);
+                        A = temp;
+                    }
+                    if(isScalar(B)){
+                        A[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[0][0];
+                    }else{
+                        A[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[i][j];
+                    }
+                }
+            }
+            return;
+        }
+        if (indexes.length > 2) {
+            throw new MCJCIndexExceedsMatrixDimensions();
+        }
+        //normally not here
+        System.err.println("subsref : pas là");
+        return;
     }
 
     public static void main(String args[]) {

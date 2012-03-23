@@ -211,6 +211,18 @@ if(!TDSget($1.source,&sr)){
 }
 $$.source += $1.source + "=" + $3.source;
 }
+            | ID '('ref_expr_list ')'  '=' expr{
+$$.source = "";
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ $$.source += "double[][] " + $1.source +";\n";
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source += "subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
+} 
 ;  
        
 %%
