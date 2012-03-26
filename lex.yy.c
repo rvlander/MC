@@ -798,7 +798,7 @@ case 6:
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
 #line 21 "mc.lex"
-{cout << "LD" << endl; return(LD);}
+{ return(LD);}
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
@@ -807,7 +807,7 @@ case 7:
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
 #line 22 "mc.lex"
-{cout << "RD" << endl; return(RD);}
+{return(RD);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP

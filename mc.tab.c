@@ -485,7 +485,7 @@ static const yytype_uint16 yyrline[] =
      141,   142,   143,   144,   145,   146,   147,   153,   168,   175,
      183,   184,   187,   188,   191,   192,   195,   198,   199,   200,
      201,   202,   203,   206,   207,   208,   211,   212,   221,   233,
-     245,   257,   269,   287,   288,   296,   302
+     245,   257,   269,   307,   308,   316,   322
 };
 #endif
 
@@ -1869,26 +1869,46 @@ if(!TDSget((yyvsp[(2) - (8)]).source,&sr)){
         cerr << "Too many output arguments : " + (yyvsp[(5) - (8)]).source + " is not a function !" << endl;
    }
    ostringstream oss;
-   oss << "MCJOuputArg[] oa = new MCJOutputArg[" << (yyvsp[(2) - (8)]).varg.size() << "];\n";
+   oss << "MCJOutputArg[] oa = new MCJOutputArg[" << (yyvsp[(2) - (8)]).varg.size() << "];\n";
    for(int i=0;i<(yyvsp[(2) - (8)]).varg.size();i++){
-   	oss << "oa[" << i << "]= new MCJOutputArg();\n";
-	oss << "oa[" << i << "].data=" << (yyvsp[(2) - (8)]).varg[i].id << ";\n"; 
+	ref_info ri = (yyvsp[(2) - (8)]).varg[i];	
+	oss << "oa[" << i << "]= new MCJOutputArg();\n";	
+	if(!ri.is_simple){
+		oss << "double[][] " << ri.id << i << ";\n";
+		oss << "oa[" << i << "].val=" << ri.id <<i<< ";\n";	
+	} else {
+	   oss << "oa[" << i << "].val=" << ri.id << ";\n";
+        }
+   	
+	 
    }
+   oss << (yyvsp[(5) - (8)]).source << "(oa," + (yyvsp[(7) - (8)]).source +")";
+	
+   for(int i=0;i<(yyvsp[(2) - (8)]).varg.size();i++){
+	ref_info ri = (yyvsp[(2) - (8)]).varg[i];	
+	if(!ri.is_simple){
+		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
+	}else{
+		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"].val";	
+	}
+   }
+	
    (yyval).source = oss.str();
+
 ;}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 287 "mc.y"
+#line 307 "mc.y"
     { (yyval).varg.push_back((yyvsp[(1) - (3)]).ri); (yyval).varg.push_back((yyvsp[(3) - (3)]).ri);;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 288 "mc.y"
+#line 308 "mc.y"
     { 
 for(int i=0;i<(yyvsp[(1) - (3)]).varg.size();i++){
 	(yyval).varg.push_back((yyvsp[(1) - (3)]).varg[i]);
@@ -1900,7 +1920,7 @@ for(int i=0;i<(yyvsp[(1) - (3)]).varg.size();i++){
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 296 "mc.y"
+#line 316 "mc.y"
     { 
 ref_info rinf;
 rinf.id = (yyvsp[(1) - (1)]).source;
@@ -1912,7 +1932,7 @@ rinf.is_simple = true;
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 302 "mc.y"
+#line 322 "mc.y"
     { 
 ref_info rinf;
 rinf.id = (yyvsp[(1) - (4)]).source;
@@ -1925,7 +1945,7 @@ rinf.ref_source = (yyvsp[(3) - (4)]).source;
 
 
 /* Line 1455 of yacc.c  */
-#line 1929 "mc.tab.c"
+#line 1949 "mc.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2137,7 +2157,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 310 "mc.y"
+#line 330 "mc.y"
 
 #include "lex.yy.c"
 
@@ -2179,6 +2199,7 @@ void writeJavaFile(const string &source){
 	
 	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcfunctions.MCJFunctions.*;" << endl;
+	outfile << "import org.mc.mcfunctions.MCJOutputArg;" << endl;
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class MatCode{" << endl;

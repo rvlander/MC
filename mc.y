@@ -274,12 +274,32 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
         cerr << "Too many output arguments : " + $5.source + " is not a function !" << endl;
    }
    ostringstream oss;
-   oss << "MCJOuputArg[] oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
+   oss << "MCJOutputArg[] oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
    for(int i=0;i<$2.varg.size();i++){
-   	oss << "oa[" << i << "]= new MCJOutputArg();\n";
-	oss << "oa[" << i << "].data=" << $2.varg[i].id << ";\n"; 
+	ref_info ri = $2.varg[i];	
+	oss << "oa[" << i << "]= new MCJOutputArg();\n";	
+	if(!ri.is_simple){
+		oss << "double[][] " << ri.id << i << ";\n";
+		oss << "oa[" << i << "].val=" << ri.id <<i<< ";\n";	
+	} else {
+	   oss << "oa[" << i << "].val=" << ri.id << ";\n";
+        }
+   	
+	 
    }
+   oss << $5.source << "(oa," + $7.source +")";
+	
+   for(int i=0;i<$2.varg.size();i++){
+	ref_info ri = $2.varg[i];	
+	if(!ri.is_simple){
+		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
+	}else{
+		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"].val";	
+	}
+   }
+	
    $$.source = oss.str();
+
 }
 ;  
     
@@ -348,6 +368,7 @@ void writeJavaFile(const string &source){
 	
 	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcfunctions.MCJFunctions.*;" << endl;
+	outfile << "import org.mc.mcfunctions.MCJOutputArg;" << endl;
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class MatCode{" << endl;

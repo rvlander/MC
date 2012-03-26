@@ -18,8 +18,8 @@ function {return(FUNCTION);};
 {nombre} {yylval.source = yytext;return(NBRE);}
 {identifier} {yylval.source = yytext;return(ID);}
 
-#\[/[^=]*=[^=] {cout << "LD" << endl; return(LD);}
-#\]/\ *=[^=] {cout << "RD" << endl; return(RD);}
+\[/[^=]*=[^=] {cout << "LD" << endl; return(LD);}
+\]/\ *=[^=] {cout << "RD" << endl; return(RD);}
 
 
 - {return('-');}

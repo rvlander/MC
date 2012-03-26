@@ -8,6 +8,6 @@ package org.mc.mcfunctions;
  *
  * @author rvlander
  */
-public class MCJOutArg {
-    double[][] val;
+public class MCJOutputArg {
+    public double[][] val;
 }
