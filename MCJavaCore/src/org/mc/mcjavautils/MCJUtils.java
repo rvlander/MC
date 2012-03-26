@@ -5,7 +5,7 @@
 package org.mc.mcjavautils;
 
 
-import org.mc.mcjavacore.ElemPosition;
+import org.mc.mcjavacore.MCJElemPosition;
 import static org.mc.mcjavacore.MCJBaseFunctions.*;
 
 /**
@@ -72,8 +72,8 @@ public class MCJUtils {
         return a[k][m];
     }
     
-    public static ElemPosition kthElemPosition(double[][] a, int i){
-        ElemPosition p = new ElemPosition();
+    public static MCJElemPosition kthElemPosition(double[][] a, int i){
+        MCJElemPosition p = new MCJElemPosition();
         int j = i-1;
         p.j = j/a.length;
         p.i= j%a.length;

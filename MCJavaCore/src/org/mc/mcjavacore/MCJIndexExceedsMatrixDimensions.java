@@ -8,9 +8,9 @@ package org.mc.mcjavacore;
  *
  * @author rvlander
  */
-public class MCJCIndexExceedsMatrixDimensions extends Exception {
+public class MCJIndexExceedsMatrixDimensions extends Exception {
 
-    public MCJCIndexExceedsMatrixDimensions() {
+    public MCJIndexExceedsMatrixDimensions() {
         System.err.println("Index exceeds matrix dimensions");
     }
     

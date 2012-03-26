@@ -8,7 +8,7 @@ package org.mc.mcjavacore;
  *
  * @author rvlander
  */
-public class ElemPosition {
+public class MCJElemPosition {
     public int i;
     public int j;
 }

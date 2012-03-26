@@ -35,7 +35,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] add(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
+    public static double[][] add(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = add(t2, t1[0][0]);
@@ -49,7 +49,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
 
         return res;
@@ -65,7 +65,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] mtimes(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
+    public static double[][] mtimes(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
@@ -81,13 +81,13 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
 
         return res;
     }
 
-    public static double[][] times(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
+    public static double[][] times(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
@@ -101,7 +101,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
 
         return res;
@@ -117,7 +117,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] minus(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
+    public static double[][] minus(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         return add(t1, uminus(t2));
     }
 
@@ -141,7 +141,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] power(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
+    public static double[][] power(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = power(t1[0][0], t2);
@@ -155,7 +155,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
 
         return res;
@@ -172,7 +172,7 @@ public class MCJOperators {
         return res;
     }
 
-    public static double[][] eq(double[][] t1, double[][] t2) throws MCJCMatrixDimensionsException {
+    public static double[][] eq(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = eq(t2, t1[0][0]);
@@ -186,7 +186,7 @@ public class MCJOperators {
                 }
             }
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
 
         return res;
@@ -215,7 +215,7 @@ public class MCJOperators {
         return colon(start, matrixFromDouble(1), stop);
     }
 
-    public static double[][] vertcat(double[][] top, double[][] bottom) throws MCJCMatrixDimensionsException {
+    public static double[][] vertcat(double[][] top, double[][] bottom) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(top)[0][0] == 0) {
             res = duplicate(bottom);
@@ -226,12 +226,12 @@ public class MCJOperators {
             copy(top, res, 0, 0);
             copy(bottom, res, top.length, 0);
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
         return res;
     }
 
-    public static double[][] horzcat(double[][] left, double[][] right) throws MCJCMatrixDimensionsException {
+    public static double[][] horzcat(double[][] left, double[][] right) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(left)[0][0] == 0) {
             res = duplicate(right);
@@ -242,12 +242,12 @@ public class MCJOperators {
             copy(left, res, 0, 0);
             copy(right, res, 0, left[0].length);
         } else {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
         return res;
     }
 
-    public static double[][] subsref(double[][] A, double[][][] indexes) throws MCJCIndexExceedsMatrixDimensions {
+    public static double[][] subsref(double[][] A, double[][][] indexes) throws MCJIndexExceedsMatrixDimensions {
         if (indexes == null) {
             return duplicate(A);
         }
@@ -262,8 +262,8 @@ public class MCJOperators {
             double[][] res = new double[m.length][m[0].length];
             int n = (int) numel(m)[0][0];
             for (int i = 1; i <= n; i++) {
-                ElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
-                ElemPosition q = kthElemPosition(m, i);
+                MCJElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
+                MCJElemPosition q = kthElemPosition(m, i);
                 res[q.i][q.j] = A[p.i][p.j]; 
                 
             }
@@ -281,7 +281,7 @@ public class MCJOperators {
                     for (int i = 0; i < m.length; i++) {
                         for (int j = 0; j < m[0].length; j++) {
                             if (i >= A.length || (int) indexes[0][i][j] > A[0].length) {
-                                throw new MCJCIndexExceedsMatrixDimensions();
+                                throw new MCJIndexExceedsMatrixDimensions();
                             }
                             res[i][j] = A[i][(int) (indexes[0][i][j]) - 1];
                         }
@@ -302,7 +302,7 @@ public class MCJOperators {
                 return new double[0][(int) numel(indexes[1])[0][0]];
             }
             if (!isVector(indexes[0]) || !isVector(indexes[1])) {
-                throw new MCJCIndexExceedsMatrixDimensions();
+                throw new MCJIndexExceedsMatrixDimensions();
             }
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
@@ -312,7 +312,7 @@ public class MCJOperators {
             for (int i = 0; i < iIndex.length; i++) {
                 for (int j = 0; j < jIndex.length; j++) {
                     if ((int) iIndex[i] > A.length || (int) jIndex[j] > A[0].length) {
-                        throw new MCJCIndexExceedsMatrixDimensions();
+                        throw new MCJIndexExceedsMatrixDimensions();
                     }
                     res[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1];
                 }
@@ -321,17 +321,17 @@ public class MCJOperators {
 
         }
         if (indexes.length > 2) {
-            throw new MCJCIndexExceedsMatrixDimensions();
+            throw new MCJIndexExceedsMatrixDimensions();
         }
         //normally not here
         System.err.println("subsref : pas là");
         return new double[0][0];
     }
 
-    public static double[][] subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJCMatrixDimensionsException, MCJCIndexExceedsMatrixDimensions {
+    public static double[][] subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJMatrixDimensionsException, MCJIndexExceedsMatrixDimensions {
         
         if (indexes == null) {
-            throw new MCJCMatrixDimensionsException();
+            throw new MCJMatrixDimensionsException();
         }
         if (indexes.length == 1) {
             double[][] m;
@@ -341,15 +341,15 @@ public class MCJOperators {
                 m = indexes[0];
             }
             if (!isScalar(B) && ( numel(m)[0][0] != numel(B)[0][0])) {
-                throw new MCJCMatrixDimensionsException();
+                throw new MCJMatrixDimensionsException();
             }
             int n = (int) numel(m)[0][0];
             for (int i = 1; i <= n; i++) {
-                ElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
+                MCJElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
                 if (isScalar(B)) {
                     A[p.i][p.j] = B[0][0];
                 } else {
-                    ElemPosition q = kthElemPosition(B, i);
+                    MCJElemPosition q = kthElemPosition(B, i);
                     A[p.i][p.j] = B[q.i][q.j];
                 }
             }
@@ -368,13 +368,13 @@ public class MCJOperators {
                 return new double[0][0];
             }
             if (!isVector(indexes[0]) || !isVector(indexes[1])) {
-                throw new MCJCIndexExceedsMatrixDimensions();
+                throw new MCJIndexExceedsMatrixDimensions();
             }
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
 
             if (!isScalar(B) &&( iIndex.length != B.length || jIndex.length != B[0].length)) {
-                throw new MCJCIndexExceedsMatrixDimensions();
+                throw new MCJIndexExceedsMatrixDimensions();
             }
 
             for (int i = 0; i < iIndex.length; i++) {
@@ -400,7 +400,7 @@ public class MCJOperators {
             return A;
         }
         if (indexes.length > 2) {
-            throw new MCJCIndexExceedsMatrixDimensions();
+            throw new MCJIndexExceedsMatrixDimensions();
         }
         //normally not here
         System.err.println("subsref : pas là");
@@ -432,7 +432,7 @@ public class MCJOperators {
             printMatrix(B);
             printMatrix(C);
 
-        } catch (MCJCMatrixDimensionsException ex) {
+        } catch (MCJMatrixDimensionsException ex) {
             Logger.getLogger(MCJOperators.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
