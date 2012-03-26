@@ -42,6 +42,9 @@ typedef struct tagYYSTYPE{
 
 
 %}
+
+%token TEXT
+
 %token END
 %token FUNCTION
 
@@ -52,6 +55,8 @@ typedef struct tagYYSTYPE{
 %token DIVIDE
 %token POWER
 %token FOR
+%token TRANSPOSE
+%token CTRANSPOSE
 
 %token LD
 %token RD
@@ -60,7 +65,7 @@ typedef struct tagYYSTYPE{
 %left '+' '-'
 %left '*' '/' TIMES DIVIDE 
 %right MOINSUNAIRE
-%left '^' POWER
+%left '^' POWER TRANSPOSE CTRANSPOSE
 %%
 
 input : scriptMFile {
@@ -140,12 +145,15 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr DIVIDE expr {$$.source = "divide("+$1.source+","+$3.source+")";}
      | expr '^' expr {$$.source = "mpower("+$1.source+","+$3.source+")";}
      | expr POWER expr {$$.source = "power("+$1.source+","+$3.source+")";}
+     | expr TRANSPOSE {$$.source = "transpose("+$1.source+")";}
+     | expr CTRANSPOSE {$$.source = "ctranspose("+$1.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}
      | '-' expr %prec MOINSUNAIRE { $$.source = "uminus("+$2.source+")";}
      | colon_expr {$$.source = "colon("+$1.start+",matrixFromDouble(1),"+$1.stop+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | matrix {$$.source = $1.source;}
      | NBRE { $$.source = "matrixFromDouble("+$1.source+")";}
+     | TEXT { $$.source = $1.source }
      | ID { $$.source = $1.source;
 		symrec sr;
 		if(!(TDSget($1.source, &sr))){
@@ -340,7 +348,7 @@ $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdf
 $$.source += $5.source;
 $$.source += "}\n}\n";
 }
-
+;
 
    
 %%

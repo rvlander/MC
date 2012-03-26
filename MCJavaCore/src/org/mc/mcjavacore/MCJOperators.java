@@ -421,6 +421,10 @@ public class MCJOperators {
         }
         
     }
+    
+    public static double [][] ctranspose(double[][] a){
+        return transpose(a);
+    }
 
     public static void main(String args[]) {
         try {

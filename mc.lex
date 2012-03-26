@@ -1,45 +1,60 @@
 %{
+
+bool verb = true;
+
+void verbose(string token){
+	if(verbose){	
+		cout << token;
+	}
+	return;
+}
+
 %}
 %option noyywrap
+%s QuoteSC
+
 
 digit  [0-9]
 nombre {digit}+
-
 identifier [a-zA-Z][_a-zA-Z0-9]*
 
 
 newline  \n|\r|\f
 %%
 
-for {return(FOR);};
-end {return(END);};
-function {return(FUNCTION);};
+for {verbose("FOR");return(FOR);};
+end {verbose("END");return(END);};
+function {verbose("FUNCTION");return(FUNCTION);};
 
-[ ] {}
-{nombre} {yylval.source = yytext;return(NBRE);}
-{identifier} {yylval.source = yytext;return(ID);}
+[ ] {BEGIN(INITIAL);}
+{nombre} {BEGIN(QuoteSC);verbose("NBRE");yylval.source = yytext;return(NBRE);}
+{identifier} {BEGIN(QuoteSC);verbose("ID");yylval.source = yytext;return(ID);}
 
-\[/[^=]*=[^=] { return(LD);}
-\]/\ *=[^=] {return(RD);}
+\[/[^=]*]=[^=] {BEGIN(INITIAL);verbose("LD");return(LD);}
+\]/\ *=[^=] {BEGIN(INITIAL);verbose("RD");return(RD);}
 
 
-- {return('-');}
-\+ {return('+');}
-\* {return('*');}
-\.\* {return(TIMES);}
-\/ {return('/');}
-\.\/ {return(DIVIDE);}
-\( {return('(');}
-\) {return(')');}
-\^ {return('^');}
-\.\^ {return(POWER);}
-: {return(':');}
-; {return(';');}
-, {return(',');}
-\[ {cout << "[" << endl;return('[');}
-\] {cout << "]" << endl;return(']');}
-= {return('=');}
-{newline} {return(NEWLINE);}
+- {BEGIN(INITIAL);verbose("-");return('-');}
+\+ {BEGIN(INITIAL);verbose("+");return('+');}
+\* {BEGIN(INITIAL);verbose("*");return('*');}
+\.\* {BEGIN(INITIAL);verbose("TIMES");return(TIMES);}
+\/ {BEGIN(INITIAL);verbose("/");return('/');}
+\.\/ {BEGIN(INITIAL);verbose("DEVIDE");return(DIVIDE);}
+\( {BEGIN(INITIAL);verbose("(");return('(');}
+\) {BEGIN(INITIAL);verbose(")");return(')');}
+\^ {BEGIN(INITIAL);verbose("^");return('^');}
+\.\^ {BEGIN(INITIAL);verbose("POWER");return(POWER);}
+: {BEGIN(INITIAL);verbose(":");return(':');}
+; {BEGIN(INITIAL);verbose(";");return(';');}
+, {BEGIN(INITIAL);verbose(",");return(',');}
+\[ {BEGIN(INITIAL);verbose("[");return('[');}
+\] {BEGIN(QuoteSC);verbose("]");return(']');}
+= {BEGIN(INITIAL);verbose("=");return('=');}
+{newline} {BEGIN(INITIAL);verbose("NEWLINE\n");return(NEWLINE);}
+\.' {BEGIN(QuoteSC);verbose("TRANSPOSE");return(TRANSPOSE);}
+' {BEGIN(QuoteSC);verbose("CTRANSPOSE");return(CTRANSPOSE);}
+
+<INITIAL>'[^'\r\f\n]*' { yylval.source = yytext;verbose("TEXT"); return(TEXT);};
 
 %%
 
