@@ -8,7 +8,6 @@ nombre {digit}+
 identifier [a-zA-Z][_a-zA-Z0-9]*
 
 
-
 newline  \n|\r|\f
 %%
 
@@ -18,6 +17,10 @@ function {return(FUNCTION);};
 [ ] {}
 {nombre} {yylval.source = yytext;return(NBRE);}
 {identifier} {yylval.source = yytext;return(ID);}
+
+\[/[^=]*=[^=] {cout << "LD" << endl; return(LD);}
+\]/\ *=[^=] {cout << "RD" << endl; return(RD);}
+
 
 - {return('-');}
 \+ {return('+');}
@@ -32,8 +35,8 @@ function {return(FUNCTION);};
 : {return(':');}
 ; {return(';');}
 , {return(',');}
-\[ {return('[');}
-\] {return(']');}
+\[ {cout << "[" << endl;return('[');}
+\] {cout << "]" << endl;return(']');}
 = {return('=');}
 {newline} {return(NEWLINE);}
 

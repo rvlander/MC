@@ -2,13 +2,24 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <stdio.h>
 #include <map>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
 #include "tds.cpp"
+
+
+struct ref_info{
+    string id;
+    bool is_simple;
+    string ref_source; 
+};
+
+
 
 int yylex(void);
 void yyerror (char const *s);
@@ -20,9 +31,14 @@ typedef struct tagYYSTYPE{
   string start;
   string stride;
   string stop;
+  //for multiple assignement
+  ref_info ri;
+  vector<ref_info> varg;
 } YYST;
 
 #define YYSTYPE YYST
+
+
 
 
 %}
@@ -35,6 +51,9 @@ typedef struct tagYYSTYPE{
 %token TIMES
 %token DIVIDE
 %token POWER
+
+%token LD
+%token RD
 
 %left ':'
 %left '+' '-'
@@ -223,7 +242,7 @@ if(!TDSget($1.source,&sr)){
 }
 $$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
 }
-              |'[' ID ']' '=' expr {
+              |LD ID RD '=' expr {
 $$.source = "";
 symrec sr;
 if(!TDSget($2.source,&sr)){
@@ -235,7 +254,7 @@ if(!TDSget($2.source,&sr)){
 }
 $$.source += $2.source + "=" + $5.source;
 }
-            |  '[' ID '('ref_expr_list ')' ']' '=' expr{
+            |  LD ID '('ref_expr_list ')' RD '=' expr{
 $$.source = "";
 symrec sr;
 if(!TDSget($2.source,&sr)){
@@ -245,19 +264,62 @@ if(!TDSget($2.source,&sr)){
   cerr << "pas possible assignement" << endl;
  }
 }
-$$.source += $1.source + " = subsasgn("+$1.source + "," + $4.source +","+$8.source+")";
+$$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.source+")";
 } 
+            | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
+   symrec sr;
+   if(!TDSget($5.source,&sr)){
+	cerr << "symbol undefined" << endl; 
+   } else if(sr.idtype != FUNC){
+        cerr << "Too many output arguments : " + $5.source + " is not a function !" << endl;
+   }
+   ostringstream oss;
+   oss << "MCJOuputArg[] oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
+   for(int i=0;i<$2.varg.size();i++){
+   	oss << "oa[" << i << "]= new MCJOutputArg();\n";
+	oss << "oa[" << i << "].data=" << $2.varg[i].id << ";\n"; 
+   }
+   $$.source = oss.str();
+}
 ;  
-       
+    
+
+output_ref_list :  out_ref ',' out_ref  { $$.varg.push_back($1.ri); $$.varg.push_back($3.ri);}
+		 |  output_ref_list ',' out_ref { 
+for(int i=0;i<$1.varg.size();i++){
+	$$.varg.push_back($1.varg[i]);
+}
+$$.varg.push_back($3.ri);
+}
+;
+
+out_ref  :  ID { 
+ref_info rinf;
+rinf.id = $1.source;
+rinf.is_simple = true;
+$$.ri = rinf	
+}
+         |  ID '('ref_expr_list ')'{ 
+ref_info rinf;
+rinf.id = $1.source;
+rinf.is_simple = false;
+rinf.ref_source = $3.source;
+$$.ri = rinf
+}
+;   
 %%
 #include "lex.yy.c"
 
-void
-yyerror (char const *s){
+void yyerror (char const *s){
    printf("%s\n",s);
 }
 
 int main(int argc, const char ** argv){
+
+symrec sri;
+sri.idtype = FUNC;
+
+TDSinsert("numel",sri);
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;
@@ -285,6 +347,7 @@ void writeJavaFile(const string &source){
 	
 	
 	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
+	outfile << "import static org.mc.mcfunctions.MCJFunctions.*;" << endl;
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class MatCode{" << endl;
@@ -293,8 +356,10 @@ void writeJavaFile(const string &source){
 	
 	map<string,symrec>::iterator it;
 	for (it = tds.begin(); it != tds.end(); it++){
-		outfile << "System.out.println(\""+it->first+"=\");"+"\nprintMatrix("+it->first +");"<<endl;
-		outfile << "System.out.println();" <<endl;			
+		if ((it->second).idtype == VAR){		
+			outfile << "System.out.println(\""+it->first+"=\");"+"\nprintMatrix("+it->first +");"<<endl;
+			outfile << "System.out.println();" <<endl;
+		}			
 	}
 
     outfile << "}\n}" << endl;
