@@ -49,10 +49,17 @@ function {verbose("FUNCTION");return(FUNCTION);};
 , {BEGIN(INITIAL);verbose(",");return(',');}
 \[ {BEGIN(INITIAL);verbose("[");return('[');}
 \] {BEGIN(QuoteSC);verbose("]");return(']');}
+== {BEGIN(INITIAL);verbose("EQ");return(EQ);}
+~= {BEGIN(INITIAL);verbose("NE");return(NE);}
+\< {BEGIN(INITIAL);verbose("<");return('<');}
+\> {BEGIN(INITIAL);verbose(">");return('>');}
+\<= {BEGIN(INITIAL);verbose("LE");return(LE);}
+\>= {BEGIN(INITIAL);verbose("GE");return(GE);}
 = {BEGIN(INITIAL);verbose("=");return('=');}
 {newline} {BEGIN(INITIAL);verbose("NEWLINE\n");return(NEWLINE);}
 \.' {BEGIN(QuoteSC);verbose("TRANSPOSE");return(TRANSPOSE);}
 ' {BEGIN(QuoteSC);verbose("CTRANSPOSE");return(CTRANSPOSE);}
+~ {BEGIN(INITIAL);verbose("~");return('~');}
 
 <INITIAL>'[^'\r\f\n]*' { yylval.source = yytext;verbose("TEXT"); return(TEXT);};
 

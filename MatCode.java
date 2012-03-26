@@ -6,7 +6,7 @@ import static org.mc.mcjavacore.MCJBaseFunctions.*;
 public class MatCode{
 public static void main(String args[]) throws Exception{
 double[][] C=horzcat(horzcat(matrixFromDouble(3),matrixFromDouble(4)),matrixFromDouble(8));
-double[][] A=ctranspose(horzcat(horzcat(matrixFromDouble(4),matrixFromDouble(5)),matrixFromDouble(6)));
+double[][] A=ge(C,horzcat(horzcat(matrixFromDouble(4),matrixFromDouble(7)),matrixFromDouble(8)));
 
 System.out.println("A=");
 printMatrix(A);

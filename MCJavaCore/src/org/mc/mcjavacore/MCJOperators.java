@@ -161,36 +161,7 @@ public class MCJOperators {
         return res;
     }
 
-// operateurs de comparaison
-    private static double[][] eq(double[][] t, double a) {
-        double[][] res = new double[t.length][t[0].length];  // /!\
-        for (int i = 0; i < t.length; i++) {
-            for (int j = 0; j < t[0].length; j++) {
-                res[i][j] = (a == t[i][j] ? 1 : 0);
-            }
-        }
-        return res;
-    }
 
-    public static double[][] eq(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-        double[][] res;
-        if (numel(t1)[0][0] == 1) {
-            res = eq(t2, t1[0][0]);
-        } else if (numel(t2)[0][0] == 1) {
-            res = eq(t1, t2[0][0]);
-        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
-            res = new double[t1.length][t1[0].length];
-            for (int i = 0; i < t1.length; i++) {
-                for (int j = 0; j < t1[0].length; j++) {
-                    res[i][j] = (t1[i][j] == t2[i][j] ? 1 : 0);
-                }
-            }
-        } else {
-            throw new MCJMatrixDimensionsException();
-        }
-
-        return res;
-    }
 
     public static double[][] colon(double[][] start, double[][] stride, double[][] stop) {
         double[][] res;
@@ -264,8 +235,8 @@ public class MCJOperators {
             for (int i = 1; i <= n; i++) {
                 MCJElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
                 MCJElemPosition q = kthElemPosition(m, i);
-                res[q.i][q.j] = A[p.i][p.j]; 
-                
+                res[q.i][q.j] = A[p.i][p.j];
+
             }
 
             return res;
@@ -329,7 +300,7 @@ public class MCJOperators {
     }
 
     public static double[][] subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJMatrixDimensionsException, MCJIndexExceedsMatrixDimensions {
-        
+
         if (indexes == null) {
             throw new MCJMatrixDimensionsException();
         }
@@ -340,7 +311,7 @@ public class MCJOperators {
             } else {
                 m = indexes[0];
             }
-            if (!isScalar(B) && ( numel(m)[0][0] != numel(B)[0][0])) {
+            if (!isScalar(B) && (numel(m)[0][0] != numel(B)[0][0])) {
                 throw new MCJMatrixDimensionsException();
             }
             int n = (int) numel(m)[0][0];
@@ -373,7 +344,7 @@ public class MCJOperators {
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
 
-            if (!isScalar(B) &&( iIndex.length != B.length || jIndex.length != B[0].length)) {
+            if (!isScalar(B) && (iIndex.length != B.length || jIndex.length != B[0].length)) {
                 throw new MCJIndexExceedsMatrixDimensions();
             }
 
@@ -386,7 +357,7 @@ public class MCJOperators {
                     }
                     if ((int) jIndex[j] > A[0].length) {
                         double[][] temp = new double[A.length][(int) jIndex[j]];
-                        System.out.println("in"+ numel(A)[0][0]);
+                        System.out.println("in" + numel(A)[0][0]);
                         copy(A, temp, 0, 0);
                         A = temp;
                     }
@@ -406,38 +377,165 @@ public class MCJOperators {
         System.err.println("subsref : pas là");
         return new double[0][0];
     }
-    
-    public static double[][] transpose(double[][] a){
-        if(numel(a)[0][0] == 0){
+
+    public static double[][] transpose(double[][] a) {
+        if (numel(a)[0][0] == 0) {
             return new double[0][0];
-        }else{
+        } else {
             double[][] res = new double[a[0].length][a.length];
-            for(int i=0;i<a.length;i++){
-                for(int j=0; j<a[0].length;j++){
+            for (int i = 0; i < a.length; i++) {
+                for (int j = 0; j < a[0].length; j++) {
                     res[j][i] = a[i][j];
                 }
             }
             return res;
         }
-        
+
     }
-    
-    public static double [][] ctranspose(double[][] a){
+
+    public static double[][] ctranspose(double[][] a) {
         return transpose(a);
     }
 
-    public static void main(String args[]) {
-        try {
-            double[][] A = vertcat(horzcat(matrixFromDouble(7), matrixFromDouble(5)), horzcat(matrixFromDouble(7), matrixFromDouble(6)));
-            double[][] B = matrixFromDouble(3);
-            double[][] C = mtimes(A, B);
-            A = matrixFromDouble(7);
-            printMatrix(A);
-            printMatrix(B);
-            printMatrix(C);
-
-        } catch (MCJMatrixDimensionsException ex) {
-            Logger.getLogger(MCJOperators.class.getName()).log(Level.SEVERE, null, ex);
+    public static double[][] not(double[][] a) {
+        if (numel(a)[0][0] == 0) {
+            return new double[0][0];
+        } else {
+            double[][] res = new double[a.length][a[0].length];
+            for (int i = 0; i < a.length; i++) {
+                for (int j = 0; j < a[0].length; j++) {
+                    if (a[i][j] != 0) {
+                        res[i][j] = 0;
+                    } else {
+                        res[i][j] = 1;
+                    }
+                }
+            }
+            return res;
         }
     }
+    
+    // operateurs de comparaison
+    private static double[][] eq(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (a == t[i][j] ? 1 : 0);
+            }
+        }
+        return res;
+    }
+
+    public static double[][] eq(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = eq(t2, t1[0][0]);
+        } else if (numel(t2)[0][0] == 1) {
+            res = eq(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = (t1[i][j] == t2[i][j] ? 1 : 0);
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+    
+    public static double[][] ne(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        return not(eq(t1,t2));
+    }
+    
+    
+    
+    private static double[][] lt(double a,double[][] t) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (a < t[i][j] ? 1 : 0);
+            }
+        }
+        return res;
+    }
+    private static double[][] lt(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (t[i][j] < a ? 1 : 0);
+            }
+        }
+        return res;
+    }
+
+    public static double[][] lt(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = lt(t1[0][0], t2);
+        } else if (numel(t2)[0][0] == 1) {
+            res = lt(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = (t1[i][j] < t2[i][j] ? 1 : 0);
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+    
+    private static double[][] gt(double a,double[][] t) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (a > t[i][j] ? 1 : 0);
+            }
+        }
+        return res;
+    }
+    private static double[][] gt(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (t[i][j] > a ? 1 : 0);
+            }
+        }
+        return res;
+    }
+
+    public static double[][] gt(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = gt(t1[0][0], t2);
+        } else if (numel(t2)[0][0] == 1) {
+            res = gt(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = (t1[i][j] > t2[i][j] ? 1 : 0);
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+
+    public static double[][] le(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        return not(gt(t1,t2));
+    }
+    
+    public static double[][] ge(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        return not(lt(t1,t2));
+    }
+    
 }

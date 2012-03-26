@@ -57,14 +57,18 @@ typedef struct tagYYSTYPE{
 %token FOR
 %token TRANSPOSE
 %token CTRANSPOSE
+%token EQ
+%token NE
+%token LE
 
 %token LD
 %token RD
 
+%left EQ NE '<' '>' LE GE
 %left ':'
 %left '+' '-'
 %left '*' '/' TIMES DIVIDE 
-%right MOINSUNAIRE
+%right MOINSUNAIRE PLUSUNAIRE '~'
 %left '^' POWER TRANSPOSE CTRANSPOSE
 %%
 
@@ -145,10 +149,18 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr DIVIDE expr {$$.source = "divide("+$1.source+","+$3.source+")";}
      | expr '^' expr {$$.source = "mpower("+$1.source+","+$3.source+")";}
      | expr POWER expr {$$.source = "power("+$1.source+","+$3.source+")";}
+     | expr EQ expr {$$.source = "eq("+$1.source+","+$3.source+")";}
+     | expr NE expr {$$.source = "ne("+$1.source+","+$3.source+")";}
+     | expr '<' expr {$$.source = "lt("+$1.source+","+$3.source+")";}
+     | expr '>' expr {$$.source = "gt("+$1.source+","+$3.source+")";}
+     | expr LE expr {$$.source = "le("+$1.source+","+$3.source+")";}
+     | expr GE expr {$$.source = "ge("+$1.source+","+$3.source+")";}
      | expr TRANSPOSE {$$.source = "transpose("+$1.source+")";}
      | expr CTRANSPOSE {$$.source = "ctranspose("+$1.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}
      | '-' expr %prec MOINSUNAIRE { $$.source = "uminus("+$2.source+")";}
+     | '+' expr %prec PLUSUNAIRE { $$.source = $2.source;}
+     | '~' expr { $$.source = "not("+$2.source+")";} 
      | colon_expr {$$.source = "colon("+$1.start+",matrixFromDouble(1),"+$1.stop+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | matrix {$$.source = $1.source;}
