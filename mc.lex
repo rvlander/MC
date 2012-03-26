@@ -11,6 +11,7 @@ identifier [a-zA-Z][_a-zA-Z0-9]*
 newline  \n|\r|\f
 %%
 
+for {return(FOR);};
 end {return(END);};
 function {return(FUNCTION);};
 

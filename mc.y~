@@ -51,6 +51,7 @@ typedef struct tagYYSTYPE{
 %token TIMES
 %token DIVIDE
 %token POWER
+%token FOR
 
 %token LD
 %token RD
@@ -127,6 +128,7 @@ statement_list : statement opt_delimiter {$$.source = $1.source;}
 
 statement : expr { $$.source = $1.source+";\n";}
           | assignement { $$.source = $1.source+";\n";}
+	  | for_command  { $$.source = $1.source+";\n";}
 ;
        
 
@@ -212,12 +214,6 @@ row_with_commas : expr ',' { $$.source = $1.source ;}
                 |row_with_commas expr ',' { $$.source = "horzcat("+$1.source+","+$2.source+")";}
 ;
 
-/*assignment : reference '=' expr {$$.source = new string(*$1.source +"="+*$2.source);}
-           | s_assignee_matrix '=' expr {$$.source = new string(*$1.source +"="+*$2.source);}
-           | m_assignee_matrix '=' reference {$$.source = new string(*$1.source +"="+*$2.source);}
-;*/
-
-//assignement simplifier!!!
 assignement : ID '=' expr {
 $$.source = "";
 symrec sr;
@@ -292,9 +288,9 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
    for(int i=0;i<$2.varg.size();i++){
 	ref_info ri = $2.varg[i];	
 	if(!ri.is_simple){
-		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"]" << ")";
+		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
 	}else{
-		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"]";	
+		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"].val";	
 	}
    }
 	
@@ -326,7 +322,27 @@ rinf.is_simple = false;
 rinf.ref_source = $3.source;
 $$.ri = rinf
 }
-;   
+;
+
+for_command : FOR ID '=' expr NEWLINE  statement_list END {
+$$.source  = " double[][] fortemp =" + $4.source +";\n";
+$$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
+$$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
+$$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
+$$.source += $6.source;
+$$.source += "}\n}\n";
+}
+            | FOR ID '=' expr statement_list END {
+$$.source  = " double[][] fortemp =" + $4.source +";\n";
+$$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
+$$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
+$$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
+$$.source += $5.source;
+$$.source += "}\n}\n";
+}
+
+
+   
 %%
 #include "lex.yy.c"
 
