@@ -1,3 +1,4 @@
+package javaout;
 import static org.mc.mcjavacore.MCJOperators.*;
 import static org.mc.mcfunctions.MCJFunctions.*;
 import org.mc.mcfunctions.MCJOutputArg;
