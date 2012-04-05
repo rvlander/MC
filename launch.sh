@@ -2,7 +2,6 @@
 
 make
 ./compile exemples/test.m
-javac -cp MCJavaCore/dist/MCJavaCore.jar MatCode.java
-mv MatCode.class javaout/
-java -cp MCJavaCore/dist/MCJavaCore.jar:. javaout.MatCode 
+../jdk1.7.0_03/bin/javac -cp MCJavaCore/dist/MCJavaCore.jar -d javaout MatCode.java
+../jdk1.7.0_03/bin/java -cp MCJavaCore/dist/MCJavaCore.jar:. javaout.MatCode 
 
