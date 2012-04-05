@@ -2377,7 +2377,7 @@ void writeJavaFile(const string &source){
 	}
  
 	
-	outfile << "package javaout;" << endl;
+	//outfile << "package javaout;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcfunctions.MCJFunctions.*;" << endl;
 	outfile << "import org.mc.mcfunctions.MCJOutputArg;" << endl;
