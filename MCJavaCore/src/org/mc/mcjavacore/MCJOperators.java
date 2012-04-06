@@ -538,4 +538,64 @@ public class MCJOperators {
         return not(lt(t1,t2));
     }
     
+    private static double[][] and(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (a*t[i][j] == 0 ? 0 : 1);
+            }
+        }
+        return res;
+    }
+
+    public static double[][]and(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = and(t2, t1[0][0]);
+        } else if (numel(t2)[0][0] == 1) {
+            res = and(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = (t1[i][j]*t2[i][j] ==0 ? 0 : 1);
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+    
+    private static double[][] or(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = (a==0 && t[i][j]==0 ? 0 : 1);
+            }
+        }
+        return res;
+    }
+
+    public static double[][] or(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = or(t2, t1[0][0]);
+        } else if (numel(t2)[0][0] == 1) {
+            res = or(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = (t1[i][j]==0 && t2[i][j]==0 ? 0 : 1);
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+    
 }
