@@ -27,6 +27,7 @@ end {verbose("END");return(END);};
 if {verbose("IF");return(IF);};
 elseif {verbose("ELSEIF");return(ELSEIF);};
 else {verbose("ELSE");return(ELSE);};
+while {verbose("WHILE");return(WHILE);};
 function {verbose("FUNCTION");return(FUNCTION);};
 
 [ ] {BEGIN(INITIAL);}

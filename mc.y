@@ -53,6 +53,7 @@ typedef struct tagYYSTYPE{
 %token IF
 %token ELSEIF
 %token ELSE
+%token WHILE
 
 %token NBRE
 %token ID
@@ -80,7 +81,7 @@ typedef struct tagYYSTYPE{
 %left EQ NE '<' '>' LE GE
 %left ':'
 %left '+' '-'
-%left '*' '/' TIMES DIVIDE 
+%left '*' '/' TIMES DIVIDE '\\' LDIVIDE
 %right MOINSUNAIRE PLUSUNAIRE '~'
 %left '^' POWER TRANSPOSE CTRANSPOSE
 %%
@@ -153,6 +154,8 @@ statement : expr { $$.source = $1.source+";\n";}
           | assignement { $$.source = $1.source+";\n";}
 	  | for_command  { $$.source = $1.source+";\n";}
 	  | if_command  { $$.source = $1.source+";\n";}
+          | while_command  { $$.source = $1.source+";\n";}
+
 ;
        
 
@@ -408,6 +411,9 @@ else_block : {$$.source ="";}
             |ELSE NEWLINE statement_list NEWLINE {$$.source = "else{"+$3.source+"}";}
 ;
 
+while_command: WHILE expr NEWLINE statement_list NEWLINE END 
+{$$.source = "while(any("+$2.source+")){"+$4.source+"}";}
+;
  
 
    

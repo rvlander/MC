@@ -5,18 +5,12 @@ import static org.mc.mcjavautils.MCJUtils.*;
 import static org.mc.mcjavacore.MCJBaseFunctions.*;
 public class MatCode{
 public static void main(String args[]) throws Exception{
-double[][] A=vertcat(horzcat(matrixFromDouble(1),matrixFromDouble(2)),horzcat(matrixFromDouble(7),matrixFromDouble(8)));
-double[][] B=vertcat(horzcat(matrixFromDouble(7),matrixFromDouble(8)),horzcat(matrixFromDouble(4),matrixFromDouble(6)));
-double[][] C=mldivide(A,B);
+double[][] A=matrixFromDouble(80);
+while(any(gt(A,matrixFromDouble(0)))){A=minus(A,matrixFromDouble(1));
+};
 
 System.out.println("A=");
 printMatrix(A);
-System.out.println();
-System.out.println("B=");
-printMatrix(B);
-System.out.println();
-System.out.println("C=");
-printMatrix(C);
 System.out.println();
 }
 }
