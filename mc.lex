@@ -24,13 +24,16 @@ newline  \n|\r|\f
 
 for {verbose("FOR");return(FOR);};
 end {verbose("END");return(END);};
+if {verbose("IF");return(IF);};
+elseif {verbose("ELSEIF");return(ELSEIF);};
+else {verbose("ELSE");return(ELSE);};
 function {verbose("FUNCTION");return(FUNCTION);};
 
 [ ] {BEGIN(INITIAL);}
 {nombre} {BEGIN(QuoteSC);verbose("NBRE");yylval.source = yytext;return(NBRE);}
 {identifier} {BEGIN(QuoteSC);verbose("ID");yylval.source = yytext;return(ID);}
 
-\[/[^=]*]=[^=] {BEGIN(INITIAL);verbose("LD");return(LD);}
+\[/[^=;\n\t\f]*]=[^=] {BEGIN(INITIAL);verbose("LD");return(LD);}
 \]/\ *=[^=] {BEGIN(INITIAL);verbose("RD");return(RD);}
 
 

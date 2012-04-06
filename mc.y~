@@ -48,13 +48,18 @@ typedef struct tagYYSTYPE{
 %token END
 %token FUNCTION
 
+%token FOR
+
+%token IF
+%token ELSEIF
+%token ELSE
+
 %token NBRE
 %token ID
 %token NEWLINE
 %token TIMES
 %token DIVIDE
 %token POWER
-%token FOR
 %token TRANSPOSE
 %token CTRANSPOSE
 %token EQ
@@ -66,6 +71,9 @@ typedef struct tagYYSTYPE{
 %token LD
 %token RD
 
+
+%left LOR
+%left LAND
 %left '|'
 %left '&'
 %left EQ NE '<' '>' LE GE
@@ -76,11 +84,13 @@ typedef struct tagYYSTYPE{
 %left '^' POWER TRANSPOSE CTRANSPOSE
 %%
 
-input : scriptMFile {
+S : input {
 cout << endl<< $1.source << endl;
 writeJavaFile($1.source);
 YYACCEPT;}
-//      | functionMFile {cout << endl<< $1.source << endl;YYACCEPT;}
+
+input : scriptMFile {$$.source = $1.source;}
+      //|functionMFile {$$.source = $1.source;}
 ;
 
 scriptMFile : opt_delimiter {$$.source = "";}
@@ -102,8 +112,8 @@ f_in_arg_list : ID {$$.source = $1.source;}
            | ID ',' f_in_arg_list {$$.source = $1.source +","+$3.source;}
 ;
 
-f_output : '['']' {$$.source = "[]";}
-         | '[' f_out_arg_list ']' {$$.source = "["+$2.source+"]";}
+f_output : LD RD {$$.source = "[]";}
+         | LD f_out_arg_list RD {$$.source = "["+$2.source+"]";}
 ;
 f_out_arg_list : ID {$$.source = $1.source;}
            | ID ',' f_out_arg_list {$$.source = $1.source +","+$3.source;}
@@ -112,8 +122,7 @@ f_out_arg_list : ID {$$.source = $1.source;}
 
 f_body : delimiter statement_list {$$.source = $2.source;} 
        | opt_delimiter {$$.source = "";} 
-;
-*/
+;*/
 
 opt_delimiter :
 	      |delimiter              
@@ -142,6 +151,7 @@ statement_list : statement opt_delimiter {$$.source = $1.source;}
 statement : expr { $$.source = $1.source+";\n";}
           | assignement { $$.source = $1.source+";\n";}
 	  | for_command  { $$.source = $1.source+";\n";}
+	  | if_command  { $$.source = $1.source+";\n";}
 ;
        
 
@@ -302,12 +312,20 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
    for(int i=0;i<$2.varg.size();i++){
 	ref_info ri = $2.varg[i];	
 	oss << "oa[" << i << "]= new MCJOutputArg();\n";	
-	if(!ri.is_simple){
+	/*if(!ri.is_simple){
 		oss << "double[][] " << ri.id << i << ";\n";
 		oss << "oa[" << i << "].val=" << ri.id <<i<< ";\n";	
 	} else {
 	   oss << "oa[" << i << "].val=" << ri.id << ";\n";
-        }
+        }*/
+	symrec sr;
+	if(!TDSget(ri.id,&sr)){
+ 	oss << "double[][] " << ri.id <<";"<< endl;
+ 	sr.idtype = VAR;
+ 	if(!TDSinsert(ri.id,sr)){
+  		cerr << "pas possible assignement" << endl;
+ 	}
+}
    	
 	 
    }
@@ -369,6 +387,24 @@ $$.source += $5.source;
 $$.source += "}\n}\n";
 }
 ;
+
+if_command : if_block else_if_list else_block END {$$.source =$1.source+$2.source+$3.source;}
+;  
+
+if_block : IF expr NEWLINE statement_list NEWLINE {$$.source = "if(any("+$2.source+")){"+$4.source+"}";}
+;
+
+else_if_list: {$$.source ="";}
+            | elseif_block else_if_list {$$.source = $1.source + $2.source;}
+;
+
+elseif_block : ELSEIF expr NEWLINE statement_list NEWLINE {$$.source = "else if(any("+$2.source+")){"+$4.source+"}";}
+;
+
+else_block : ELSE NEWLINE statement_list NEWLINE {$$.source = "else{"+$3.source+"}";}
+;
+
+ 
 
    
 %%

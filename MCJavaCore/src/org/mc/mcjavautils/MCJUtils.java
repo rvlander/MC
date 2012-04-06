@@ -83,4 +83,18 @@ public class MCJUtils {
     public static boolean isScalar(double[][] m){
         return numel(m)[0][0] == 1;
     }
+    
+    public static boolean any(double[][] m){
+        if (numel(m)[0][0] == 0) return false;
+        boolean res = true;
+        for(int i=0;i<m.length;i++){
+            for (int j=0;j<m[0].length;j++){
+                res = m[i][j] !=0;
+                if(!res) break;
+            }
+            if(!res) break;
+        }
+        return res;
+    }
+    
 }

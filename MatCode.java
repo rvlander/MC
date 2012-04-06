@@ -5,18 +5,22 @@ import static org.mc.mcjavautils.MCJUtils.*;
 import static org.mc.mcjavacore.MCJBaseFunctions.*;
 public class MatCode{
 public static void main(String args[]) throws Exception{
-double[][] A=lor(land(matrixFromDouble(7),matrixFromDouble(0)),matrixFromDouble(7));
-double[][] C1=land(matrixFromDouble(4),matrixFromDouble(0));
-double[][] A1=lor(add(uminus(matrixFromDouble(2)),matrixFromDouble(7)),matrixFromDouble(0));
+double[][] A=vertcat(horzcat(matrixFromDouble(1),matrixFromDouble(2)),horzcat(matrixFromDouble(3),matrixFromDouble(1)));
+double[][] B=vertcat(horzcat(matrixFromDouble(1),matrixFromDouble(2)),horzcat(matrixFromDouble(3),matrixFromDouble(2)));
+double[][] C=colon(matrixFromDouble(1),matrixFromDouble(1),matrixFromDouble(5));
+if(any(A)){C=add(C,matrixFromDouble(2));
+}else if(any(B)){C=add(C,matrixFromDouble(789));
+}else{C=minus(C,matrixFromDouble(10));
+};
 
 System.out.println("A=");
 printMatrix(A);
 System.out.println();
-System.out.println("A1=");
-printMatrix(A1);
+System.out.println("B=");
+printMatrix(B);
 System.out.println();
-System.out.println("C1=");
-printMatrix(C1);
+System.out.println("C=");
+printMatrix(C);
 System.out.println();
 }
 }
