@@ -24,6 +24,9 @@ newline  \n|\r|\f
 
 for {verbose("FOR");return(FOR);};
 end {verbose("END");return(END);};
+if {verbose("IF");return(IF);};
+elseif {verbose("ELSEIF");return(ELSEIF);};
+else {verbose("ELSE");return(ELSE);};
 function {verbose("FUNCTION");return(FUNCTION);};
 
 [ ] {BEGIN(INITIAL);}
@@ -39,7 +42,9 @@ function {verbose("FUNCTION");return(FUNCTION);};
 \* {BEGIN(INITIAL);verbose("*");return('*');}
 \.\* {BEGIN(INITIAL);verbose("TIMES");return(TIMES);}
 \/ {BEGIN(INITIAL);verbose("/");return('/');}
+\\ {BEGIN(INITIAL);verbose("\");return('\');}
 \.\/ {BEGIN(INITIAL);verbose("DEVIDE");return(DIVIDE);}
+\.\\ {BEGIN(INITIAL);verbose("LDEVIDE");return(LDIVIDE);}
 \( {BEGIN(INITIAL);verbose("(");return('(');}
 \) {BEGIN(INITIAL);verbose(")");return(')');}
 \^ {BEGIN(INITIAL);verbose("^");return('^');}

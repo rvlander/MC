@@ -42,7 +42,9 @@ function {verbose("FUNCTION");return(FUNCTION);};
 \* {BEGIN(INITIAL);verbose("*");return('*');}
 \.\* {BEGIN(INITIAL);verbose("TIMES");return(TIMES);}
 \/ {BEGIN(INITIAL);verbose("/");return('/');}
+\\ {BEGIN(INITIAL);verbose("\\");return('\\');}
 \.\/ {BEGIN(INITIAL);verbose("DEVIDE");return(DIVIDE);}
+\.\\ {BEGIN(INITIAL);verbose("LDEVIDE");return(LDIVIDE);}
 \( {BEGIN(INITIAL);verbose("(");return('(');}
 \) {BEGIN(INITIAL);verbose(")");return(')');}
 \^ {BEGIN(INITIAL);verbose("^");return('^');}

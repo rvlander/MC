@@ -59,6 +59,7 @@ typedef struct tagYYSTYPE{
 %token NEWLINE
 %token TIMES
 %token DIVIDE
+%token LDIVIDE
 %token POWER
 %token TRANSPOSE
 %token CTRANSPOSE
@@ -159,8 +160,10 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr '-' expr {$$.source = "minus("+$1.source+","+$3.source+")";}
      | expr '*' expr {$$.source = "mtimes("+$1.source+","+$3.source+")";}
      | expr TIMES expr {$$.source = "times("+$1.source+","+$3.source+")";}
-     | expr '/' expr {$$.source = "mdivide("+$1.source+","+$3.source+")";}
-     | expr DIVIDE expr {$$.source = "divide("+$1.source+","+$3.source+")";}
+     | expr '/' expr {$$.source = "mrdivide("+$1.source+","+$3.source+")";}
+     | expr '\' expr {$$.source = "mldivide("+$1.source+","+$3.source+")";}
+     | expr DIVIDE expr {$$.source = "rdivide("+$1.source+","+$3.source+")";}
+     | expr LDIVIDE expr {$$.source = "ldivide("+$1.source+","+$3.source+")";}
      | expr '^' expr {$$.source = "mpower("+$1.source+","+$3.source+")";}
      | expr POWER expr {$$.source = "power("+$1.source+","+$3.source+")";}
      | expr EQ expr {$$.source = "eq("+$1.source+","+$3.source+")";}
@@ -401,7 +404,8 @@ else_if_list: {$$.source ="";}
 elseif_block : ELSEIF expr NEWLINE statement_list NEWLINE {$$.source = "else if(any("+$2.source+")){"+$4.source+"}";}
 ;
 
-else_block : ELSE NEWLINE statement_list NEWLINE {$$.source = "else{"+$3.source+"}";}
+else_block : {$$.source ="";}
+            |ELSE NEWLINE statement_list NEWLINE {$$.source = "else{"+$3.source+"}";}
 ;
 
  

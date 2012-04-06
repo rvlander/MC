@@ -14,14 +14,6 @@ import static org.mc.mcjavautils.MCJUtils.*;
  *
  * @author rvlander
  */
-
-/*
- * => ADD => MINUS => MTIMES => TIMES "/" {$$.source =
- * "mdivide("+$1.source+","+$3.source+")";} | expr DIVIDE expr * {$$.source =
- * "divide("+$1.source+","+$3.source+")";} | expr '^' expr {$$.source =
- * "mpow("+$1.source+","+$3.source+")";} | expr POWER expr {$$.source = =>POW =>
- * UMINUS => COlon
- */
 public class MCJOperators {
 
 //operateurs normaux
@@ -85,6 +77,56 @@ public class MCJOperators {
         }
 
         return res;
+    }
+
+    private static double[][] rdivide(double a, double[][] t) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = a / t[i][j];
+            }
+        }
+        return res;
+    }
+
+    private static double[][] rdivide(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = t[i][j] / a;
+            }
+        }
+        return res;
+    }
+
+    public static double[][] rdivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = rdivide(t1[0][0], t2);
+        } else if (numel(t2)[0][0] == 1) {
+            res = rdivide(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = t1[i][j] / t2[i][j];
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+
+    public static double[][] ldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        return rdivide(t2, t1);
+    }
+    public static double[][] mldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    public static double[][] mrdivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public static double[][] times(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
@@ -160,8 +202,10 @@ public class MCJOperators {
 
         return res;
     }
-
-
+    
+    public static double[][] mpower(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
     public static double[][] colon(double[][] start, double[][] stride, double[][] stop) {
         double[][] res;
@@ -414,7 +458,7 @@ public class MCJOperators {
             return res;
         }
     }
-    
+
     // operateurs de comparaison
     private static double[][] eq(double[][] t, double a) {
         double[][] res = new double[t.length][t[0].length];  // /!\
@@ -445,14 +489,12 @@ public class MCJOperators {
 
         return res;
     }
-    
+
     public static double[][] ne(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-        return not(eq(t1,t2));
+        return not(eq(t1, t2));
     }
-    
-    
-    
-    private static double[][] lt(double a,double[][] t) {
+
+    private static double[][] lt(double a, double[][] t) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < t[0].length; j++) {
@@ -461,6 +503,7 @@ public class MCJOperators {
         }
         return res;
     }
+
     private static double[][] lt(double[][] t, double a) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
@@ -490,8 +533,8 @@ public class MCJOperators {
 
         return res;
     }
-    
-    private static double[][] gt(double a,double[][] t) {
+
+    private static double[][] gt(double a, double[][] t) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < t[0].length; j++) {
@@ -500,6 +543,7 @@ public class MCJOperators {
         }
         return res;
     }
+
     private static double[][] gt(double[][] t, double a) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
@@ -531,24 +575,24 @@ public class MCJOperators {
     }
 
     public static double[][] le(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-        return not(gt(t1,t2));
+        return not(gt(t1, t2));
     }
-    
+
     public static double[][] ge(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-        return not(lt(t1,t2));
+        return not(lt(t1, t2));
     }
-    
+
     private static double[][] and(double[][] t, double a) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < t[0].length; j++) {
-                res[i][j] = (a*t[i][j] == 0 ? 0 : 1);
+                res[i][j] = (a * t[i][j] == 0 ? 0 : 1);
             }
         }
         return res;
     }
 
-    public static double[][]and(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+    public static double[][] and(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
         if (numel(t1)[0][0] == 1) {
             res = and(t2, t1[0][0]);
@@ -558,7 +602,7 @@ public class MCJOperators {
             res = new double[t1.length][t1[0].length];
             for (int i = 0; i < t1.length; i++) {
                 for (int j = 0; j < t1[0].length; j++) {
-                    res[i][j] = (t1[i][j]*t2[i][j] ==0 ? 0 : 1);
+                    res[i][j] = (t1[i][j] * t2[i][j] == 0 ? 0 : 1);
                 }
             }
         } else {
@@ -567,12 +611,12 @@ public class MCJOperators {
 
         return res;
     }
-    
+
     private static double[][] or(double[][] t, double a) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < t[0].length; j++) {
-                res[i][j] = (a==0 && t[i][j]==0 ? 0 : 1);
+                res[i][j] = (a == 0 && t[i][j] == 0 ? 0 : 1);
             }
         }
         return res;
@@ -588,7 +632,7 @@ public class MCJOperators {
             res = new double[t1.length][t1[0].length];
             for (int i = 0; i < t1.length; i++) {
                 for (int j = 0; j < t1[0].length; j++) {
-                    res[i][j] = (t1[i][j]==0 && t2[i][j]==0 ? 0 : 1);
+                    res[i][j] = (t1[i][j] == 0 && t2[i][j] == 0 ? 0 : 1);
                 }
             }
         } else {
@@ -597,19 +641,18 @@ public class MCJOperators {
 
         return res;
     }
-    
+
     public static double[][] land(double[][] t1, double[][] t2) throws MCJLorAndTypeException {
-        if(!isScalar(t1) | !isScalar(t2)){
+        if (!isScalar(t1) | !isScalar(t2)) {
             throw new MCJLorAndTypeException();
         }
-        return matrixFromDouble(t1[0][0]*t2[0][0] ==0 ? 0 : 1);
+        return matrixFromDouble(t1[0][0] * t2[0][0] == 0 ? 0 : 1);
     }
-    
+
     public static double[][] lor(double[][] t1, double[][] t2) throws MCJLorAndTypeException {
-        if(!isScalar(t1) | !isScalar(t2)){
+        if (!isScalar(t1) | !isScalar(t2)) {
             throw new MCJLorAndTypeException();
         }
-        return matrixFromDouble(t1[0][0]==0 && t2[0][0]==0 ? 0 : 1);
+        return matrixFromDouble(t1[0][0] == 0 && t2[0][0] == 0 ? 0 : 1);
     }
-    
 }
