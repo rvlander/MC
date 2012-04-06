@@ -598,4 +598,18 @@ public class MCJOperators {
         return res;
     }
     
+    public static double[][] land(double[][] t1, double[][] t2) throws MCJLorAndTypeException {
+        if(!isScalar(t1) | !isScalar(t2)){
+            throw new MCJLorAndTypeException();
+        }
+        return matrixFromDouble(t1[0][0]*t2[0][0] ==0 ? 0 : 1);
+    }
+    
+    public static double[][] lor(double[][] t1, double[][] t2) throws MCJLorAndTypeException {
+        if(!isScalar(t1) | !isScalar(t2)){
+            throw new MCJLorAndTypeException();
+        }
+        return matrixFromDouble(t1[0][0]==0 && t2[0][0]==0 ? 0 : 1);
+    }
+    
 }

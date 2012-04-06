@@ -60,10 +60,15 @@ typedef struct tagYYSTYPE{
 %token EQ
 %token NE
 %token LE
+%token LOR
+%token LAND
 
 %token LD
 %token RD
 
+
+%left LOR
+%left LAND
 %left '|'
 %left '&'
 %left EQ NE '<' '>' LE GE
@@ -159,6 +164,8 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | expr GE expr {$$.source = "ge("+$1.source+","+$3.source+")";}
      | expr '|' expr {$$.source = "or("+$1.source+","+$3.source+")";}
      | expr '&' expr {$$.source = "and("+$1.source+","+$3.source+")";}
+     | expr LOR expr {$$.source = "lor("+$1.source+","+$3.source+")";}
+     | expr LAND expr {$$.source = "land("+$1.source+","+$3.source+")";}
      | expr TRANSPOSE {$$.source = "transpose("+$1.source+")";}
      | expr CTRANSPOSE {$$.source = "ctranspose("+$1.source+")";}
      | '(' expr ')' {$$.source = "("+$2.source+")";}

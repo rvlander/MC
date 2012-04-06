@@ -57,6 +57,8 @@ function {verbose("FUNCTION");return(FUNCTION);};
 \>= {BEGIN(INITIAL);verbose("GE");return(GE);}
 \| {BEGIN(INITIAL);verbose("|");return('|');}
 & {BEGIN(INITIAL);verbose("&");return('&');}
+\|\| {BEGIN(INITIAL);verbose("LOR");return(LOR);}
+&& {BEGIN(INITIAL);verbose("LAND");return(LAND);}
 = {BEGIN(INITIAL);verbose("=");return('=');}
 {newline} {BEGIN(INITIAL);verbose("NEWLINE\n");return(NEWLINE);}
 \.' {BEGIN(QuoteSC);verbose("TRANSPOSE");return(TRANSPOSE);}
