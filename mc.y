@@ -130,7 +130,7 @@ opt_delimiter :
 	      |delimiter              
 ;
 
-delimiter :null_line
+delimiter :null_lines
           |empty_lines
           |null_lines empty_lines
 ;
@@ -376,7 +376,7 @@ $$.ri = rinf
 }
 ;
 
-for_command : FOR ID '=' expr NEWLINE  statement_list END {
+for_command : FOR ID '=' expr opt_delimiter  statement_list END {
 $$.source  = " double[][] fortemp =" + $4.source +";\n";
 $$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
 $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
@@ -384,34 +384,34 @@ $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdf
 $$.source += $6.source;
 $$.source += "}\n}\n";
 }
-            | FOR ID '=' expr statement_list END {
+           /* | FOR ID '=' expr statement_list END {
 $$.source  = " double[][] fortemp =" + $4.source +";\n";
 $$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
 $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
 $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
 $$.source += $5.source;
 $$.source += "}\n}\n";
-}
+}*/
 ;
 
 if_command : if_block else_if_list else_block END {$$.source =$1.source+$2.source+$3.source;}
 ;  
 
-if_block : IF expr NEWLINE statement_list NEWLINE {$$.source = "if(any("+$2.source+")){"+$4.source+"}";}
+if_block : IF expr opt_delimiter statement_list {$$.source = "if(any("+$2.source+")){"+$4.source+"}";}
 ;
 
 else_if_list: {$$.source ="";}
             | elseif_block else_if_list {$$.source = $1.source + $2.source;}
 ;
 
-elseif_block : ELSEIF expr NEWLINE statement_list NEWLINE {$$.source = "else if(any("+$2.source+")){"+$4.source+"}";}
+elseif_block : ELSEIF expr opt_delimiter statement_list {$$.source = "else if(any("+$2.source+")){"+$4.source+"}";}
 ;
 
 else_block : {$$.source ="";}
-            |ELSE NEWLINE statement_list NEWLINE {$$.source = "else{"+$3.source+"}";}
+            |ELSE opt_delimiter statement_list {$$.source = "else{"+$3.source+"}";}
 ;
 
-while_command: WHILE expr NEWLINE statement_list NEWLINE END 
+while_command: WHILE expr opt_delimiter statement_list END 
 {$$.source = "while(any("+$2.source+")){"+$4.source+"}";}
 ;
  
