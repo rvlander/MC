@@ -23,9 +23,11 @@ struct ref_info{
 
 int yylex(void);
 void yyerror (char const *s);
-void writeJavaFile(const string &s);
+void writeJavaFile(const string &s, bool);
 
 typedef struct tagYYSTYPE{
+  //type of programm
+  bool ismain;
   string source;	
   //for colon expression;
   string start;
@@ -88,43 +90,127 @@ typedef struct tagYYSTYPE{
 
 S : input {
 cout << endl<< $1.source << endl;
-writeJavaFile($1.source);
+writeJavaFile($1.source,$$.ismain);
 YYACCEPT;}
 
-input : scriptMFile {$$.source = $1.source;}
-      //|functionMFile {$$.source = $1.source;}
+input : scriptMFile {$$.source = $1.source;$$.ismain= true}
+        |functionMFile {$$.source = $1.source;$$.ismain=false}
 ;
 
 scriptMFile : opt_delimiter {$$.source = "";}
             | opt_delimiter statement_list {$$.source = $2.source;}
 ;
 
-/*functionMFile : empty_lines f_def_line f_body {$$.source = $2.source+"{\n"+$3.source+"}\n";}
-              | f_def_line f_body {$$.source = $1.source+"{\n"+$2.source+"}\n";}
+functionMFile : empty_lines f_all {$$.source = $2.source}
+              | f_all {$$.source = $1.source}
 ;
 
-f_def_line : FUNCTION ID f_input {$$.source = "void "+$2.source + $3.source;}
-           | FUNCTION f_output '=' ID f_input{$$.source = $2.source+"="+$4.source+$5.source;}
+f_all : f_def_line f_body {$$.source = $1.source+"{\n";
+for(int i=0;i<$1.varg.size();i++){
+$$.source += "double[][] " + $1.varg[i].id +"= new double[0][0];\n";
+}
+$$.source += $2.source+"\n";
+$$.source += "if(oargs !=null){\n";
+for(int i=0;i<$1.varg.size();i++){
+ostringstream oss;
+oss << i;
+$$.source += "if(oargs.length>"+oss.str()+")"+ $1.varg[i].ref_source +"=" + $1.varg[i].id+";\n";
+}
+$$.source += "}\n";
+$$.source +=  "return "+$1.varg[0].id+";\n}\n";}
 ;
 
-f_input : '('')' {$$.source = "()";}
-        | '(' f_in_arg_list ')' {$$.source = "("+$2.source+")";}
-;
-f_in_arg_list : ID {$$.source = $1.source;}
-           | ID ',' f_in_arg_list {$$.source = $1.source +","+$3.source;}
+f_def_line : FUNCTION ID f_input {$$.source = "double[][] "+$2.source + $3.source;}
+           | FUNCTION f_output '=' ID f_input{$$.source = "public static double[][] "+$4.source+$5.source;$$.varg=$2.varg;}
 ;
 
-f_output : LD RD {$$.source = "[]";}
-         | LD f_out_arg_list RD {$$.source = "["+$2.source+"]";}
+f_input : '('')' {$$.source = "(MCJOutArgput[] oargs)";}
+        | '(' f_in_arg_list ')' {$$.source = "(MCJOutputArg[] oargs,"+$2.source+")";}
 ;
-f_out_arg_list : ID {$$.source = $1.source;}
-           | ID ',' f_out_arg_list {$$.source = $1.source +","+$3.source;}
-	   | ID f_out_arg_list {$$.source = $1.source +","+$2.source;}
+f_in_arg_list : ID {$$.source = "double[][] "+$1.source;
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}}
+           | ID ',' f_in_arg_list {
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source = "double[][] "+$1.source +","+$3.source;}
+;
+
+f_output : LD RD {}
+         | LD f_out_arg_list RD {$$.varg = $2.varg;}
+;
+f_out_arg_list : ID {
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+ref_info rinf;
+rinf.id = $1.source;	
+rinf.ref_source = "oargs[0].val";
+$$.varg.push_back(rinf);
+}
+           |f_out_arg_list ',' ID { 
+symrec sr;
+if(!TDSget($3.source,&sr)){
+ sr.idtype = VAR;
+ if(!TDSinsert($3.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+int n = $1.varg.size();
+//cerr << &$$ << " " << &$1 << endl;
+//cerr << "nb o args"<< $$.varg[0].id << endl;
+/*for(int i=0;i<n;i++){
+cerr << "i = "<< i << endl;
+	$$.varg.push_back($1.varg[i]);
+}*/
+//cerr << "nb o args "<< $$.varg.size() << endl;
+ostringstream oss;
+oss << "oargs[" << n <<"].val";
+$3.ri.ref_source = oss.str();
+$3.ri.id= $3.source;
+$$.varg.push_back($3.ri);
+//cerr << "nb o args "<< $$.varg.size() << endl;
+
+}
+	   | f_out_arg_list ID{
+
+symrec sr;
+if(!TDSget($2.source,&sr)){
+ sr.idtype = VAR;
+ if(!TDSinsert($2.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+
+int n = $1.varg.size(); 
+/*for(int i=0;i<n;i++){
+	$$.varg.push_back($1.varg[i]);
+}*/
+ostringstream oss;
+oss << "oargs[" << n <<"].val";
+$2.ri.ref_source = oss.str();
+$2.ri.id= $2.source;
+$$.varg.push_back($2.ri);
+}
 ;
 
 f_body : delimiter statement_list {$$.source = $2.source;} 
        | opt_delimiter {$$.source = "";} 
-;*/
+;
 
 opt_delimiter :
 	      |delimiter              
@@ -384,15 +470,6 @@ $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdf
 $$.source += $6.source;
 $$.source += "}\n}\n";
 }
-           /* | FOR ID '=' expr statement_list END {
-$$.source  = " double[][] fortemp =" + $4.source +";\n";
-$$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
-$$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
-$$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
-$$.source += $5.source;
-$$.source += "}\n}\n";
-}*/
-;
 
 if_command : if_block else_if_list else_block END {$$.source =$1.source+$2.source+$3.source;}
 ;  
@@ -446,7 +523,7 @@ fclose(fid);
  return res;
 }
 
-void writeJavaFile(const string &source){
+void writeJavaFile(const string &source, bool ismain){
 	ofstream outfile;
 	outfile.open("MatCode.java",fstream::out);
 
@@ -461,9 +538,11 @@ void writeJavaFile(const string &source){
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class MatCode{" << endl;
-	outfile << "public static void main(String args[]) throws Exception{" << endl;	
+
+	if(ismain) outfile << "public static void main(String args[]) throws Exception{" << endl;	
 	outfile << source << endl;
 	
+	if(ismain){
 	map<string,symrec>::iterator it;
 	for (it = tds.begin(); it != tds.end(); it++){
 		if ((it->second).idtype == VAR){		
@@ -471,7 +550,9 @@ void writeJavaFile(const string &source){
 			outfile << "System.out.println();" <<endl;
 		}			
 	}
+	outfile << "}" << endl;
+	}
 
-    outfile << "}\n}" << endl;
+    	outfile << "}" << endl;
 	outfile.close();	
 }
