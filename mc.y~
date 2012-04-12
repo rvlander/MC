@@ -39,6 +39,7 @@ typedef struct tagYYSTYPE{
   //for multiple assignement
   ref_info ri;
   vector<ref_info> varg;
+  vector<ref_info> ivarg;
 } YYST;
 
 #define YYSTYPE YYST
@@ -110,7 +111,14 @@ functionMFile : empty_lines f_all {$$.source = $2.source}
               | f_all {$$.source = $1.source}
 ;
 
-f_all : f_def_line f_body {$$.source = $1.source+"{\n";
+f_all : f_def_line f_body {$$.source = $1.source+" throws Exception{\n";
+
+for(int i=0;i<$1.ivarg.size();i++){
+ostringstream oss;
+oss << i;
+$$.source += "double[][] " + $1.ivarg[i].id +" = iargs["+oss.str()+"];\n";
+}
+
 for(int i=0;i<$1.varg.size();i++){
 $$.source += "double[][] " + $1.varg[i].id +"= new double[0][0];\n";
 }
@@ -126,11 +134,14 @@ $$.source +=  "return "+$1.varg[0].id+";\n}\n";}
 ;
 
 f_def_line : FUNCTION ID f_input {$$.source = "double[][] "+$2.source + $3.source;}
-           | FUNCTION f_output '=' ID f_input{$$.source = "public static double[][] "+$4.source+$5.source;$$.varg=$2.varg;}
+           | FUNCTION f_output '=' ID f_input{$$.source = "public static double[][] "+$4.source+$5.source;
+$$.varg=$2.varg;
+$$.ivarg=$5.ivarg;
+}
 ;
 
-f_input : '('')' {$$.source = "(MCJOutArgput[] oargs)";}
-        | '(' f_in_arg_list ')' {$$.source = "(MCJOutputArg[] oargs,"+$2.source+")";}
+f_input : '('')' {$$.source = "(MCJOutputArg[] oargs,double[][][] iargs)";}
+        | '(' f_in_arg_list ')' {$$.source = "(MCJOutputArg[] oargs,double[][][] iargs)";$$.ivarg = $2.ivarg;}
 ;
 f_in_arg_list : ID {$$.source = "double[][] "+$1.source;
 symrec sr;
@@ -139,8 +150,12 @@ if(!TDSget($1.source,&sr)){
  if(!TDSinsert($1.source,sr)){
   cerr << "pas possible assignement" << endl;
  }
-}}
-           | ID ',' f_in_arg_list {
+}
+ref_info ri;
+ri.id = $1.source;
+$$.ivarg.push_back(ri);
+}
+           | f_in_arg_list ',' ID {
 symrec sr;
 if(!TDSget($1.source,&sr)){
  sr.idtype = VAR;
@@ -148,11 +163,28 @@ if(!TDSget($1.source,&sr)){
   cerr << "pas possible assignement" << endl;
  }
 }
-$$.source = "double[][] "+$1.source +","+$3.source;}
+$$.source = "double[][] "+$1.source +","+$3.source;
+ref_info ri;
+ri.id = $3.source;
+$$.ivarg.push_back(ri);
+}
 ;
 
 f_output : LD RD {}
          | LD f_out_arg_list RD {$$.varg = $2.varg;}
+         | ID {
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+ref_info rinf;
+rinf.id = $1.source;	
+rinf.ref_source = "oargs[0].val";
+$$.varg.push_back(rinf);
+}
 ;
 f_out_arg_list : ID {
 symrec sr;
@@ -564,7 +596,7 @@ int searchFunction(const string &id){
 	}
 
 	while((pdirent = readdir(pdir)) != NULL){
-		if(target.compare(pdirent->d_name)){
+		if(target.compare(pdirent->d_name)==0){
 			res =1;	
 			string path = "./exemples/" + target;
 			to_compile.push_back(path);	

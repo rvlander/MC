@@ -1,3 +1,3 @@
-function [B]=funqui(A)
- B = A+2
+function B=funqui(A,E,C)
+ B = A+E+C;
 end
