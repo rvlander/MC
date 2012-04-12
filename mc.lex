@@ -31,10 +31,11 @@ while {verbose("WHILE");return(WHILE);};
 function {verbose("FUNCTION");return(FUNCTION);};
 
 [ ] {BEGIN(INITIAL);}
+\%[^\n\r\f]* {BEGIN(INITIAL);}
 {nombre} {BEGIN(QuoteSC);verbose("NBRE");yylval.source = yytext;return(NBRE);}
 {identifier} {BEGIN(QuoteSC);verbose("ID");yylval.source = yytext;return(ID);}
 
-\[/[^=;\n\t\f]*]=[^=] {BEGIN(INITIAL);verbose("LD");return(LD);}
+\[/[^=;\n\t\f]*]\ *=[^=] {BEGIN(INITIAL);verbose("LD");return(LD);}
 \]/\ *=[^=] {BEGIN(INITIAL);verbose("RD");return(RD);}
 
 
