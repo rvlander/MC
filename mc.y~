@@ -113,10 +113,13 @@ functionMFile : empty_lines f_all {$$.source = $2.source}
 
 f_all : f_def_line f_body {$$.source = $1.source+" throws Exception{\n";
 
+$$.source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
+
 for(int i=0;i<$1.ivarg.size();i++){
 ostringstream oss;
 oss << i;
-$$.source += "double[][] " + $1.ivarg[i].id +" = iargs["+oss.str()+"];\n";
+string li = oss.str();
+$$.source += "double[][] " + $1.ivarg[i].id +";\nif(nargin[0][0]>"+li+")"+$1.ivarg[i].id+ "= iargs["+oss.str()+"];\n";
 }
 
 for(int i=0;i<$1.varg.size();i++){
@@ -157,13 +160,13 @@ $$.ivarg.push_back(ri);
 }
            | f_in_arg_list ',' ID {
 symrec sr;
-if(!TDSget($1.source,&sr)){
+if(!TDSget($3.source,&sr)){
  sr.idtype = VAR;
- if(!TDSinsert($1.source,sr)){
+ if(!TDSinsert($3.source,sr)){
   cerr << "pas possible assignement" << endl;
  }
 }
-$$.source = "double[][] "+$1.source +","+$3.source;
+$$.source = $1.source +", double[][] "+$3.source;
 ref_info ri;
 ri.id = $3.source;
 $$.ivarg.push_back(ri);

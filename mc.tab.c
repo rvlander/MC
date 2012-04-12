@@ -527,17 +527,17 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    97,    97,   102,   103,   106,   107,   110,   111,   114,
-     136,   137,   143,   144,   146,   158,   173,   174,   175,   189,
-     202,   226,   248,   249,   252,   253,   256,   257,   258,   260,
-     261,   263,   264,   265,   266,   268,   269,   272,   273,   276,
-     277,   278,   279,   280,   285,   286,   287,   288,   289,   290,
-     291,   292,   293,   294,   295,   296,   297,   298,   299,   300,
-     301,   302,   303,   304,   305,   306,   307,   308,   309,   310,
-     311,   312,   313,   314,   315,   316,   322,   346,   353,   361,
-     362,   365,   366,   369,   370,   373,   376,   377,   378,   379,
-     380,   381,   384,   385,   386,   389,   390,   393,   405,   417,
-     429,   441,   487,   488,   496,   502,   511,   520,   523,   526,
-     527,   530,   533,   534,   537
+     139,   140,   146,   147,   149,   161,   176,   177,   178,   192,
+     205,   229,   251,   252,   255,   256,   259,   260,   261,   263,
+     264,   266,   267,   268,   269,   271,   272,   275,   276,   279,
+     280,   281,   282,   283,   288,   289,   290,   291,   292,   293,
+     294,   295,   296,   297,   298,   299,   300,   301,   302,   303,
+     304,   305,   306,   307,   308,   309,   310,   311,   312,   313,
+     314,   315,   316,   317,   318,   319,   325,   349,   356,   364,
+     365,   368,   369,   372,   373,   376,   379,   380,   381,   382,
+     383,   384,   387,   388,   389,   392,   393,   396,   408,   420,
+     432,   444,   490,   491,   499,   505,   514,   523,   526,   529,
+     530,   533,   536,   537,   540
 };
 #endif
 
@@ -1694,10 +1694,13 @@ YYACCEPT;;}
 #line 114 "mc.y"
     {(yyval).source = (yyvsp[(1) - (2)]).source+" throws Exception{\n";
 
+(yyval).source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
+
 for(int i=0;i<(yyvsp[(1) - (2)]).ivarg.size();i++){
 ostringstream oss;
 oss << i;
-(yyval).source += "double[][] " + (yyvsp[(1) - (2)]).ivarg[i].id +" = iargs["+oss.str()+"];\n";
+string li = oss.str();
+(yyval).source += "double[][] " + (yyvsp[(1) - (2)]).ivarg[i].id +"= new double[0][0];\nif(nargin[0][0]>"+li+")"+(yyvsp[(1) - (2)]).ivarg[i].id+ "= iargs["+oss.str()+"];\n";
 }
 
 for(int i=0;i<(yyvsp[(1) - (2)]).varg.size();i++){
@@ -1717,14 +1720,14 @@ oss << i;
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 136 "mc.y"
+#line 139 "mc.y"
     {(yyval).source = "double[][] "+(yyvsp[(2) - (3)]).source + (yyvsp[(3) - (3)]).source;;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 137 "mc.y"
+#line 140 "mc.y"
     {(yyval).source = "public static double[][] "+(yyvsp[(4) - (5)]).source+(yyvsp[(5) - (5)]).source;
 (yyval).varg=(yyvsp[(2) - (5)]).varg;
 (yyval).ivarg=(yyvsp[(5) - (5)]).ivarg;
@@ -1734,21 +1737,21 @@ oss << i;
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 143 "mc.y"
+#line 146 "mc.y"
     {(yyval).source = "(MCJOutputArg[] oargs,double[][][] iargs)";;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 144 "mc.y"
+#line 147 "mc.y"
     {(yyval).source = "(MCJOutputArg[] oargs,double[][][] iargs)";(yyval).ivarg = (yyvsp[(2) - (3)]).ivarg;;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 146 "mc.y"
+#line 149 "mc.y"
     {(yyval).source = "double[][] "+(yyvsp[(1) - (1)]).source;
 symrec sr;
 if(!TDSget((yyvsp[(1) - (1)]).source,&sr)){
@@ -1766,7 +1769,7 @@ ri.id = (yyvsp[(1) - (1)]).source;
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 158 "mc.y"
+#line 161 "mc.y"
     {
 symrec sr;
 if(!TDSget((yyvsp[(3) - (3)]).source,&sr)){
@@ -1785,21 +1788,21 @@ ri.id = (yyvsp[(3) - (3)]).source;
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 173 "mc.y"
+#line 176 "mc.y"
     {;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 174 "mc.y"
+#line 177 "mc.y"
     {(yyval).varg = (yyvsp[(2) - (3)]).varg;;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 175 "mc.y"
+#line 178 "mc.y"
     {
 symrec sr;
 if(!TDSget((yyvsp[(1) - (1)]).source,&sr)){
@@ -1818,7 +1821,7 @@ rinf.ref_source = "oargs[0].val";
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 189 "mc.y"
+#line 192 "mc.y"
     {
 symrec sr;
 if(!TDSget((yyvsp[(1) - (1)]).source,&sr)){
@@ -1837,7 +1840,7 @@ rinf.ref_source = "oargs[0].val";
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 202 "mc.y"
+#line 205 "mc.y"
     { 
 symrec sr;
 if(!TDSget((yyvsp[(3) - (3)]).source,&sr)){
@@ -1867,7 +1870,7 @@ oss << "oargs[" << n <<"].val";
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 226 "mc.y"
+#line 229 "mc.y"
     {
 
 symrec sr;
@@ -1893,287 +1896,287 @@ oss << "oargs[" << n <<"].val";
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 248 "mc.y"
+#line 251 "mc.y"
     {(yyval).source = (yyvsp[(2) - (2)]).source;;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 249 "mc.y"
+#line 252 "mc.y"
     {(yyval).source = "";;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 272 "mc.y"
+#line 275 "mc.y"
     {(yyval).source = (yyvsp[(1) - (2)]).source;;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 273 "mc.y"
+#line 276 "mc.y"
     {(yyval).source = (yyvsp[(1) - (3)]).source+(yyvsp[(3) - (3)]).source;;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 276 "mc.y"
+#line 279 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source+";\n";;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 277 "mc.y"
+#line 280 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source+";\n";;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 278 "mc.y"
+#line 281 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source+";\n";;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 279 "mc.y"
+#line 282 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source+";\n";;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 280 "mc.y"
+#line 283 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source+";\n";;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 285 "mc.y"
+#line 288 "mc.y"
     {(yyval).source = "add("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 286 "mc.y"
+#line 289 "mc.y"
     {(yyval).source = "minus("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 287 "mc.y"
+#line 290 "mc.y"
     {(yyval).source = "mtimes("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 288 "mc.y"
+#line 291 "mc.y"
     {(yyval).source = "times("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 289 "mc.y"
+#line 292 "mc.y"
     {(yyval).source = "mrdivide("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 290 "mc.y"
+#line 293 "mc.y"
     {(yyval).source = "mldivide("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 291 "mc.y"
+#line 294 "mc.y"
     {(yyval).source = "rdivide("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 292 "mc.y"
+#line 295 "mc.y"
     {(yyval).source = "ldivide("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 293 "mc.y"
+#line 296 "mc.y"
     {(yyval).source = "mpower("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 294 "mc.y"
+#line 297 "mc.y"
     {(yyval).source = "power("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 295 "mc.y"
+#line 298 "mc.y"
     {(yyval).source = "eq("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 296 "mc.y"
+#line 299 "mc.y"
     {(yyval).source = "ne("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 297 "mc.y"
+#line 300 "mc.y"
     {(yyval).source = "lt("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 298 "mc.y"
+#line 301 "mc.y"
     {(yyval).source = "gt("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 299 "mc.y"
+#line 302 "mc.y"
     {(yyval).source = "le("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 300 "mc.y"
+#line 303 "mc.y"
     {(yyval).source = "ge("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 301 "mc.y"
+#line 304 "mc.y"
     {(yyval).source = "or("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 302 "mc.y"
+#line 305 "mc.y"
     {(yyval).source = "and("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 303 "mc.y"
+#line 306 "mc.y"
     {(yyval).source = "lor("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 304 "mc.y"
+#line 307 "mc.y"
     {(yyval).source = "land("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 305 "mc.y"
+#line 308 "mc.y"
     {(yyval).source = "transpose("+(yyvsp[(1) - (2)]).source+")";;}
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 306 "mc.y"
+#line 309 "mc.y"
     {(yyval).source = "ctranspose("+(yyvsp[(1) - (2)]).source+")";;}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 307 "mc.y"
+#line 310 "mc.y"
     {(yyval).source = "("+(yyvsp[(2) - (3)]).source+")";;}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 308 "mc.y"
+#line 311 "mc.y"
     { (yyval).source = "uminus("+(yyvsp[(2) - (2)]).source+")";;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 309 "mc.y"
+#line 312 "mc.y"
     { (yyval).source = (yyvsp[(2) - (2)]).source;;}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 310 "mc.y"
+#line 313 "mc.y"
     { (yyval).source = "not("+(yyvsp[(2) - (2)]).source+")";;}
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 311 "mc.y"
+#line 314 "mc.y"
     {(yyval).source = "colon("+(yyvsp[(1) - (1)]).start+",matrixFromDouble(1),"+(yyvsp[(1) - (1)]).stop+")";;}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 312 "mc.y"
+#line 315 "mc.y"
     {(yyval).source = "colon("+(yyvsp[(1) - (1)]).start+","+(yyvsp[(1) - (1)]).stride+","+(yyvsp[(1) - (1)]).stop+")";;}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 313 "mc.y"
+#line 316 "mc.y"
     {(yyval).source = (yyvsp[(1) - (1)]).source;;}
     break;
 
   case 73:
 
 /* Line 1455 of yacc.c  */
-#line 314 "mc.y"
+#line 317 "mc.y"
     { (yyval).source = "matrixFromDouble("+(yyvsp[(1) - (1)]).source+")";;}
     break;
 
   case 74:
 
 /* Line 1455 of yacc.c  */
-#line 315 "mc.y"
+#line 318 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source ;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 316 "mc.y"
+#line 319 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source;
 		symrec sr;
 		if(!(TDSget((yyvsp[(1) - (1)]).source, &sr))){
@@ -2185,7 +2188,7 @@ oss << "oargs[" << n <<"].val";
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 322 "mc.y"
+#line 325 "mc.y"
     {
           symrec sr;
 		  if(!(TDSget((yyvsp[(1) - (4)]).source, &sr))){
@@ -2211,7 +2214,7 @@ oss << "oargs[" << n <<"].val";
   case 77:
 
 /* Line 1455 of yacc.c  */
-#line 346 "mc.y"
+#line 349 "mc.y"
     {  
   (yyval).start = (yyvsp[(1) - (3)]).source;
   (yyval).stride = (yyvsp[(3) - (3)]).source;
@@ -2222,7 +2225,7 @@ oss << "oargs[" << n <<"].val";
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 353 "mc.y"
+#line 356 "mc.y"
     {
 (yyval).start = (yyvsp[(1) - (3)]).start;
 (yyval).stride = (yyvsp[(1) - (3)]).stride;
@@ -2233,126 +2236,126 @@ oss << "oargs[" << n <<"].val";
   case 79:
 
 /* Line 1455 of yacc.c  */
-#line 361 "mc.y"
+#line 364 "mc.y"
     {(yyval).source = "null";;}
     break;
 
   case 80:
 
 /* Line 1455 of yacc.c  */
-#line 362 "mc.y"
+#line 365 "mc.y"
     {(yyval).source = (yyvsp[(1) - (1)]).source;;}
     break;
 
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 365 "mc.y"
+#line 368 "mc.y"
     {(yyval).source = "null";;}
     break;
 
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 366 "mc.y"
+#line 369 "mc.y"
     {(yyval).source = "new double[][][]{"+ (yyvsp[(1) - (1)]).source+"}";;}
     break;
 
   case 83:
 
 /* Line 1455 of yacc.c  */
-#line 369 "mc.y"
+#line 372 "mc.y"
     {(yyval).source = (yyvsp[(1) - (1)]).source;;}
     break;
 
   case 84:
 
 /* Line 1455 of yacc.c  */
-#line 370 "mc.y"
+#line 373 "mc.y"
     {(yyval).source = (yyvsp[(1) - (3)]).source + "," + (yyvsp[(3) - (3)]).source;;}
     break;
 
   case 85:
 
 /* Line 1455 of yacc.c  */
-#line 373 "mc.y"
+#line 376 "mc.y"
     { (yyval).source = (yyvsp[(2) - (3)]).source ;;}
     break;
 
   case 86:
 
 /* Line 1455 of yacc.c  */
-#line 376 "mc.y"
+#line 379 "mc.y"
     {(yyval).source = "new double[0][0]";;}
     break;
 
   case 87:
 
 /* Line 1455 of yacc.c  */
-#line 377 "mc.y"
+#line 380 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source;;}
     break;
 
   case 88:
 
 /* Line 1455 of yacc.c  */
-#line 378 "mc.y"
+#line 381 "mc.y"
     { (yyval).source = (yyvsp[(1) - (2)]).source;;}
     break;
 
   case 89:
 
 /* Line 1455 of yacc.c  */
-#line 379 "mc.y"
+#line 382 "mc.y"
     { (yyval).source = "vertcat("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";}
     break;
 
   case 91:
 
 /* Line 1455 of yacc.c  */
-#line 381 "mc.y"
+#line 384 "mc.y"
     { (yyval).source = "vertcat("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(3) - (3)]).source+")";}
     break;
 
   case 92:
 
 /* Line 1455 of yacc.c  */
-#line 384 "mc.y"
+#line 387 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source ;;}
     break;
 
   case 93:
 
 /* Line 1455 of yacc.c  */
-#line 385 "mc.y"
+#line 388 "mc.y"
     { (yyval).source = (yyvsp[(1) - (1)]).source ;;}
     break;
 
   case 94:
 
 /* Line 1455 of yacc.c  */
-#line 386 "mc.y"
+#line 389 "mc.y"
     { (yyval).source = "horzcat("+(yyvsp[(1) - (2)]).source+","+(yyvsp[(2) - (2)]).source+")";;}
     break;
 
   case 95:
 
 /* Line 1455 of yacc.c  */
-#line 389 "mc.y"
+#line 392 "mc.y"
     { (yyval).source = (yyvsp[(1) - (2)]).source ;;}
     break;
 
   case 96:
 
 /* Line 1455 of yacc.c  */
-#line 390 "mc.y"
+#line 393 "mc.y"
     { (yyval).source = "horzcat("+(yyvsp[(1) - (3)]).source+","+(yyvsp[(2) - (3)]).source+")";;}
     break;
 
   case 97:
 
 /* Line 1455 of yacc.c  */
-#line 393 "mc.y"
+#line 396 "mc.y"
     {
 (yyval).source = "";
 symrec sr;
@@ -2370,7 +2373,7 @@ if(!TDSget((yyvsp[(1) - (3)]).source,&sr)){
   case 98:
 
 /* Line 1455 of yacc.c  */
-#line 405 "mc.y"
+#line 408 "mc.y"
     {
 (yyval).source = "";
 symrec sr;
@@ -2388,7 +2391,7 @@ if(!TDSget((yyvsp[(1) - (6)]).source,&sr)){
   case 99:
 
 /* Line 1455 of yacc.c  */
-#line 417 "mc.y"
+#line 420 "mc.y"
     {
 (yyval).source = "";
 symrec sr;
@@ -2406,7 +2409,7 @@ if(!TDSget((yyvsp[(2) - (5)]).source,&sr)){
   case 100:
 
 /* Line 1455 of yacc.c  */
-#line 429 "mc.y"
+#line 432 "mc.y"
     {
 (yyval).source = "";
 symrec sr;
@@ -2424,7 +2427,7 @@ if(!TDSget((yyvsp[(2) - (8)]).source,&sr)){
   case 101:
 
 /* Line 1455 of yacc.c  */
-#line 441 "mc.y"
+#line 444 "mc.y"
     {
    symrec sr;
    if(!TDSget((yyvsp[(5) - (8)]).source,&sr)){
@@ -2473,14 +2476,14 @@ if(!TDSget((yyvsp[(2) - (8)]).source,&sr)){
   case 102:
 
 /* Line 1455 of yacc.c  */
-#line 487 "mc.y"
+#line 490 "mc.y"
     { (yyval).varg.push_back((yyvsp[(1) - (3)]).ri); (yyval).varg.push_back((yyvsp[(3) - (3)]).ri);;}
     break;
 
   case 103:
 
 /* Line 1455 of yacc.c  */
-#line 488 "mc.y"
+#line 491 "mc.y"
     { 
 for(int i=0;i<(yyvsp[(1) - (3)]).varg.size();i++){
 	(yyval).varg.push_back((yyvsp[(1) - (3)]).varg[i]);
@@ -2492,7 +2495,7 @@ for(int i=0;i<(yyvsp[(1) - (3)]).varg.size();i++){
   case 104:
 
 /* Line 1455 of yacc.c  */
-#line 496 "mc.y"
+#line 499 "mc.y"
     { 
 ref_info rinf;
 rinf.id = (yyvsp[(1) - (1)]).source;
@@ -2504,7 +2507,7 @@ rinf.is_simple = true;
   case 105:
 
 /* Line 1455 of yacc.c  */
-#line 502 "mc.y"
+#line 505 "mc.y"
     { 
 ref_info rinf;
 rinf.id = (yyvsp[(1) - (4)]).source;
@@ -2517,7 +2520,7 @@ rinf.ref_source = (yyvsp[(3) - (4)]).source;
   case 106:
 
 /* Line 1455 of yacc.c  */
-#line 511 "mc.y"
+#line 514 "mc.y"
     {
 (yyval).source  = " double[][] fortemp =" + (yyvsp[(4) - (7)]).source +";\n";
 (yyval).source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
@@ -2531,63 +2534,63 @@ rinf.ref_source = (yyvsp[(3) - (4)]).source;
   case 107:
 
 /* Line 1455 of yacc.c  */
-#line 520 "mc.y"
+#line 523 "mc.y"
     {(yyval).source =(yyvsp[(1) - (4)]).source+(yyvsp[(2) - (4)]).source+(yyvsp[(3) - (4)]).source;;}
     break;
 
   case 108:
 
 /* Line 1455 of yacc.c  */
-#line 523 "mc.y"
+#line 526 "mc.y"
     {(yyval).source = "if(any("+(yyvsp[(2) - (4)]).source+")){"+(yyvsp[(4) - (4)]).source+"}";;}
     break;
 
   case 109:
 
 /* Line 1455 of yacc.c  */
-#line 526 "mc.y"
+#line 529 "mc.y"
     {(yyval).source ="";;}
     break;
 
   case 110:
 
 /* Line 1455 of yacc.c  */
-#line 527 "mc.y"
+#line 530 "mc.y"
     {(yyval).source = (yyvsp[(1) - (2)]).source + (yyvsp[(2) - (2)]).source;;}
     break;
 
   case 111:
 
 /* Line 1455 of yacc.c  */
-#line 530 "mc.y"
+#line 533 "mc.y"
     {(yyval).source = "else if(any("+(yyvsp[(2) - (4)]).source+")){"+(yyvsp[(4) - (4)]).source+"}";;}
     break;
 
   case 112:
 
 /* Line 1455 of yacc.c  */
-#line 533 "mc.y"
+#line 536 "mc.y"
     {(yyval).source ="";;}
     break;
 
   case 113:
 
 /* Line 1455 of yacc.c  */
-#line 534 "mc.y"
+#line 537 "mc.y"
     {(yyval).source = "else{"+(yyvsp[(3) - (3)]).source+"}";;}
     break;
 
   case 114:
 
 /* Line 1455 of yacc.c  */
-#line 538 "mc.y"
+#line 541 "mc.y"
     {(yyval).source = "while(any("+(yyvsp[(2) - (5)]).source+")){"+(yyvsp[(4) - (5)]).source+"}";;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2591 "mc.tab.c"
+#line 2594 "mc.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2799,7 +2802,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 543 "mc.y"
+#line 546 "mc.y"
 
 #include "lex.yy.c"
 

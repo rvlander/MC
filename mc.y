@@ -113,10 +113,13 @@ functionMFile : empty_lines f_all {$$.source = $2.source}
 
 f_all : f_def_line f_body {$$.source = $1.source+" throws Exception{\n";
 
+$$.source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
+
 for(int i=0;i<$1.ivarg.size();i++){
 ostringstream oss;
 oss << i;
-$$.source += "double[][] " + $1.ivarg[i].id +" = iargs["+oss.str()+"];\n";
+string li = oss.str();
+$$.source += "double[][] " + $1.ivarg[i].id +"= new double[0][0];\nif(nargin[0][0]>"+li+")"+$1.ivarg[i].id+ "= iargs["+oss.str()+"];\n";
 }
 
 for(int i=0;i<$1.varg.size();i++){
