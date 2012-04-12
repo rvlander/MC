@@ -8,6 +8,8 @@
 #include <fstream>
 #include <vector>
 
+#include <dirent.h>
+
 using namespace std;
 
 #include "tds.cpp"
@@ -24,6 +26,7 @@ struct ref_info{
 int yylex(void);
 void yyerror (char const *s);
 void writeJavaFile(const string &s, bool);
+int searchFunction(const string &id);
 
 typedef struct tagYYSTYPE{
   //type of programm
@@ -40,7 +43,9 @@ typedef struct tagYYSTYPE{
 
 #define YYSTYPE YYST
 
+ofstream outfile;
 
+vector<string> to_compile;
 
 
 %}
@@ -107,7 +112,7 @@ functionMFile : empty_lines f_all {$$.source = $2.source}
 
 f_all : f_def_line f_body {$$.source = $1.source+"{\n";
 for(int i=0;i<$1.varg.size();i++){
-$$.source += "double[][] " + $1.varg[i].id +"= new double[][];\n";
+$$.source += "double[][] " + $1.varg[i].id +"= new double[0][0];\n";
 }
 $$.source += $2.source+"\n";
 $$.source += "if(oargs !=null){\n";
@@ -285,7 +290,16 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
 	 | ID '(' ref_expr_list ')' {
           symrec sr;
 		  if(!(TDSget($1.source, &sr))){
-			cerr << " Symbol "+$1.source+" not declared" << endl;		
+			int t = searchFunction($1.source);
+			if(t != false) {
+				sr.idtype = FUNC;
+                              if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+			}else {
+			cerr << " Symbol "+$1.source+" not declared" << endl;
+				YYERROR;                         
+			}		
 		  }
           if(sr.idtype == VAR) {
 		  	$$.source = "subsref("+$1.source+","+$3.source+")";
@@ -501,44 +515,22 @@ void yyerror (char const *s){
    printf("%s\n",s);
 }
 
-int main(int argc, const char ** argv){
 
-symrec sri;
-sri.idtype = FUNC;
-
-TDSinsert("numel",sri);
- int externalfile=0;
- externalfile = argc>1;	
- FILE *fid;
-
- if(externalfile){
-	fid = fopen(argv[1],"r");
- 	yyrestart(fid);
-}
- int res = yyparse();
- if(externalfile){
-fclose(fid);
-}
-
- return res;
-}
-
-void writeJavaFile(const string &source, bool ismain){
-	ofstream outfile;
-	outfile.open("MatCode.java",fstream::out);
-
-	if (!outfile.is_open()){
-		cerr << "can't open file" << endl;	
-	}
- 
-	
-	outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
+void writeJavaFileHeader(const string &classname){
+outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcfunctions.MCJFunctions.*;" << endl;
 	outfile << "import org.mc.mcfunctions.MCJOutputArg;" << endl;
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
-	outfile << "public class MatCode{" << endl;
+	outfile << "public class "<<classname<<"{" << endl;
 
+}
+
+void writeJavaFile(const string &source, bool ismain){
+	
+ 
+	
+	
 	if(ismain) outfile << "public static void main(String args[]) throws Exception{" << endl;	
 	outfile << source << endl;
 	
@@ -552,7 +544,78 @@ void writeJavaFile(const string &source, bool ismain){
 	}
 	outfile << "}" << endl;
 	}
-
-    	outfile << "}" << endl;
-	outfile.close();	
 }
+void writeJavaFileFooter(){
+    	outfile << "}" << endl;	
+}
+
+
+int searchFunction(const string &id){
+	int res =0;
+	DIR * pdir;
+	struct dirent *pdirent;
+
+	string target = id+".m";
+
+	pdir = opendir("./exemples/");
+
+ 	if(pdir == NULL){
+		cerr << "Le rértoire courant n'a pu être ouvert!" << endl;	
+	}
+
+	while((pdirent = readdir(pdir)) != NULL){
+		if(target.compare(pdirent->d_name)){
+			res =1;	
+			string path = "./exemples/" + target;
+			to_compile.push_back(path);	
+		}	
+	}
+
+	return res;
+}
+
+
+int main(int argc, const char ** argv){
+
+symrec sri;
+sri.idtype = FUNC;
+
+TDSinsert("numel",sri);
+ int externalfile=0;
+ externalfile = argc>1;	
+ FILE *fid;
+
+ to_compile.push_back(argv[1]);
+
+
+
+	outfile.open("MatCode.java",fstream::out);
+
+	if (!outfile.is_open()){
+		cerr << "can't open file" << endl;	
+	}
+
+writeJavaFileHeader("MatCode");
+
+
+cout << "Begin compiling ..." << endl;
+
+ 
+while(!to_compile.empty()){
+	string comp = to_compile.back();
+	to_compile.pop_back();
+	cout << "Compiling " << comp << endl;
+	fid = fopen(comp.c_str(),"r");
+	cout << "File opened" << endl; 	
+	yyrestart(fid);
+ 	yyparse();
+cout << "File parsed" << endl;
+	fclose(fid);
+cout << "File closed" << endl;
+}
+writeJavaFileFooter();
+outfile.close();
+
+ return 0;
+}
+
