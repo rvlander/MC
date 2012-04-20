@@ -619,7 +619,7 @@ int main(int argc, const char ** argv){
 symrec sri;
 sri.idtype = FUNC;
 
-TDSinsert("numel",sri);
+TDSinsert("size",sri);
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;

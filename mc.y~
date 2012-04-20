@@ -375,7 +375,7 @@ comma_ref_list : ref_index {$$.source = $1.source;}
                | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;}
 ;
 
-matrix : '[' {in_matrix++} boxes rows ']' {in_matrix--; $$.source = $3.source ;}
+matrix : '[' {in_matrix++} rows ']' {in_matrix--; $$.source = $3.source ;}
 ;
 
 rows : {$$.source = "new double[0][0]";}
