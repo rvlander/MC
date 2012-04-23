@@ -48,6 +48,8 @@ ofstream outfile;
 
 vector<string> to_compile;
 
+int in_matrix =0;
+
 
 %}
 
@@ -80,7 +82,7 @@ vector<string> to_compile;
 
 %token LD
 %token RD
-
+%token MSPACE
 
 %left LOR
 %left LAND
@@ -119,7 +121,7 @@ for(int i=0;i<$1.ivarg.size();i++){
 ostringstream oss;
 oss << i;
 string li = oss.str();
-$$.source += "double[][] " + $1.ivarg[i].id +";\nif(nargin[0][0]>"+li+")"+$1.ivarg[i].id+ "= iargs["+oss.str()+"];\n";
+$$.source += "double[][] " + $1.ivarg[i].id +"= new double[0][0];\nif(nargin[0][0]>"+li+")"+$1.ivarg[i].id+ "= iargs["+oss.str()+"];\n";
 }
 
 for(int i=0;i<$1.varg.size();i++){
@@ -373,7 +375,7 @@ comma_ref_list : ref_index {$$.source = $1.source;}
                | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;}
 ;
 
-matrix : '[' rows ']' { $$.source = $2.source ;}
+matrix : '[' {in_matrix++} rows ']' {in_matrix--; $$.source = $3.source ;}
 ;
 
 rows : {$$.source = "new double[0][0]";}
@@ -390,7 +392,9 @@ row : expr { $$.source = $1.source ;}
 ;
 
 row_with_commas : expr ',' { $$.source = $1.source ;}
+                | expr MSPACE { $$.source = $1.source ;}
                 |row_with_commas expr ',' { $$.source = "horzcat("+$1.source+","+$2.source+")";}
+                |row_with_commas expr MSPACE { $$.source = "horzcat("+$1.source+","+$2.source+")";}
 ;
 
 assignement : ID '=' expr {
@@ -441,17 +445,17 @@ if(!TDSget($2.source,&sr)){
 }
 $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.source+")";
 } 
-            | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
+            |  LD  output_ref_list  RD '=' ID  '(' ref_expr_list ')' {
    symrec sr;
-   if(!TDSget($5.source,&sr)){
+   if(!TDSget($7.source,&sr)){
 	cerr << "symbol undefined" << endl; 
    } else if(sr.idtype != FUNC){
-        cerr << "Too many output arguments : " + $5.source + " is not a function !" << endl;
+        cerr << "Too many output arguments : " + $7.source + " is not a function !" << endl;
    }
    ostringstream oss;
-   oss << "MCJOutputArg[] oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
-   for(int i=0;i<$2.varg.size();i++){
-	ref_info ri = $2.varg[i];	
+   oss << "MCJOutputArg[] oa = new MCJOutputArg[" << $3.varg.size() << "];\n";
+   for(int i=0;i<$3.varg.size();i++){
+	ref_info ri = $3.varg[i];	
 	oss << "oa[" << i << "]= new MCJOutputArg();\n";	
 	/*if(!ri.is_simple){
 		oss << "double[][] " << ri.id << i << ";\n";
@@ -470,10 +474,10 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
    	
 	 
    }
-   oss << $5.source << "(oa," + $7.source +")";
+   oss << $7.source << "(oa," + $7.source +")";
 	
-   for(int i=0;i<$2.varg.size();i++){
-	ref_info ri = $2.varg[i];	
+   for(int i=0;i<$3.varg.size();i++){
+	ref_info ri = $3.varg[i];	
 	if(!ri.is_simple){
 		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
 	}else{
@@ -488,7 +492,14 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
     
 
 output_ref_list :  out_ref ',' out_ref  { $$.varg.push_back($1.ri); $$.varg.push_back($3.ri);}
+                 |out_ref MSPACE out_ref  { $$.varg.push_back($1.ri); $$.varg.push_back($3.ri);}
 		 |  output_ref_list ',' out_ref { 
+for(int i=0;i<$1.varg.size();i++){
+	$$.varg.push_back($1.varg[i]);
+}
+$$.varg.push_back($3.ri);
+}
+	        |  output_ref_list MSPACE out_ref { 
 for(int i=0;i<$1.varg.size();i++){
 	$$.varg.push_back($1.varg[i]);
 }
@@ -615,7 +626,7 @@ int main(int argc, const char ** argv){
 symrec sri;
 sri.idtype = FUNC;
 
-TDSinsert("numel",sri);
+TDSinsert("size",sri);
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;

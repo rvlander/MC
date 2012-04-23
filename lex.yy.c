@@ -843,21 +843,25 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 33 "mc.lex"
-{BEGIN(INITIAL);}
+{BEGIN(INITIAL);
+if(in_matrix>0){
+	verbose("MSPACE");return(MSPACE);
+}
+}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 34 "mc.lex"
+#line 38 "mc.lex"
 {BEGIN(INITIAL);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 35 "mc.lex"
+#line 39 "mc.lex"
 {BEGIN(QuoteSC);verbose("NBRE");yylval.source = yytext;return(NBRE);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 36 "mc.lex"
+#line 40 "mc.lex"
 {BEGIN(QuoteSC);verbose("ID");yylval.source = yytext;return(ID);}
 	YY_BREAK
 case 12:
@@ -866,7 +870,7 @@ case 12:
 (yy_c_buf_p) = yy_cp = yy_bp + 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 38 "mc.lex"
+#line 42 "mc.lex"
 {BEGIN(INITIAL);verbose("LD");return(LD);}
 	YY_BREAK
 case 13:
@@ -875,181 +879,181 @@ case 13:
 (yy_c_buf_p) = yy_cp = yy_bp + 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 39 "mc.lex"
+#line 43 "mc.lex"
 {BEGIN(INITIAL);verbose("RD");return(RD);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 42 "mc.lex"
+#line 46 "mc.lex"
 {BEGIN(INITIAL);verbose("-");return('-');}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 43 "mc.lex"
+#line 47 "mc.lex"
 {BEGIN(INITIAL);verbose("+");return('+');}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 44 "mc.lex"
+#line 48 "mc.lex"
 {BEGIN(INITIAL);verbose("*");return('*');}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 45 "mc.lex"
+#line 49 "mc.lex"
 {BEGIN(INITIAL);verbose("TIMES");return(TIMES);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 46 "mc.lex"
+#line 50 "mc.lex"
 {BEGIN(INITIAL);verbose("/");return('/');}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 47 "mc.lex"
+#line 51 "mc.lex"
 {BEGIN(INITIAL);verbose("\\");return('\\');}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 48 "mc.lex"
+#line 52 "mc.lex"
 {BEGIN(INITIAL);verbose("DEVIDE");return(DIVIDE);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 49 "mc.lex"
+#line 53 "mc.lex"
 {BEGIN(INITIAL);verbose("LDEVIDE");return(LDIVIDE);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 50 "mc.lex"
+#line 54 "mc.lex"
 {BEGIN(INITIAL);verbose("(");return('(');}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 51 "mc.lex"
+#line 55 "mc.lex"
 {BEGIN(INITIAL);verbose(")");return(')');}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 52 "mc.lex"
+#line 56 "mc.lex"
 {BEGIN(INITIAL);verbose("^");return('^');}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 53 "mc.lex"
+#line 57 "mc.lex"
 {BEGIN(INITIAL);verbose("POWER");return(POWER);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 54 "mc.lex"
+#line 58 "mc.lex"
 {BEGIN(INITIAL);verbose(":");return(':');}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 55 "mc.lex"
+#line 59 "mc.lex"
 {BEGIN(INITIAL);verbose(";");return(';');}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 56 "mc.lex"
+#line 60 "mc.lex"
 {BEGIN(INITIAL);verbose(",");return(',');}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 57 "mc.lex"
+#line 61 "mc.lex"
 {BEGIN(INITIAL);verbose("[");return('[');}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 58 "mc.lex"
+#line 62 "mc.lex"
 {BEGIN(QuoteSC);verbose("]");return(']');}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 59 "mc.lex"
+#line 63 "mc.lex"
 {BEGIN(INITIAL);verbose("EQ");return(EQ);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 60 "mc.lex"
+#line 64 "mc.lex"
 {BEGIN(INITIAL);verbose("NE");return(NE);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 61 "mc.lex"
+#line 65 "mc.lex"
 {BEGIN(INITIAL);verbose("<");return('<');}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 62 "mc.lex"
+#line 66 "mc.lex"
 {BEGIN(INITIAL);verbose(">");return('>');}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 63 "mc.lex"
+#line 67 "mc.lex"
 {BEGIN(INITIAL);verbose("LE");return(LE);}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 64 "mc.lex"
+#line 68 "mc.lex"
 {BEGIN(INITIAL);verbose("GE");return(GE);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 65 "mc.lex"
+#line 69 "mc.lex"
 {BEGIN(INITIAL);verbose("|");return('|');}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 66 "mc.lex"
+#line 70 "mc.lex"
 {BEGIN(INITIAL);verbose("&");return('&');}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 67 "mc.lex"
+#line 71 "mc.lex"
 {BEGIN(INITIAL);verbose("LOR");return(LOR);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 68 "mc.lex"
+#line 72 "mc.lex"
 {BEGIN(INITIAL);verbose("LAND");return(LAND);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 69 "mc.lex"
+#line 73 "mc.lex"
 {BEGIN(INITIAL);verbose("=");return('=');}
 	YY_BREAK
 case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
-#line 70 "mc.lex"
+#line 74 "mc.lex"
 {BEGIN(INITIAL);verbose("NEWLINE\n");return(NEWLINE);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 71 "mc.lex"
+#line 75 "mc.lex"
 {BEGIN(QuoteSC);verbose("TRANSPOSE");return(TRANSPOSE);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 72 "mc.lex"
+#line 76 "mc.lex"
 {BEGIN(QuoteSC);verbose("CTRANSPOSE");return(CTRANSPOSE);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 73 "mc.lex"
+#line 77 "mc.lex"
 {BEGIN(INITIAL);verbose("~");return('~');}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 75 "mc.lex"
+#line 79 "mc.lex"
 { yylval.source = yytext;verbose("TEXT"); return(TEXT);};
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 77 "mc.lex"
+#line 81 "mc.lex"
 ECHO;
 	YY_BREAK
-#line 1053 "lex.yy.c"
+#line 1057 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(QuoteSC):
 	yyterminate();
@@ -2048,7 +2052,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 77 "mc.lex"
+#line 81 "mc.lex"
 
 
 

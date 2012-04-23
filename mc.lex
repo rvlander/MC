@@ -30,7 +30,11 @@ else {verbose("ELSE");return(ELSE);};
 while {verbose("WHILE");return(WHILE);};
 function {verbose("FUNCTION");return(FUNCTION);};
 
-[ ] {BEGIN(INITIAL);}
+[ ] {BEGIN(INITIAL);
+if(in_matrix>0){
+	verbose("MSPACE");return(MSPACE);
+}
+}
 \%[^\n\r\f]* {BEGIN(INITIAL);}
 {nombre} {BEGIN(QuoteSC);verbose("NBRE");yylval.source = yytext;return(NBRE);}
 {identifier} {BEGIN(QuoteSC);verbose("ID");yylval.source = yytext;return(ID);}

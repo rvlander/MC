@@ -48,6 +48,8 @@ ofstream outfile;
 
 vector<string> to_compile;
 
+int in_matrix =0;
+
 
 %}
 
@@ -80,7 +82,7 @@ vector<string> to_compile;
 
 %token LD
 %token RD
-
+%token MSPACE
 
 %left LOR
 %left LAND
@@ -373,7 +375,7 @@ comma_ref_list : ref_index {$$.source = $1.source;}
                | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;}
 ;
 
-matrix : '[' rows ']' { $$.source = $2.source ;}
+matrix : '[' {in_matrix++} rows ']' {in_matrix--; $$.source = $3.source ;}
 ;
 
 rows : {$$.source = "new double[0][0]";}
@@ -390,7 +392,9 @@ row : expr { $$.source = $1.source ;}
 ;
 
 row_with_commas : expr ',' { $$.source = $1.source ;}
+                | expr MSPACE { $$.source = $1.source ;}
                 |row_with_commas expr ',' { $$.source = "horzcat("+$1.source+","+$2.source+")";}
+                |row_with_commas expr MSPACE { $$.source = "horzcat("+$1.source+","+$2.source+")";}
 ;
 
 assignement : ID '=' expr {
@@ -615,7 +619,7 @@ int main(int argc, const char ** argv){
 symrec sri;
 sri.idtype = FUNC;
 
-TDSinsert("numel",sri);
+TDSinsert("size",sri);
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;

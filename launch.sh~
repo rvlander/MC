@@ -1,7 +1,13 @@
 #!/bin/bash
 
 make
+
+if [ -z $1]
+then
 ./compile exemples/test.m
+else
+./compile exemples/"$1"
+fi
 javac -cp MCJavaCore/dist/MCJavaCore.jar MatCode.java
-../jdk1.7.0_03/bin/java -cp MCJavaCore/dist/MCJavaCore.jar:. MatCode 
+java -cp MCJavaCore/dist/MCJavaCore.jar:. MatCode 
 
