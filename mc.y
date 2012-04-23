@@ -97,10 +97,15 @@ int in_matrix =0;
 %left '^' POWER TRANSPOSE CTRANSPOSE
 %%
 
+prog : input_list {YYACCEPT;};
+
+input_list : S
+	    | input_list S; 
+
 S : input {
-cout << endl<< $1.source << endl;
+//cout << endl<< $1.source << endl;
 writeJavaFile($1.source,$$.ismain);
-YYACCEPT;}
+}
 
 input : scriptMFile {$$.source = $1.source;$$.ismain= true}
         |functionMFile {$$.source = $1.source;$$.ismain=false}
@@ -110,8 +115,11 @@ scriptMFile : opt_delimiter {$$.source = "";}
             | opt_delimiter statement_list {$$.source = $2.source;}
 ;
 
-functionMFile : empty_lines f_all {$$.source = $2.source}
-              | f_all {$$.source = $1.source}
+functionMFile : empty_lines f_all opt_end{$$.source = $2.source}
+              | f_all opt_end{$$.source = $1.source}
+;
+opt_end : 
+        | END opt_delimiter
 ;
 
 f_all : f_def_line f_body {$$.source = $1.source+" throws Exception{\n";
@@ -336,7 +344,7 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
  }
 			}else {
 			cerr << " Symbol "+$1.source+" not declared" << endl;
-				YYERROR;                         
+				//YYERROR;                         
 			}		
 		  }
           if(sr.idtype == VAR) {
@@ -609,7 +617,7 @@ int searchFunction(const string &id){
 	pdir = opendir(lepath.c_str());
 
  	if(pdir == NULL){
-		cerr << "Le rértoire courant n'a pu être ouvert!" << endl;	
+		cerr << "Le répertoire " << lepath << " n'a pu être ouvert!" << endl;	
 	}
 
 	while(res==0 && (pdirent = readdir(pdir)) != NULL){
@@ -632,7 +640,7 @@ void readPathFile(string path_file){
 
      while(fp.getline(ligne,1024)){
 	string ll(ligne);
-         cout << "added :" << ll << endl;
+        // cout << "added :" << ll << endl;
         les_path.push_back(ligne);     
 
      } 
