@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <stdio.h>
 #include <map>
@@ -589,6 +590,9 @@ void writeJavaFileFooter(){
 }
 
 
+/******************/
+vector<string> les_path;
+
 int searchFunction(const string &id){
 	int res =0;
 	DIR * pdir;
@@ -596,21 +600,42 @@ int searchFunction(const string &id){
 
 	string target = id+".m";
 
-	pdir = opendir("./exemples/");
+	int n = les_path.size();
+	int i=0;	
+	
+	while (res ==0 && i<n){
+
+	string lepath = les_path[i];
+	pdir = opendir(lepath.c_str());
 
  	if(pdir == NULL){
 		cerr << "Le rértoire courant n'a pu être ouvert!" << endl;	
 	}
 
-	while((pdirent = readdir(pdir)) != NULL){
+	while(res==0 && (pdirent = readdir(pdir)) != NULL){
 		if(target.compare(pdirent->d_name)==0){
 			res =1;	
-			string path = "./exemples/" + target;
+			string path = lepath+ "/" + target;
 			to_compile.push_back(path);	
 		}	
 	}
+	i++;
+	}
 
 	return res;
+}
+
+void readPathFile(string path_file){
+     ifstream fp(path_file.c_str());
+
+     char ligne[1024]
+
+     while(fp.getline(ligne,1024)){
+	string ll(ligne);
+         cout << "added :" << ll << endl;
+        les_path.push_back(ligne);     
+
+     } 
 }
 
 
@@ -619,12 +644,14 @@ int main(int argc, const char ** argv){
 symrec sri;
 sri.idtype = FUNC;
 
-TDSinsert("numel",sri);
+TDSinsert("size",sri);
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;
 
  to_compile.push_back(argv[1]);
+ 
+	readPathFile("path_file");
 
 
 
