@@ -607,6 +607,26 @@ void writeJavaFileFooter(){
 /******************/
 vector<string> les_path;
 
+bool isBuiltin(string path){
+     ifstream fp(path.c_str());
+
+     char ligne[1024];
+
+     int res = false;
+
+     while(fp.getline(ligne,1024)&& !res){
+	string ll(ligne);
+        int r = ll.find("Built-in");   
+	//cout << "find result  : " << r << endl;  
+	if(r!=-1){
+		cout << "Built-in function "<< path <<endl;	
+		res = true;
+	} 
+
+     } 
+	return res;
+}
+
 int searchFunction(const string &id){
 	int res =0;
 	DIR * pdir;
@@ -630,7 +650,11 @@ int searchFunction(const string &id){
 		if(target.compare(pdirent->d_name)==0){
 			res =1;	
 			string path = lepath+ "/" + target;
-			to_compile.push_back(path);	
+			if(!isBuiltin(path)){
+				cout << path << " not built-in "<< endl;
+				to_compile.push_back(path);
+			
+			}	
 		}	
 	}
 	i++;
