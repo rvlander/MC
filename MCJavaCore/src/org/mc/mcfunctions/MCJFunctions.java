@@ -236,4 +236,45 @@ public class MCJFunctions {
         }
         return res;
     }
+    
+    
+     public static double[][] sum(MCJOutputArg[] oargs, double[][][] iargs) {
+        double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);
+        double[][] A = iargs[0];
+        if (nargin[0][0] > 0) {
+            A = iargs[0];
+        }
+        
+        double[][] res;
+        
+        
+        if(MCJUtils.isVector(A)){
+            double somme=0;
+            for(int i=1;i<=MCJBaseFunctions.numel(A)[0][0];i++){
+                somme += MCJUtils.kthElemValue(A, i);
+            }
+            res = MCJBaseFunctions.matrixFromDouble(somme);
+        }else{
+           int m = A.length; int n = A[0].length;
+           res = new double[1][n];
+           for(int i=0;i<n;i++){
+               for(int j=0;j<m;j++){
+                   res[0][i] += A[j][i];
+               }
+           }
+        }
+        
+        double[][] dim = new double[0][0];
+        if(iargs.length == 2){
+            res = MCJBaseFunctions.matrixFromDouble(res[0][(int)iargs[1][0][0]-1]);
+        }
+
+        if (oargs != null) {
+            if (oargs.length == 1) {
+                oargs[0].val = res;
+            }
+        }
+        
+        return res;
+    }
 }

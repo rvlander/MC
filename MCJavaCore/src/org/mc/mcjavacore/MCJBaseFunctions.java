@@ -16,6 +16,15 @@ public class MCJBaseFunctions {
         double[][] res = {{a}};
         return res;
     }
+    
+    public static double[][] matrixFromText(String a) {
+        byte[] vals = a.getBytes();
+        double[][] res = new double[1][vals.length];
+        for(int i=0;i<vals.length;i++){
+            res[0][i] = vals[i];
+        }
+        return res;
+    }
 
     public static double[][] numel(double[][] m) {
         double res;

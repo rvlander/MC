@@ -326,7 +326,12 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | matrix {$$.source = $1.source;}
      | NBRE { $$.source = "matrixFromDouble("+$1.source+")";}
-     | TEXT { $$.source = $1.source }
+     | TEXT {
+int tn = $1.source.size();
+$1.source[0] = '"';
+$1.source[tn-1] = '"'; 
+$$.source = "matrixFromText("+$1.source+")" 
+}
      | ID { $$.source = $1.source;
 		symrec sr;
 		if(!(TDSget($1.source, &sr))){
