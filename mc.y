@@ -515,6 +515,12 @@ rinf.id = $1.source;
 rinf.is_simple = true;
 $$.ri = rinf	
 }
+	|  '~' { 
+ref_info rinf;
+rinf.id = "ignored_arg";
+rinf.is_simple = true;
+$$.ri = rinf	
+}
          |  ID '('ref_expr_list ')'{ 
 ref_info rinf;
 rinf.id = $1.source;

@@ -15,13 +15,13 @@
 État 67 conflits: 1 décalage/réduction
 État 68 conflits: 2 décalage/réduction
 État 69 conflits: 2 décalage/réduction
-État 81 conflits: 12 décalage/réduction
-État 121 conflits: 2 décalage/réduction
-État 160 conflits: 2 décalage/réduction
-État 168 conflits: 2 décalage/réduction
-État 195 conflits: 2 décalage/réduction
-État 206 conflits: 2 décalage/réduction
-État 214 conflits: 2 décalage/réduction
+État 82 conflits: 12 décalage/réduction
+État 122 conflits: 2 décalage/réduction
+État 161 conflits: 2 décalage/réduction
+État 169 conflits: 2 décalage/réduction
+État 196 conflits: 2 décalage/réduction
+État 207 conflits: 2 décalage/réduction
+État 215 conflits: 2 décalage/réduction
 
 
 Grammaire
@@ -173,31 +173,32 @@ Grammaire
   110                | output_ref_list ',' out_ref
 
   111 out_ref: ID
-  112        | ID '(' ref_expr_list ')'
+  112        | '~'
+  113        | ID '(' ref_expr_list ')'
 
-  113 for_command: FOR ID '=' expr opt_delimiter statement_list END
+  114 for_command: FOR ID '=' expr opt_delimiter statement_list END
 
-  114 if_command: if_block else_if_list else_block END
+  115 if_command: if_block else_if_list else_block END
 
-  115 if_block: IF expr opt_delimiter statement_list
+  116 if_block: IF expr opt_delimiter statement_list
 
-  116 else_if_list: /* vide */
-  117             | elseif_block else_if_list
+  117 else_if_list: /* vide */
+  118             | elseif_block else_if_list
 
-  118 elseif_block: ELSEIF expr opt_delimiter statement_list
+  119 elseif_block: ELSEIF expr opt_delimiter statement_list
 
-  119 else_block: /* vide */
-  120           | ELSE opt_delimiter statement_list
+  120 else_block: /* vide */
+  121           | ELSE opt_delimiter statement_list
 
-  121 while_command: WHILE expr opt_delimiter statement_list END
+  122 while_command: WHILE expr opt_delimiter statement_list END
 
 
 Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
 '&' (38) 65
-'(' (40) 16 17 70 80 105 107 108 112
-')' (41) 16 17 70 80 105 107 108 112
+'(' (40) 16 17 70 80 105 107 108 113
+')' (41) 16 17 70 80 105 107 108 113
 '*' (42) 50
 '+' (43) 48 72
 ',' (44) 19 24 35 37 88 100 102 109 110
@@ -206,26 +207,26 @@ $end (0) 0
 ':' (58) 81 82 83
 ';' (59) 36 38 93 94
 '<' (60) 60
-'=' (61) 15 104 105 106 107 108 113
+'=' (61) 15 104 105 106 107 108 114
 '>' (62) 61
 '[' (91) 90
 '\\' (92) 53
 ']' (93) 90
 '^' (94) 56
 '|' (124) 64
-'~' (126) 73
+'~' (126) 73 112
 error (256)
 TEXT (258) 78
-END (259) 12 113 114 121
+END (259) 12 114 115 122
 FUNCTION (260) 14 15
-FOR (261) 113
-IF (262) 115
-ELSEIF (263) 118
-ELSE (264) 120
-WHILE (265) 121
+FOR (261) 114
+IF (262) 116
+ELSEIF (263) 119
+ELSE (264) 121
+WHILE (265) 122
 NBRE (266) 77
-ID (267) 14 15 18 19 22 23 24 25 79 80 104 105 106 107 108 111 112
-    113
+ID (267) 14 15 18 19 22 23 24 25 79 80 104 105 106 107 108 111 113
+    114
 NEWLINE (268) 39 40 95 96
 TIMES (269) 51
 DIVIDE (270) 54
@@ -279,7 +280,7 @@ f_out_arg_list (63)
 f_body (64)
     à gauche: 26 27, à droite: 13
 opt_delimiter (65)
-    à gauche: 28 29, à droite: 7 8 12 27 41 113 115 118 120 121
+    à gauche: 28 29, à droite: 7 8 12 27 41 114 116 119 121 122
 delimiter (66)
     à gauche: 30 31 32, à droite: 26 29 42
 null_lines (67)
@@ -289,15 +290,15 @@ null_line (68)
 empty_lines (69)
     à gauche: 39 40, à droite: 9 31 32 37 38 40
 statement_list (70)
-    à gauche: 41 42, à droite: 8 26 42 113 115 118 120 121
+    à gauche: 41 42, à droite: 8 26 42 114 116 119 121 122
 statement (71)
     à gauche: 43 44 45 46 47, à droite: 41 42
 expr (72)
     à gauche: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
     66 67 68 69 70 71 72 73 74 75 76 77 78 79 80, à droite: 43 48
     49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69
-    70 71 72 73 81 82 84 97 99 100 101 102 103 104 105 106 107 113
-    115 118 121
+    70 71 72 73 81 82 84 97 99 100 101 102 103 104 105 106 107 114
+    116 119 122
 colon_expr (73)
     à gauche: 81, à droite: 74 82
 colon_expr1 (74)
@@ -305,7 +306,7 @@ colon_expr1 (74)
 ref_index (75)
     à gauche: 83 84, à droite: 87 88
 ref_expr_list (76)
-    à gauche: 85 86, à droite: 80 105 107 108 112
+    à gauche: 85 86, à droite: 80 105 107 108 113
 comma_ref_list (77)
     à gauche: 87 88, à droite: 86 88
 matrix (78)
@@ -323,21 +324,21 @@ assignement (83)
 output_ref_list (84)
     à gauche: 109 110, à droite: 108 110
 out_ref (85)
-    à gauche: 111 112, à droite: 109 110
+    à gauche: 111 112 113, à droite: 109 110
 for_command (86)
-    à gauche: 113, à droite: 45
+    à gauche: 114, à droite: 45
 if_command (87)
-    à gauche: 114, à droite: 46
+    à gauche: 115, à droite: 46
 if_block (88)
-    à gauche: 115, à droite: 114
+    à gauche: 116, à droite: 115
 else_if_list (89)
-    à gauche: 116 117, à droite: 114 117
+    à gauche: 117 118, à droite: 115 118
 elseif_block (90)
-    à gauche: 118, à droite: 117
+    à gauche: 119, à droite: 118
 else_block (91)
-    à gauche: 119 120, à droite: 114
+    à gauche: 120 121, à droite: 115
 while_command (92)
-    à gauche: 121, à droite: 47
+    à gauche: 122, à droite: 47
 
 
 état 0
@@ -757,14 +758,14 @@ while_command (92)
 
 état 30
 
-  113 for_command: FOR . ID '=' expr opt_delimiter statement_list END
+  114 for_command: FOR . ID '=' expr opt_delimiter statement_list END
 
     ID  décalage et aller à l'état 66
 
 
 état 31
 
-  115 if_block: IF . expr opt_delimiter statement_list
+  116 if_block: IF . expr opt_delimiter statement_list
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -783,7 +784,7 @@ while_command (92)
 
 état 32
 
-  121 while_command: WHILE . expr opt_delimiter statement_list END
+  122 while_command: WHILE . expr opt_delimiter statement_list END
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -827,10 +828,11 @@ while_command (92)
   107            | LD . ID '(' ref_expr_list ')' RD '=' expr
   108            | LD . output_ref_list RD '=' ID '(' ref_expr_list ')'
 
-    ID  décalage et aller à l'état 72
+    ID   décalage et aller à l'état 72
+    '~'  décalage et aller à l'état 73
 
-    output_ref_list  aller à l'état 73
-    out_ref          aller à l'état 74
+    output_ref_list  aller à l'état 74
+    out_ref          aller à l'état 75
 
 
 état 36
@@ -846,7 +848,7 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 75
+    expr         aller à l'état 76
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
@@ -865,7 +867,7 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 76
+    expr         aller à l'état 77
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
@@ -884,7 +886,7 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 77
+    expr         aller à l'état 78
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
@@ -903,7 +905,7 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 78
+    expr         aller à l'état 79
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
@@ -915,7 +917,7 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 89 ($@1)
 
-    $@1  aller à l'état 79
+    $@1  aller à l'état 80
 
 
 état 41
@@ -939,8 +941,8 @@ while_command (92)
     ';'       [réduction par utilisation de la règle 28 (opt_delimiter)]
     $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
 
-    opt_delimiter  aller à l'état 80
-    delimiter      aller à l'état 81
+    opt_delimiter  aller à l'état 81
+    delimiter      aller à l'état 82
     null_lines     aller à l'état 15
     null_line      aller à l'état 16
     empty_lines    aller à l'état 28
@@ -973,29 +975,29 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     '+'       [réduction par utilisation de la règle 43 (statement)]
     '-'       [réduction par utilisation de la règle 43 (statement)]
@@ -1007,7 +1009,7 @@ while_command (92)
    74 expr: colon_expr .
    82 colon_expr1: colon_expr . ':' expr
 
-    ':'  décalage et aller à l'état 105
+    ':'  décalage et aller à l'état 106
 
     ':'       [réduction par utilisation de la règle 74 (expr)]
     $défaut  réduction par utilisation de la règle 74 (expr)
@@ -1050,14 +1052,14 @@ while_command (92)
 
 état 50
 
-  114 if_command: if_block . else_if_list else_block END
+  115 if_command: if_block . else_if_list else_block END
 
-    ELSEIF  décalage et aller à l'état 106
+    ELSEIF  décalage et aller à l'état 107
 
-    $défaut  réduction par utilisation de la règle 116 (else_if_list)
+    $défaut  réduction par utilisation de la règle 117 (else_if_list)
 
-    else_if_list  aller à l'état 107
-    elseif_block  aller à l'état 108
+    else_if_list  aller à l'état 108
+    elseif_block  aller à l'état 109
 
 
 état 51
@@ -1120,7 +1122,7 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 11 (opt_end)
 
-    opt_end  aller à l'état 109
+    opt_end  aller à l'état 110
 
 
 état 58
@@ -1128,10 +1130,10 @@ while_command (92)
    16 f_input: '(' . ')'
    17        | '(' . f_in_arg_list ')'
 
-    ID   décalage et aller à l'état 110
-    ')'  décalage et aller à l'état 111
+    ID   décalage et aller à l'état 111
+    ')'  décalage et aller à l'état 112
 
-    f_in_arg_list  aller à l'état 112
+    f_in_arg_list  aller à l'état 113
 
 
 état 59
@@ -1161,16 +1163,16 @@ while_command (92)
    24 f_out_arg_list: f_out_arg_list . ',' ID
    25               | f_out_arg_list . ID
 
-    ID   décalage et aller à l'état 113
-    RD   décalage et aller à l'état 114
-    ','  décalage et aller à l'état 115
+    ID   décalage et aller à l'état 114
+    RD   décalage et aller à l'état 115
+    ','  décalage et aller à l'état 116
 
 
 état 63
 
    15 f_def_line: FUNCTION f_output '=' . ID f_input
 
-    ID  décalage et aller à l'état 116
+    ID  décalage et aller à l'état 117
 
 
 état 64
@@ -1189,9 +1191,9 @@ while_command (92)
 
 état 66
 
-  113 for_command: FOR ID . '=' expr opt_delimiter statement_list END
+  114 for_command: FOR ID . '=' expr opt_delimiter statement_list END
 
-    '='  décalage et aller à l'état 117
+    '='  décalage et aller à l'état 118
 
 
 état 67
@@ -1199,7 +1201,7 @@ while_command (92)
    79 expr: ID .
    80     | ID . '(' ref_expr_list ')'
 
-    '('  décalage et aller à l'état 118
+    '('  décalage et aller à l'état 119
 
     '('       [réduction par utilisation de la règle 79 (expr)]
     $défaut  réduction par utilisation de la règle 79 (expr)
@@ -1230,32 +1232,32 @@ while_command (92)
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
-  115 if_block: IF expr . opt_delimiter statement_list
+  116 if_block: IF expr . opt_delimiter statement_list
 
     NEWLINE     décalage et aller à l'état 2
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
     ','         décalage et aller à l'état 3
     ';'         décalage et aller à l'état 4
 
@@ -1263,7 +1265,7 @@ while_command (92)
     '-'       [réduction par utilisation de la règle 28 (opt_delimiter)]
     $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
 
-    opt_delimiter  aller à l'état 119
+    opt_delimiter  aller à l'état 120
     delimiter      aller à l'état 14
     null_lines     aller à l'état 15
     null_line      aller à l'état 16
@@ -1295,32 +1297,32 @@ while_command (92)
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
-  121 while_command: WHILE expr . opt_delimiter statement_list END
+  122 while_command: WHILE expr . opt_delimiter statement_list END
 
     NEWLINE     décalage et aller à l'état 2
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
     ','         décalage et aller à l'état 3
     ';'         décalage et aller à l'état 4
 
@@ -1328,7 +1330,7 @@ while_command (92)
     '-'       [réduction par utilisation de la règle 28 (opt_delimiter)]
     $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
 
-    opt_delimiter  aller à l'état 120
+    opt_delimiter  aller à l'état 121
     delimiter      aller à l'état 14
     null_lines     aller à l'état 15
     null_line      aller à l'état 16
@@ -1348,7 +1350,7 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 121
+    expr         aller à l'état 122
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
@@ -1362,7 +1364,7 @@ while_command (92)
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
     ID    décalage et aller à l'état 67
-    ':'   décalage et aller à l'état 122
+    ':'   décalage et aller à l'état 123
     '+'   décalage et aller à l'état 36
     '-'   décalage et aller à l'état 37
     '~'   décalage et aller à l'état 38
@@ -1371,12 +1373,12 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 85 (ref_expr_list)
 
-    expr            aller à l'état 123
+    expr            aller à l'état 124
     colon_expr      aller à l'état 44
     colon_expr1     aller à l'état 45
-    ref_index       aller à l'état 124
-    ref_expr_list   aller à l'état 125
-    comma_ref_list  aller à l'état 126
+    ref_index       aller à l'état 125
+    ref_expr_list   aller à l'état 126
+    comma_ref_list  aller à l'état 127
     matrix          aller à l'état 46
 
 
@@ -1385,63 +1387,35 @@ while_command (92)
   106 assignement: LD ID . RD '=' expr
   107            | LD ID . '(' ref_expr_list ')' RD '=' expr
   111 out_ref: ID .
-  112        | ID . '(' ref_expr_list ')'
+  113        | ID . '(' ref_expr_list ')'
 
-    RD   décalage et aller à l'état 127
-    '('  décalage et aller à l'état 128
+    RD   décalage et aller à l'état 128
+    '('  décalage et aller à l'état 129
 
     $défaut  réduction par utilisation de la règle 111 (out_ref)
 
 
 état 73
 
-  108 assignement: LD output_ref_list . RD '=' ID '(' ref_expr_list ')'
-  110 output_ref_list: output_ref_list . ',' out_ref
+  112 out_ref: '~' .
 
-    RD   décalage et aller à l'état 129
-    ','  décalage et aller à l'état 130
+    $défaut  réduction par utilisation de la règle 112 (out_ref)
 
 
 état 74
 
-  109 output_ref_list: out_ref . ',' out_ref
+  108 assignement: LD output_ref_list . RD '=' ID '(' ref_expr_list ')'
+  110 output_ref_list: output_ref_list . ',' out_ref
 
+    RD   décalage et aller à l'état 130
     ','  décalage et aller à l'état 131
 
 
 état 75
 
-   48 expr: expr . '+' expr
-   49     | expr . '-' expr
-   50     | expr . '*' expr
-   51     | expr . TIMES expr
-   52     | expr . '/' expr
-   53     | expr . '\\' expr
-   54     | expr . DIVIDE expr
-   55     | expr . LDIVIDE expr
-   56     | expr . '^' expr
-   57     | expr . POWER expr
-   58     | expr . EQ expr
-   59     | expr . NE expr
-   60     | expr . '<' expr
-   61     | expr . '>' expr
-   62     | expr . LE expr
-   63     | expr . GE expr
-   64     | expr . '|' expr
-   65     | expr . '&' expr
-   66     | expr . LOR expr
-   67     | expr . LAND expr
-   68     | expr . TRANSPOSE
-   69     | expr . CTRANSPOSE
-   72     | '+' expr .
-   81 colon_expr: expr . ':' expr
+  109 output_ref_list: out_ref . ',' out_ref
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
-
-    $défaut  réduction par utilisation de la règle 72 (expr)
+    ','  décalage et aller à l'état 132
 
 
 état 76
@@ -1468,15 +1442,15 @@ while_command (92)
    67     | expr . LAND expr
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
-   71     | '-' expr .
+   72     | '+' expr .
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
-    $défaut  réduction par utilisation de la règle 71 (expr)
+    $défaut  réduction par utilisation de la règle 72 (expr)
 
 
 état 77
@@ -1503,15 +1477,15 @@ while_command (92)
    67     | expr . LAND expr
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
-   73     | '~' expr .
+   71     | '-' expr .
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
-    $défaut  réduction par utilisation de la règle 73 (expr)
+    $défaut  réduction par utilisation de la règle 71 (expr)
 
 
 état 78
@@ -1538,36 +1512,71 @@ while_command (92)
    67     | expr . LAND expr
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
-   70     | '(' expr . ')'
+   73     | '~' expr .
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
-    ')'         décalage et aller à l'état 132
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
+
+    $défaut  réduction par utilisation de la règle 73 (expr)
 
 
 état 79
+
+   48 expr: expr . '+' expr
+   49     | expr . '-' expr
+   50     | expr . '*' expr
+   51     | expr . TIMES expr
+   52     | expr . '/' expr
+   53     | expr . '\\' expr
+   54     | expr . DIVIDE expr
+   55     | expr . LDIVIDE expr
+   56     | expr . '^' expr
+   57     | expr . POWER expr
+   58     | expr . EQ expr
+   59     | expr . NE expr
+   60     | expr . '<' expr
+   61     | expr . '>' expr
+   62     | expr . LE expr
+   63     | expr . GE expr
+   64     | expr . '|' expr
+   65     | expr . '&' expr
+   66     | expr . LOR expr
+   67     | expr . LAND expr
+   68     | expr . TRANSPOSE
+   69     | expr . CTRANSPOSE
+   70     | '(' expr . ')'
+   81 colon_expr: expr . ':' expr
+
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
+    ')'         décalage et aller à l'état 133
+
+
+état 80
 
    90 matrix: '[' $@1 . rows ']'
 
@@ -1582,23 +1591,23 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 91 (rows)
 
-    expr             aller à l'état 133
+    expr             aller à l'état 134
     colon_expr       aller à l'état 44
     colon_expr1      aller à l'état 45
     matrix           aller à l'état 46
-    rows             aller à l'état 134
-    row              aller à l'état 135
-    row_with_commas  aller à l'état 136
+    rows             aller à l'état 135
+    row              aller à l'état 136
+    row_with_commas  aller à l'état 137
 
 
-état 80
+état 81
 
    41 statement_list: statement opt_delimiter .
 
     $défaut  réduction par utilisation de la règle 41 (statement_list)
 
 
-état 81
+état 82
 
    29 opt_delimiter: delimiter .
    42 statement_list: statement delimiter . statement_list
@@ -1630,7 +1639,7 @@ while_command (92)
     '['       [réduction par utilisation de la règle 29 (opt_delimiter)]
     $défaut  réduction par utilisation de la règle 29 (opt_delimiter)
 
-    statement_list  aller à l'état 137
+    statement_list  aller à l'état 138
     statement       aller à l'état 42
     expr            aller à l'état 43
     colon_expr      aller à l'état 44
@@ -1643,28 +1652,9 @@ while_command (92)
     while_command   aller à l'état 51
 
 
-état 82
-
-   51 expr: expr TIMES . expr
-
-    TEXT  décalage et aller à l'état 29
-    NBRE  décalage et aller à l'état 33
-    ID    décalage et aller à l'état 67
-    '+'   décalage et aller à l'état 36
-    '-'   décalage et aller à l'état 37
-    '~'   décalage et aller à l'état 38
-    '('   décalage et aller à l'état 39
-    '['   décalage et aller à l'état 40
-
-    expr         aller à l'état 138
-    colon_expr   aller à l'état 44
-    colon_expr1  aller à l'état 45
-    matrix       aller à l'état 46
-
-
 état 83
 
-   54 expr: expr DIVIDE . expr
+   51 expr: expr TIMES . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1683,7 +1673,7 @@ while_command (92)
 
 état 84
 
-   55 expr: expr LDIVIDE . expr
+   54 expr: expr DIVIDE . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1702,7 +1692,7 @@ while_command (92)
 
 état 85
 
-   57 expr: expr POWER . expr
+   55 expr: expr LDIVIDE . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1721,21 +1711,7 @@ while_command (92)
 
 état 86
 
-   68 expr: expr TRANSPOSE .
-
-    $défaut  réduction par utilisation de la règle 68 (expr)
-
-
-état 87
-
-   69 expr: expr CTRANSPOSE .
-
-    $défaut  réduction par utilisation de la règle 69 (expr)
-
-
-état 88
-
-   58 expr: expr EQ . expr
+   57 expr: expr POWER . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1752,9 +1728,23 @@ while_command (92)
     matrix       aller à l'état 46
 
 
+état 87
+
+   68 expr: expr TRANSPOSE .
+
+    $défaut  réduction par utilisation de la règle 68 (expr)
+
+
+état 88
+
+   69 expr: expr CTRANSPOSE .
+
+    $défaut  réduction par utilisation de la règle 69 (expr)
+
+
 état 89
 
-   59 expr: expr NE . expr
+   58 expr: expr EQ . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1773,7 +1763,7 @@ while_command (92)
 
 état 90
 
-   62 expr: expr LE . expr
+   59 expr: expr NE . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1792,7 +1782,7 @@ while_command (92)
 
 état 91
 
-   66 expr: expr LOR . expr
+   62 expr: expr LE . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1811,7 +1801,7 @@ while_command (92)
 
 état 92
 
-   67 expr: expr LAND . expr
+   66 expr: expr LOR . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1830,7 +1820,7 @@ while_command (92)
 
 état 93
 
-   64 expr: expr '|' . expr
+   67 expr: expr LAND . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1849,7 +1839,7 @@ while_command (92)
 
 état 94
 
-   65 expr: expr '&' . expr
+   64 expr: expr '|' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1868,7 +1858,7 @@ while_command (92)
 
 état 95
 
-   60 expr: expr '<' . expr
+   65 expr: expr '&' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1887,7 +1877,7 @@ while_command (92)
 
 état 96
 
-   61 expr: expr '>' . expr
+   60 expr: expr '<' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1906,7 +1896,7 @@ while_command (92)
 
 état 97
 
-   63 expr: expr GE . expr
+   61 expr: expr '>' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1925,7 +1915,7 @@ while_command (92)
 
 état 98
 
-   81 colon_expr: expr ':' . expr
+   63 expr: expr GE . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1944,7 +1934,7 @@ while_command (92)
 
 état 99
 
-   48 expr: expr '+' . expr
+   81 colon_expr: expr ':' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1963,7 +1953,7 @@ while_command (92)
 
 état 100
 
-   49 expr: expr '-' . expr
+   48 expr: expr '+' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -1982,7 +1972,7 @@ while_command (92)
 
 état 101
 
-   50 expr: expr '*' . expr
+   49 expr: expr '-' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2001,7 +1991,7 @@ while_command (92)
 
 état 102
 
-   52 expr: expr '/' . expr
+   50 expr: expr '*' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2020,7 +2010,7 @@ while_command (92)
 
 état 103
 
-   53 expr: expr '\\' . expr
+   52 expr: expr '/' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2039,7 +2029,7 @@ while_command (92)
 
 état 104
 
-   56 expr: expr '^' . expr
+   53 expr: expr '\\' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2058,7 +2048,7 @@ while_command (92)
 
 état 105
 
-   82 colon_expr1: colon_expr ':' . expr
+   56 expr: expr '^' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2077,7 +2067,7 @@ while_command (92)
 
 état 106
 
-  118 elseif_block: ELSEIF . expr opt_delimiter statement_list
+   82 colon_expr1: colon_expr ':' . expr
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2096,90 +2086,7 @@ while_command (92)
 
 état 107
 
-  114 if_command: if_block else_if_list . else_block END
-
-    ELSE  décalage et aller à l'état 161
-
-    $défaut  réduction par utilisation de la règle 119 (else_block)
-
-    else_block  aller à l'état 162
-
-
-état 108
-
-  117 else_if_list: elseif_block . else_if_list
-
-    ELSEIF  décalage et aller à l'état 106
-
-    $défaut  réduction par utilisation de la règle 116 (else_if_list)
-
-    else_if_list  aller à l'état 163
-    elseif_block  aller à l'état 108
-
-
-état 109
-
-    9 functionMFile: empty_lines f_all opt_end .
-
-    $défaut  réduction par utilisation de la règle 9 (functionMFile)
-
-
-état 110
-
-   18 f_in_arg_list: ID .
-
-    $défaut  réduction par utilisation de la règle 18 (f_in_arg_list)
-
-
-état 111
-
-   16 f_input: '(' ')' .
-
-    $défaut  réduction par utilisation de la règle 16 (f_input)
-
-
-état 112
-
-   17 f_input: '(' f_in_arg_list . ')'
-   19 f_in_arg_list: f_in_arg_list . ',' ID
-
-    ')'  décalage et aller à l'état 164
-    ','  décalage et aller à l'état 165
-
-
-état 113
-
-   25 f_out_arg_list: f_out_arg_list ID .
-
-    $défaut  réduction par utilisation de la règle 25 (f_out_arg_list)
-
-
-état 114
-
-   21 f_output: LD f_out_arg_list RD .
-
-    $défaut  réduction par utilisation de la règle 21 (f_output)
-
-
-état 115
-
-   24 f_out_arg_list: f_out_arg_list ',' . ID
-
-    ID  décalage et aller à l'état 166
-
-
-état 116
-
-   15 f_def_line: FUNCTION f_output '=' ID . f_input
-
-    '('  décalage et aller à l'état 58
-
-    f_input  aller à l'état 167
-
-
-état 117
-
-  113 for_command: FOR ID '=' . expr opt_delimiter statement_list END
+  119 elseif_block: ELSEIF . expr opt_delimiter statement_list
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
@@ -2190,20 +2097,122 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 168
+    expr         aller à l'état 161
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
 
 
+état 108
+
+  115 if_command: if_block else_if_list . else_block END
+
+    ELSE  décalage et aller à l'état 162
+
+    $défaut  réduction par utilisation de la règle 120 (else_block)
+
+    else_block  aller à l'état 163
+
+
+état 109
+
+  118 else_if_list: elseif_block . else_if_list
+
+    ELSEIF  décalage et aller à l'état 107
+
+    $défaut  réduction par utilisation de la règle 117 (else_if_list)
+
+    else_if_list  aller à l'état 164
+    elseif_block  aller à l'état 109
+
+
+état 110
+
+    9 functionMFile: empty_lines f_all opt_end .
+
+    $défaut  réduction par utilisation de la règle 9 (functionMFile)
+
+
+état 111
+
+   18 f_in_arg_list: ID .
+
+    $défaut  réduction par utilisation de la règle 18 (f_in_arg_list)
+
+
+état 112
+
+   16 f_input: '(' ')' .
+
+    $défaut  réduction par utilisation de la règle 16 (f_input)
+
+
+état 113
+
+   17 f_input: '(' f_in_arg_list . ')'
+   19 f_in_arg_list: f_in_arg_list . ',' ID
+
+    ')'  décalage et aller à l'état 165
+    ','  décalage et aller à l'état 166
+
+
+état 114
+
+   25 f_out_arg_list: f_out_arg_list ID .
+
+    $défaut  réduction par utilisation de la règle 25 (f_out_arg_list)
+
+
+état 115
+
+   21 f_output: LD f_out_arg_list RD .
+
+    $défaut  réduction par utilisation de la règle 21 (f_output)
+
+
+état 116
+
+   24 f_out_arg_list: f_out_arg_list ',' . ID
+
+    ID  décalage et aller à l'état 167
+
+
+état 117
+
+   15 f_def_line: FUNCTION f_output '=' ID . f_input
+
+    '('  décalage et aller à l'état 58
+
+    f_input  aller à l'état 168
+
+
 état 118
+
+  114 for_command: FOR ID '=' . expr opt_delimiter statement_list END
+
+    TEXT  décalage et aller à l'état 29
+    NBRE  décalage et aller à l'état 33
+    ID    décalage et aller à l'état 67
+    '+'   décalage et aller à l'état 36
+    '-'   décalage et aller à l'état 37
+    '~'   décalage et aller à l'état 38
+    '('   décalage et aller à l'état 39
+    '['   décalage et aller à l'état 40
+
+    expr         aller à l'état 169
+    colon_expr   aller à l'état 44
+    colon_expr1  aller à l'état 45
+    matrix       aller à l'état 46
+
+
+état 119
 
    80 expr: ID '(' . ref_expr_list ')'
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
     ID    décalage et aller à l'état 67
-    ':'   décalage et aller à l'état 122
+    ':'   décalage et aller à l'état 123
     '+'   décalage et aller à l'état 36
     '-'   décalage et aller à l'état 37
     '~'   décalage et aller à l'état 38
@@ -2212,48 +2221,18 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 85 (ref_expr_list)
 
-    expr            aller à l'état 123
+    expr            aller à l'état 124
     colon_expr      aller à l'état 44
     colon_expr1     aller à l'état 45
-    ref_index       aller à l'état 124
-    ref_expr_list   aller à l'état 169
-    comma_ref_list  aller à l'état 126
+    ref_index       aller à l'état 125
+    ref_expr_list   aller à l'état 170
+    comma_ref_list  aller à l'état 127
     matrix          aller à l'état 46
-
-
-état 119
-
-  115 if_block: IF expr opt_delimiter . statement_list
-
-    TEXT   décalage et aller à l'état 29
-    FOR    décalage et aller à l'état 30
-    IF     décalage et aller à l'état 31
-    WHILE  décalage et aller à l'état 32
-    NBRE   décalage et aller à l'état 33
-    ID     décalage et aller à l'état 34
-    LD     décalage et aller à l'état 35
-    '+'    décalage et aller à l'état 36
-    '-'    décalage et aller à l'état 37
-    '~'    décalage et aller à l'état 38
-    '('    décalage et aller à l'état 39
-    '['    décalage et aller à l'état 40
-
-    statement_list  aller à l'état 170
-    statement       aller à l'état 42
-    expr            aller à l'état 43
-    colon_expr      aller à l'état 44
-    colon_expr1     aller à l'état 45
-    matrix          aller à l'état 46
-    assignement     aller à l'état 47
-    for_command     aller à l'état 48
-    if_command      aller à l'état 49
-    if_block        aller à l'état 50
-    while_command   aller à l'état 51
 
 
 état 120
 
-  121 while_command: WHILE expr opt_delimiter . statement_list END
+  116 if_block: IF expr opt_delimiter . statement_list
 
     TEXT   décalage et aller à l'état 29
     FOR    décalage et aller à l'état 30
@@ -2283,6 +2262,36 @@ while_command (92)
 
 état 121
 
+  122 while_command: WHILE expr opt_delimiter . statement_list END
+
+    TEXT   décalage et aller à l'état 29
+    FOR    décalage et aller à l'état 30
+    IF     décalage et aller à l'état 31
+    WHILE  décalage et aller à l'état 32
+    NBRE   décalage et aller à l'état 33
+    ID     décalage et aller à l'état 34
+    LD     décalage et aller à l'état 35
+    '+'    décalage et aller à l'état 36
+    '-'    décalage et aller à l'état 37
+    '~'    décalage et aller à l'état 38
+    '('    décalage et aller à l'état 39
+    '['    décalage et aller à l'état 40
+
+    statement_list  aller à l'état 172
+    statement       aller à l'état 42
+    expr            aller à l'état 43
+    colon_expr      aller à l'état 44
+    colon_expr1     aller à l'état 45
+    matrix          aller à l'état 46
+    assignement     aller à l'état 47
+    for_command     aller à l'état 48
+    if_command      aller à l'état 49
+    if_block        aller à l'état 50
+    while_command   aller à l'état 51
+
+
+état 122
+
    48 expr: expr . '+' expr
    49     | expr . '-' expr
    50     | expr . '*' expr
@@ -2308,43 +2317,43 @@ while_command (92)
    81 colon_expr: expr . ':' expr
   104 assignement: ID '=' expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     '+'       [réduction par utilisation de la règle 104 (assignement)]
     '-'       [réduction par utilisation de la règle 104 (assignement)]
     $défaut  réduction par utilisation de la règle 104 (assignement)
 
 
-état 122
+état 123
 
    83 ref_index: ':' .
 
     $défaut  réduction par utilisation de la règle 83 (ref_index)
 
 
-état 123
+état 124
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2371,74 +2380,74 @@ while_command (92)
    81 colon_expr: expr . ':' expr
    84 ref_index: expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 84 (ref_index)
 
 
-état 124
+état 125
 
    87 comma_ref_list: ref_index .
    88               | ref_index . ',' comma_ref_list
 
-    ','  décalage et aller à l'état 172
+    ','  décalage et aller à l'état 173
 
     $défaut  réduction par utilisation de la règle 87 (comma_ref_list)
 
 
-état 125
+état 126
 
    80 expr: ID '(' ref_expr_list . ')'
   105 assignement: ID '(' ref_expr_list . ')' '=' expr
 
-    ')'  décalage et aller à l'état 173
+    ')'  décalage et aller à l'état 174
 
 
-état 126
+état 127
 
    86 ref_expr_list: comma_ref_list .
 
     $défaut  réduction par utilisation de la règle 86 (ref_expr_list)
 
 
-état 127
+état 128
 
   106 assignement: LD ID RD . '=' expr
 
-    '='  décalage et aller à l'état 174
+    '='  décalage et aller à l'état 175
 
 
-état 128
+état 129
 
   107 assignement: LD ID '(' . ref_expr_list ')' RD '=' expr
-  112 out_ref: ID '(' . ref_expr_list ')'
+  113 out_ref: ID '(' . ref_expr_list ')'
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
     ID    décalage et aller à l'état 67
-    ':'   décalage et aller à l'état 122
+    ':'   décalage et aller à l'état 123
     '+'   décalage et aller à l'état 36
     '-'   décalage et aller à l'état 37
     '~'   décalage et aller à l'état 38
@@ -2447,48 +2456,50 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 85 (ref_expr_list)
 
-    expr            aller à l'état 123
+    expr            aller à l'état 124
     colon_expr      aller à l'état 44
     colon_expr1     aller à l'état 45
-    ref_index       aller à l'état 124
-    ref_expr_list   aller à l'état 175
-    comma_ref_list  aller à l'état 126
+    ref_index       aller à l'état 125
+    ref_expr_list   aller à l'état 176
+    comma_ref_list  aller à l'état 127
     matrix          aller à l'état 46
-
-
-état 129
-
-  108 assignement: LD output_ref_list RD . '=' ID '(' ref_expr_list ')'
-
-    '='  décalage et aller à l'état 176
 
 
 état 130
 
-  110 output_ref_list: output_ref_list ',' . out_ref
+  108 assignement: LD output_ref_list RD . '=' ID '(' ref_expr_list ')'
 
-    ID  décalage et aller à l'état 177
-
-    out_ref  aller à l'état 178
+    '='  décalage et aller à l'état 177
 
 
 état 131
 
-  109 output_ref_list: out_ref ',' . out_ref
+  110 output_ref_list: output_ref_list ',' . out_ref
 
-    ID  décalage et aller à l'état 177
+    ID   décalage et aller à l'état 178
+    '~'  décalage et aller à l'état 73
 
     out_ref  aller à l'état 179
 
 
 état 132
 
+  109 output_ref_list: out_ref ',' . out_ref
+
+    ID   décalage et aller à l'état 178
+    '~'  décalage et aller à l'état 73
+
+    out_ref  aller à l'état 180
+
+
+état 133
+
    70 expr: '(' expr ')' .
 
     $défaut  réduction par utilisation de la règle 70 (expr)
 
 
-état 133
+état 134
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2517,36 +2528,36 @@ while_command (92)
   100 row_with_commas: expr . ','
   101                | expr . MSPACE
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    MSPACE      décalage et aller à l'état 180
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
-    ','         décalage et aller à l'état 181
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    MSPACE      décalage et aller à l'état 181
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
+    ','         décalage et aller à l'état 182
 
     $défaut  réduction par utilisation de la règle 97 (row)
 
 
-état 134
+état 135
 
    90 matrix: '[' $@1 rows . ']'
    93 rows: rows . ';'
@@ -2554,19 +2565,19 @@ while_command (92)
    95     | rows . NEWLINE
    96     | rows . NEWLINE row
 
-    NEWLINE  décalage et aller à l'état 182
-    ';'      décalage et aller à l'état 183
-    ']'      décalage et aller à l'état 184
+    NEWLINE  décalage et aller à l'état 183
+    ';'      décalage et aller à l'état 184
+    ']'      décalage et aller à l'état 185
 
 
-état 135
+état 136
 
    92 rows: row .
 
     $défaut  réduction par utilisation de la règle 92 (rows)
 
 
-état 136
+état 137
 
    98 row: row_with_commas .
    99    | row_with_commas . expr
@@ -2584,20 +2595,20 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 98 (row)
 
-    expr         aller à l'état 185
+    expr         aller à l'état 186
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
 
 
-état 137
+état 138
 
    42 statement_list: statement delimiter statement_list .
 
     $défaut  réduction par utilisation de la règle 42 (statement_list)
 
 
-état 138
+état 139
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2624,15 +2635,15 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 51 (expr)
 
 
-état 139
+état 140
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2659,15 +2670,15 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 54 (expr)
 
 
-état 140
+état 141
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2694,15 +2705,15 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 55 (expr)
 
 
-état 141
+état 142
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2732,7 +2743,7 @@ while_command (92)
     $défaut  réduction par utilisation de la règle 57 (expr)
 
 
-état 142
+état 143
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2759,24 +2770,24 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 58 (expr)
 
 
-état 143
+état 144
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2803,24 +2814,24 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 59 (expr)
 
 
-état 144
+état 145
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2847,24 +2858,24 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 62 (expr)
 
 
-état 145
+état 146
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2891,33 +2902,33 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 66 (expr)
 
 
-état 146
+état 147
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2944,32 +2955,32 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 67 (expr)
 
 
-état 147
+état 148
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -2996,31 +3007,31 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 64 (expr)
 
 
-état 148
+état 149
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3047,30 +3058,30 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 65 (expr)
 
 
-état 149
+état 150
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3097,24 +3108,24 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 60 (expr)
 
 
-état 150
+état 151
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3141,24 +3152,24 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 61 (expr)
 
 
-état 151
+état 152
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3185,24 +3196,24 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 63 (expr)
 
 
-état 152
+état 153
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3229,23 +3240,23 @@ while_command (92)
    81 colon_expr: expr . ':' expr
    81           | expr ':' expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 81 (colon_expr)
 
 
-état 153
+état 154
 
    48 expr: expr . '+' expr
    48     | expr '+' expr .
@@ -3272,21 +3283,21 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 48 (expr)
 
 
-état 154
+état 155
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3313,21 +3324,21 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 49 (expr)
 
 
-état 155
+état 156
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3354,15 +3365,15 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 50 (expr)
 
 
-état 156
+état 157
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3389,15 +3400,15 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 52 (expr)
 
 
-état 157
+état 158
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3424,15 +3435,15 @@ while_command (92)
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
 
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '^'         décalage et aller à l'état 104
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 53 (expr)
 
 
-état 158
+état 159
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3462,7 +3473,7 @@ while_command (92)
     $défaut  réduction par utilisation de la règle 56 (expr)
 
 
-état 159
+état 160
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3489,23 +3500,23 @@ while_command (92)
    81 colon_expr: expr . ':' expr
    82 colon_expr1: colon_expr ':' expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     $défaut  réduction par utilisation de la règle 82 (colon_expr1)
 
 
-état 160
+état 161
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3530,54 +3541,37 @@ while_command (92)
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
-  118 elseif_block: ELSEIF expr . opt_delimiter statement_list
+  119 elseif_block: ELSEIF expr . opt_delimiter statement_list
 
     NEWLINE     décalage et aller à l'état 2
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
     ','         décalage et aller à l'état 3
     ';'         décalage et aller à l'état 4
 
     '+'       [réduction par utilisation de la règle 28 (opt_delimiter)]
     '-'       [réduction par utilisation de la règle 28 (opt_delimiter)]
-    $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
-
-    opt_delimiter  aller à l'état 186
-    delimiter      aller à l'état 14
-    null_lines     aller à l'état 15
-    null_line      aller à l'état 16
-    empty_lines    aller à l'état 28
-
-
-état 161
-
-  120 else_block: ELSE . opt_delimiter statement_list
-
-    NEWLINE  décalage et aller à l'état 2
-    ','      décalage et aller à l'état 3
-    ';'      décalage et aller à l'état 4
-
     $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
 
     opt_delimiter  aller à l'état 187
@@ -3589,47 +3583,64 @@ while_command (92)
 
 état 162
 
-  114 if_command: if_block else_if_list else_block . END
+  121 else_block: ELSE . opt_delimiter statement_list
 
-    END  décalage et aller à l'état 188
+    NEWLINE  décalage et aller à l'état 2
+    ','      décalage et aller à l'état 3
+    ';'      décalage et aller à l'état 4
+
+    $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
+
+    opt_delimiter  aller à l'état 188
+    delimiter      aller à l'état 14
+    null_lines     aller à l'état 15
+    null_line      aller à l'état 16
+    empty_lines    aller à l'état 28
 
 
 état 163
 
-  117 else_if_list: elseif_block else_if_list .
+  115 if_command: if_block else_if_list else_block . END
 
-    $défaut  réduction par utilisation de la règle 117 (else_if_list)
+    END  décalage et aller à l'état 189
 
 
 état 164
+
+  118 else_if_list: elseif_block else_if_list .
+
+    $défaut  réduction par utilisation de la règle 118 (else_if_list)
+
+
+état 165
 
    17 f_input: '(' f_in_arg_list ')' .
 
     $défaut  réduction par utilisation de la règle 17 (f_input)
 
 
-état 165
+état 166
 
    19 f_in_arg_list: f_in_arg_list ',' . ID
 
-    ID  décalage et aller à l'état 189
+    ID  décalage et aller à l'état 190
 
 
-état 166
+état 167
 
    24 f_out_arg_list: f_out_arg_list ',' ID .
 
     $défaut  réduction par utilisation de la règle 24 (f_out_arg_list)
 
 
-état 167
+état 168
 
    15 f_def_line: FUNCTION f_output '=' ID f_input .
 
     $défaut  réduction par utilisation de la règle 15 (f_def_line)
 
 
-état 168
+état 169
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3654,32 +3665,32 @@ while_command (92)
    68     | expr . TRANSPOSE
    69     | expr . CTRANSPOSE
    81 colon_expr: expr . ':' expr
-  113 for_command: FOR ID '=' expr . opt_delimiter statement_list END
+  114 for_command: FOR ID '=' expr . opt_delimiter statement_list END
 
     NEWLINE     décalage et aller à l'état 2
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
     ','         décalage et aller à l'état 3
     ';'         décalage et aller à l'état 4
 
@@ -3687,67 +3698,67 @@ while_command (92)
     '-'       [réduction par utilisation de la règle 28 (opt_delimiter)]
     $défaut  réduction par utilisation de la règle 28 (opt_delimiter)
 
-    opt_delimiter  aller à l'état 190
+    opt_delimiter  aller à l'état 191
     delimiter      aller à l'état 14
     null_lines     aller à l'état 15
     null_line      aller à l'état 16
     empty_lines    aller à l'état 28
 
 
-état 169
+état 170
 
    80 expr: ID '(' ref_expr_list . ')'
 
-    ')'  décalage et aller à l'état 191
-
-
-état 170
-
-  115 if_block: IF expr opt_delimiter statement_list .
-
-    $défaut  réduction par utilisation de la règle 115 (if_block)
+    ')'  décalage et aller à l'état 192
 
 
 état 171
 
-  121 while_command: WHILE expr opt_delimiter statement_list . END
+  116 if_block: IF expr opt_delimiter statement_list .
 
-    END  décalage et aller à l'état 192
+    $défaut  réduction par utilisation de la règle 116 (if_block)
 
 
 état 172
+
+  122 while_command: WHILE expr opt_delimiter statement_list . END
+
+    END  décalage et aller à l'état 193
+
+
+état 173
 
    88 comma_ref_list: ref_index ',' . comma_ref_list
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
     ID    décalage et aller à l'état 67
-    ':'   décalage et aller à l'état 122
+    ':'   décalage et aller à l'état 123
     '+'   décalage et aller à l'état 36
     '-'   décalage et aller à l'état 37
     '~'   décalage et aller à l'état 38
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr            aller à l'état 123
+    expr            aller à l'état 124
     colon_expr      aller à l'état 44
     colon_expr1     aller à l'état 45
-    ref_index       aller à l'état 124
-    comma_ref_list  aller à l'état 193
+    ref_index       aller à l'état 125
+    comma_ref_list  aller à l'état 194
     matrix          aller à l'état 46
 
 
-état 173
+état 174
 
    80 expr: ID '(' ref_expr_list ')' .
   105 assignement: ID '(' ref_expr_list ')' . '=' expr
 
-    '='  décalage et aller à l'état 194
+    '='  décalage et aller à l'état 195
 
     $défaut  réduction par utilisation de la règle 80 (expr)
 
 
-état 174
+état 175
 
   106 assignement: LD ID RD '=' . expr
 
@@ -3760,66 +3771,66 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 195
+    expr         aller à l'état 196
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
 
 
-état 175
-
-  107 assignement: LD ID '(' ref_expr_list . ')' RD '=' expr
-  112 out_ref: ID '(' ref_expr_list . ')'
-
-    ')'  décalage et aller à l'état 196
-
-
 état 176
 
-  108 assignement: LD output_ref_list RD '=' . ID '(' ref_expr_list ')'
+  107 assignement: LD ID '(' ref_expr_list . ')' RD '=' expr
+  113 out_ref: ID '(' ref_expr_list . ')'
 
-    ID  décalage et aller à l'état 197
+    ')'  décalage et aller à l'état 197
 
 
 état 177
 
-  111 out_ref: ID .
-  112        | ID . '(' ref_expr_list ')'
+  108 assignement: LD output_ref_list RD '=' . ID '(' ref_expr_list ')'
 
-    '('  décalage et aller à l'état 198
+    ID  décalage et aller à l'état 198
+
+
+état 178
+
+  111 out_ref: ID .
+  113        | ID . '(' ref_expr_list ')'
+
+    '('  décalage et aller à l'état 199
 
     $défaut  réduction par utilisation de la règle 111 (out_ref)
 
 
-état 178
+état 179
 
   110 output_ref_list: output_ref_list ',' out_ref .
 
     $défaut  réduction par utilisation de la règle 110 (output_ref_list)
 
 
-état 179
+état 180
 
   109 output_ref_list: out_ref ',' out_ref .
 
     $défaut  réduction par utilisation de la règle 109 (output_ref_list)
 
 
-état 180
+état 181
 
   101 row_with_commas: expr MSPACE .
 
     $défaut  réduction par utilisation de la règle 101 (row_with_commas)
 
 
-état 181
+état 182
 
   100 row_with_commas: expr ',' .
 
     $défaut  réduction par utilisation de la règle 100 (row_with_commas)
 
 
-état 182
+état 183
 
    95 rows: rows NEWLINE .
    96     | rows NEWLINE . row
@@ -3835,15 +3846,15 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 95 (rows)
 
-    expr             aller à l'état 133
+    expr             aller à l'état 134
     colon_expr       aller à l'état 44
     colon_expr1      aller à l'état 45
     matrix           aller à l'état 46
-    row              aller à l'état 199
-    row_with_commas  aller à l'état 136
+    row              aller à l'état 200
+    row_with_commas  aller à l'état 137
 
 
-état 183
+état 184
 
    93 rows: rows ';' .
    94     | rows ';' . row
@@ -3859,22 +3870,22 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 93 (rows)
 
-    expr             aller à l'état 133
+    expr             aller à l'état 134
     colon_expr       aller à l'état 44
     colon_expr1      aller à l'état 45
     matrix           aller à l'état 46
-    row              aller à l'état 200
-    row_with_commas  aller à l'état 136
+    row              aller à l'état 201
+    row_with_commas  aller à l'état 137
 
 
-état 184
+état 185
 
    90 matrix: '[' $@1 rows ']' .
 
     $défaut  réduction par utilisation de la règle 90 (matrix)
 
 
-état 185
+état 186
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -3903,68 +3914,38 @@ while_command (92)
   102 row_with_commas: row_with_commas expr . ','
   103                | row_with_commas expr . MSPACE
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    MSPACE      décalage et aller à l'état 201
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
-    ','         décalage et aller à l'état 202
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    MSPACE      décalage et aller à l'état 202
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
+    ','         décalage et aller à l'état 203
 
     $défaut  réduction par utilisation de la règle 99 (row)
 
 
-état 186
-
-  118 elseif_block: ELSEIF expr opt_delimiter . statement_list
-
-    TEXT   décalage et aller à l'état 29
-    FOR    décalage et aller à l'état 30
-    IF     décalage et aller à l'état 31
-    WHILE  décalage et aller à l'état 32
-    NBRE   décalage et aller à l'état 33
-    ID     décalage et aller à l'état 34
-    LD     décalage et aller à l'état 35
-    '+'    décalage et aller à l'état 36
-    '-'    décalage et aller à l'état 37
-    '~'    décalage et aller à l'état 38
-    '('    décalage et aller à l'état 39
-    '['    décalage et aller à l'état 40
-
-    statement_list  aller à l'état 203
-    statement       aller à l'état 42
-    expr            aller à l'état 43
-    colon_expr      aller à l'état 44
-    colon_expr1     aller à l'état 45
-    matrix          aller à l'état 46
-    assignement     aller à l'état 47
-    for_command     aller à l'état 48
-    if_command      aller à l'état 49
-    if_block        aller à l'état 50
-    while_command   aller à l'état 51
-
-
 état 187
 
-  120 else_block: ELSE opt_delimiter . statement_list
+  119 elseif_block: ELSEIF expr opt_delimiter . statement_list
 
     TEXT   décalage et aller à l'état 29
     FOR    décalage et aller à l'état 30
@@ -3994,21 +3975,7 @@ while_command (92)
 
 état 188
 
-  114 if_command: if_block else_if_list else_block END .
-
-    $défaut  réduction par utilisation de la règle 114 (if_command)
-
-
-état 189
-
-   19 f_in_arg_list: f_in_arg_list ',' ID .
-
-    $défaut  réduction par utilisation de la règle 19 (f_in_arg_list)
-
-
-état 190
-
-  113 for_command: FOR ID '=' expr opt_delimiter . statement_list END
+  121 else_block: ELSE opt_delimiter . statement_list
 
     TEXT   décalage et aller à l'état 29
     FOR    décalage et aller à l'état 30
@@ -4036,28 +4003,72 @@ while_command (92)
     while_command   aller à l'état 51
 
 
+état 189
+
+  115 if_command: if_block else_if_list else_block END .
+
+    $défaut  réduction par utilisation de la règle 115 (if_command)
+
+
+état 190
+
+   19 f_in_arg_list: f_in_arg_list ',' ID .
+
+    $défaut  réduction par utilisation de la règle 19 (f_in_arg_list)
+
+
 état 191
+
+  114 for_command: FOR ID '=' expr opt_delimiter . statement_list END
+
+    TEXT   décalage et aller à l'état 29
+    FOR    décalage et aller à l'état 30
+    IF     décalage et aller à l'état 31
+    WHILE  décalage et aller à l'état 32
+    NBRE   décalage et aller à l'état 33
+    ID     décalage et aller à l'état 34
+    LD     décalage et aller à l'état 35
+    '+'    décalage et aller à l'état 36
+    '-'    décalage et aller à l'état 37
+    '~'    décalage et aller à l'état 38
+    '('    décalage et aller à l'état 39
+    '['    décalage et aller à l'état 40
+
+    statement_list  aller à l'état 206
+    statement       aller à l'état 42
+    expr            aller à l'état 43
+    colon_expr      aller à l'état 44
+    colon_expr1     aller à l'état 45
+    matrix          aller à l'état 46
+    assignement     aller à l'état 47
+    for_command     aller à l'état 48
+    if_command      aller à l'état 49
+    if_block        aller à l'état 50
+    while_command   aller à l'état 51
+
+
+état 192
 
    80 expr: ID '(' ref_expr_list ')' .
 
     $défaut  réduction par utilisation de la règle 80 (expr)
 
 
-état 192
-
-  121 while_command: WHILE expr opt_delimiter statement_list END .
-
-    $défaut  réduction par utilisation de la règle 121 (while_command)
-
-
 état 193
+
+  122 while_command: WHILE expr opt_delimiter statement_list END .
+
+    $défaut  réduction par utilisation de la règle 122 (while_command)
+
+
+état 194
 
    88 comma_ref_list: ref_index ',' comma_ref_list .
 
     $défaut  réduction par utilisation de la règle 88 (comma_ref_list)
 
 
-état 194
+état 195
 
   105 assignement: ID '(' ref_expr_list ')' '=' . expr
 
@@ -4070,13 +4081,13 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 206
+    expr         aller à l'état 207
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
 
 
-état 195
+état 196
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -4103,60 +4114,60 @@ while_command (92)
    81 colon_expr: expr . ':' expr
   106 assignement: LD ID RD '=' expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     '+'       [réduction par utilisation de la règle 106 (assignement)]
     '-'       [réduction par utilisation de la règle 106 (assignement)]
     $défaut  réduction par utilisation de la règle 106 (assignement)
 
 
-état 196
-
-  107 assignement: LD ID '(' ref_expr_list ')' . RD '=' expr
-  112 out_ref: ID '(' ref_expr_list ')' .
-
-    RD  décalage et aller à l'état 207
-
-    $défaut  réduction par utilisation de la règle 112 (out_ref)
-
-
 état 197
 
-  108 assignement: LD output_ref_list RD '=' ID . '(' ref_expr_list ')'
+  107 assignement: LD ID '(' ref_expr_list ')' . RD '=' expr
+  113 out_ref: ID '(' ref_expr_list ')' .
 
-    '('  décalage et aller à l'état 208
+    RD  décalage et aller à l'état 208
+
+    $défaut  réduction par utilisation de la règle 113 (out_ref)
 
 
 état 198
 
-  112 out_ref: ID '(' . ref_expr_list ')'
+  108 assignement: LD output_ref_list RD '=' ID . '(' ref_expr_list ')'
+
+    '('  décalage et aller à l'état 209
+
+
+état 199
+
+  113 out_ref: ID '(' . ref_expr_list ')'
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
     ID    décalage et aller à l'état 67
-    ':'   décalage et aller à l'état 122
+    ':'   décalage et aller à l'état 123
     '+'   décalage et aller à l'état 36
     '-'   décalage et aller à l'état 37
     '~'   décalage et aller à l'état 38
@@ -4165,65 +4176,65 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 85 (ref_expr_list)
 
-    expr            aller à l'état 123
+    expr            aller à l'état 124
     colon_expr      aller à l'état 44
     colon_expr1     aller à l'état 45
-    ref_index       aller à l'état 124
-    ref_expr_list   aller à l'état 209
-    comma_ref_list  aller à l'état 126
+    ref_index       aller à l'état 125
+    ref_expr_list   aller à l'état 210
+    comma_ref_list  aller à l'état 127
     matrix          aller à l'état 46
 
 
-état 199
+état 200
 
    96 rows: rows NEWLINE row .
 
     $défaut  réduction par utilisation de la règle 96 (rows)
 
 
-état 200
+état 201
 
    94 rows: rows ';' row .
 
     $défaut  réduction par utilisation de la règle 94 (rows)
 
 
-état 201
+état 202
 
   103 row_with_commas: row_with_commas expr MSPACE .
 
     $défaut  réduction par utilisation de la règle 103 (row_with_commas)
 
 
-état 202
+état 203
 
   102 row_with_commas: row_with_commas expr ',' .
 
     $défaut  réduction par utilisation de la règle 102 (row_with_commas)
 
 
-état 203
-
-  118 elseif_block: ELSEIF expr opt_delimiter statement_list .
-
-    $défaut  réduction par utilisation de la règle 118 (elseif_block)
-
-
 état 204
 
-  120 else_block: ELSE opt_delimiter statement_list .
+  119 elseif_block: ELSEIF expr opt_delimiter statement_list .
 
-    $défaut  réduction par utilisation de la règle 120 (else_block)
+    $défaut  réduction par utilisation de la règle 119 (elseif_block)
 
 
 état 205
 
-  113 for_command: FOR ID '=' expr opt_delimiter statement_list . END
+  121 else_block: ELSE opt_delimiter statement_list .
 
-    END  décalage et aller à l'état 210
+    $défaut  réduction par utilisation de la règle 121 (else_block)
 
 
 état 206
+
+  114 for_command: FOR ID '=' expr opt_delimiter statement_list . END
+
+    END  décalage et aller à l'état 211
+
+
+état 207
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -4250,50 +4261,50 @@ while_command (92)
    81 colon_expr: expr . ':' expr
   105 assignement: ID '(' ref_expr_list ')' '=' expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     '+'       [réduction par utilisation de la règle 105 (assignement)]
     '-'       [réduction par utilisation de la règle 105 (assignement)]
     $défaut  réduction par utilisation de la règle 105 (assignement)
 
 
-état 207
+état 208
 
   107 assignement: LD ID '(' ref_expr_list ')' RD . '=' expr
 
-    '='  décalage et aller à l'état 211
+    '='  décalage et aller à l'état 212
 
 
-état 208
+état 209
 
   108 assignement: LD output_ref_list RD '=' ID '(' . ref_expr_list ')'
 
     TEXT  décalage et aller à l'état 29
     NBRE  décalage et aller à l'état 33
     ID    décalage et aller à l'état 67
-    ':'   décalage et aller à l'état 122
+    ':'   décalage et aller à l'état 123
     '+'   décalage et aller à l'état 36
     '-'   décalage et aller à l'état 37
     '~'   décalage et aller à l'état 38
@@ -4302,30 +4313,30 @@ while_command (92)
 
     $défaut  réduction par utilisation de la règle 85 (ref_expr_list)
 
-    expr            aller à l'état 123
+    expr            aller à l'état 124
     colon_expr      aller à l'état 44
     colon_expr1     aller à l'état 45
-    ref_index       aller à l'état 124
-    ref_expr_list   aller à l'état 212
-    comma_ref_list  aller à l'état 126
+    ref_index       aller à l'état 125
+    ref_expr_list   aller à l'état 213
+    comma_ref_list  aller à l'état 127
     matrix          aller à l'état 46
-
-
-état 209
-
-  112 out_ref: ID '(' ref_expr_list . ')'
-
-    ')'  décalage et aller à l'état 213
 
 
 état 210
 
-  113 for_command: FOR ID '=' expr opt_delimiter statement_list END .
+  113 out_ref: ID '(' ref_expr_list . ')'
 
-    $défaut  réduction par utilisation de la règle 113 (for_command)
+    ')'  décalage et aller à l'état 214
 
 
 état 211
+
+  114 for_command: FOR ID '=' expr opt_delimiter statement_list END .
+
+    $défaut  réduction par utilisation de la règle 114 (for_command)
+
+
+état 212
 
   107 assignement: LD ID '(' ref_expr_list ')' RD '=' . expr
 
@@ -4338,27 +4349,27 @@ while_command (92)
     '('   décalage et aller à l'état 39
     '['   décalage et aller à l'état 40
 
-    expr         aller à l'état 214
+    expr         aller à l'état 215
     colon_expr   aller à l'état 44
     colon_expr1  aller à l'état 45
     matrix       aller à l'état 46
 
 
-état 212
+état 213
 
   108 assignement: LD output_ref_list RD '=' ID '(' ref_expr_list . ')'
 
-    ')'  décalage et aller à l'état 215
-
-
-état 213
-
-  112 out_ref: ID '(' ref_expr_list ')' .
-
-    $défaut  réduction par utilisation de la règle 112 (out_ref)
+    ')'  décalage et aller à l'état 216
 
 
 état 214
+
+  113 out_ref: ID '(' ref_expr_list ')' .
+
+    $défaut  réduction par utilisation de la règle 113 (out_ref)
+
+
+état 215
 
    48 expr: expr . '+' expr
    49     | expr . '-' expr
@@ -4385,36 +4396,36 @@ while_command (92)
    81 colon_expr: expr . ':' expr
   107 assignement: LD ID '(' ref_expr_list ')' RD '=' expr .
 
-    TIMES       décalage et aller à l'état 82
-    DIVIDE      décalage et aller à l'état 83
-    LDIVIDE     décalage et aller à l'état 84
-    POWER       décalage et aller à l'état 85
-    TRANSPOSE   décalage et aller à l'état 86
-    CTRANSPOSE  décalage et aller à l'état 87
-    EQ          décalage et aller à l'état 88
-    NE          décalage et aller à l'état 89
-    LE          décalage et aller à l'état 90
-    LOR         décalage et aller à l'état 91
-    LAND        décalage et aller à l'état 92
-    '|'         décalage et aller à l'état 93
-    '&'         décalage et aller à l'état 94
-    '<'         décalage et aller à l'état 95
-    '>'         décalage et aller à l'état 96
-    GE          décalage et aller à l'état 97
-    ':'         décalage et aller à l'état 98
-    '+'         décalage et aller à l'état 99
-    '-'         décalage et aller à l'état 100
-    '*'         décalage et aller à l'état 101
-    '/'         décalage et aller à l'état 102
-    '\\'        décalage et aller à l'état 103
-    '^'         décalage et aller à l'état 104
+    TIMES       décalage et aller à l'état 83
+    DIVIDE      décalage et aller à l'état 84
+    LDIVIDE     décalage et aller à l'état 85
+    POWER       décalage et aller à l'état 86
+    TRANSPOSE   décalage et aller à l'état 87
+    CTRANSPOSE  décalage et aller à l'état 88
+    EQ          décalage et aller à l'état 89
+    NE          décalage et aller à l'état 90
+    LE          décalage et aller à l'état 91
+    LOR         décalage et aller à l'état 92
+    LAND        décalage et aller à l'état 93
+    '|'         décalage et aller à l'état 94
+    '&'         décalage et aller à l'état 95
+    '<'         décalage et aller à l'état 96
+    '>'         décalage et aller à l'état 97
+    GE          décalage et aller à l'état 98
+    ':'         décalage et aller à l'état 99
+    '+'         décalage et aller à l'état 100
+    '-'         décalage et aller à l'état 101
+    '*'         décalage et aller à l'état 102
+    '/'         décalage et aller à l'état 103
+    '\\'        décalage et aller à l'état 104
+    '^'         décalage et aller à l'état 105
 
     '+'       [réduction par utilisation de la règle 107 (assignement)]
     '-'       [réduction par utilisation de la règle 107 (assignement)]
     $défaut  réduction par utilisation de la règle 107 (assignement)
 
 
-état 215
+état 216
 
   108 assignement: LD output_ref_list RD '=' ID '(' ref_expr_list ')' .
 

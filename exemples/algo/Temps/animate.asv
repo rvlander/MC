@@ -1,0 +1,29 @@
+fps = 25;
+delay = 1/25*1000;
+
+Tend= min(T(end),sampling(end));
+
+nb_img = floor(Tend/delay);
+
+frames = moviein(nr_img);
+
+for i = 1 : nr_fr
+    f = f * 1.25; w = 2 * pi * f;
+    y = cos(w*t);
+    plot(t, y);
+    title('Recording movie...')
+    % Get every frame with 'getframe' and load the appropriate       % matrix.
+    frames(:, i) = getframe;
+end
+
+% Save the matrix so that this movie can be loaded later
+save frames 
+
+This is the first frame of the recording:
+simple animation in Matlab
+
+Now you can play back the movie: 
+
+% Play the movie once, 2 FPS.
+title('Movie being played back...')
+movie(frames, 1, 2)
