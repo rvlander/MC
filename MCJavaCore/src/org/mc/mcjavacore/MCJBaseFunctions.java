@@ -25,6 +25,14 @@ public class MCJBaseFunctions {
         }
         return res;
     }
+    
+    public static String stringFromMatrix(double[][] a) {
+        byte[] res = new byte[(int)numel(a)[0][0]];    
+        for(int i=1;i<=res.length;i++){
+            res[i-1] = (byte)MCJUtils.kthElemValue(a, i);
+        }
+        return new String(res);
+    }
 
     public static double[][] numel(double[][] m) {
         double res;

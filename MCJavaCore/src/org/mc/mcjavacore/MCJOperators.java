@@ -118,6 +118,46 @@ public class MCJOperators {
 
         return res;
     }
+    
+    private static double[][] mod(double a, double[][] t) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = a % t[i][j];
+            }
+        }
+        return res;
+    }
+    
+    private static double[][] mod(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = t[i][j] % a;
+            }
+        }
+        return res;
+    }
+
+    public static double[][] mod(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = mod(t1[0][0], t2);
+        } else if (numel(t2)[0][0] == 1) {
+            res = mod(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = t1[i][j] % t2[i][j];
+                }
+            }
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
 
     public static double[][] ldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         return rdivide(t2, t1);

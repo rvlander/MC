@@ -85,6 +85,10 @@ int in_matrix =0;
 %token RD
 %token MSPACE
 
+
+%token VARARGIN
+
+
 %left LOR
 %left LAND
 %left '|'
@@ -382,7 +386,8 @@ ref_index :':'  {$$.source = "null";}
 ;
 
 ref_expr_list : {$$.source = "null";}
-			  | comma_ref_list {$$.source = "new double[][][]{"+ $1.source+"}";}
+              | comma_ref_list {$$.source = "new double[][][]{"+ $1.source+"}";}
+              | VARARGIN {$$.source = "iargs";}
 ;
 
 comma_ref_list : ref_index {$$.source = $1.source;}
@@ -462,7 +467,16 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
             | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
    symrec sr;
    if(!TDSget($5.source,&sr)){
-	cerr << "symbol undefined" << endl; 
+	int t = searchFunction($5.source);
+			if(t != false) {
+				sr.idtype = FUNC;
+                              if(!TDSinsert($5.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+			}else {
+			cerr << " Symbol "+$5.source+" not declared" << endl;
+				//YYERROR;                         
+			}	 
    } else if(sr.idtype != FUNC){
         cerr << "Too many output arguments : " + $5.source + " is not a function !" << endl;
    }
@@ -535,12 +549,22 @@ $$.ri = rinf
 }
 ;
 
-for_command : FOR ID '=' expr opt_delimiter  statement_list END {
-$$.source  = " double[][] fortemp =" + $4.source +";\n";
+for_command : FOR ID  {
+
+symrec sr;
+if(!TDSget($2.source,&sr)){
+ 
+ sr.idtype = VAR;
+ if(!TDSinsert($2.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}}
+'=' expr opt_delimiter  statement_list END {
+$$.source  = " double[][] fortemp =" + $5.source +";\n";
 $$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
 $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
 $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
-$$.source += $6.source;
+$$.source += $7.source;
 $$.source += "}\n}\n";
 }
 
@@ -554,7 +578,7 @@ else_if_list: {$$.source ="";}
             | elseif_block else_if_list {$$.source = $1.source + $2.source;}
 ;
 
-elseif_block : ELSEIF expr opt_delimiter statement_list {$$.source = "else if(any("+$2.source+")){"+$4.source+"}";}
+elseif_block : ELSEIF expr opt_delimiter statement_list {$$.source = "else if(all("+$2.source+")){"+$4.source+"}";}
 ;
 
 else_block : {$$.source ="";}
@@ -582,6 +606,7 @@ outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcjavautils.MCJUtils.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class "<<classname<<"{" << endl;
+	outfile << "static final double[][] pi = matrixFromDouble(Math.PI);" << endl;
 
 }
 
@@ -695,6 +720,20 @@ void readFunctionFile(string func_file){
      } 
 }
 
+void readGlobalsFile(string globals_file){
+     ifstream fp(globals_file.c_str());
+
+     char ligne[1024];
+
+     while(fp.getline(ligne,1024)){
+	string ll(ligne);
+        symrec sri;
+	sri.idtype = VAR;
+	TDSinsert(ll,sri);   
+
+     } 
+}
+
 
 
 int main(int argc, const char ** argv){
@@ -708,6 +747,7 @@ int main(int argc, const char ** argv){
  
 	readPathFile("path_file");
 	readFunctionFile("func_file");
+readFunctionFile("globals_file");
 
 
 

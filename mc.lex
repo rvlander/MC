@@ -29,6 +29,7 @@ elseif {verbose("ELSEIF");return(ELSEIF);};
 else {verbose("ELSE");return(ELSE);};
 while {verbose("WHILE");return(WHILE);};
 function {verbose("FUNCTION");return(FUNCTION);};
+varargin\{:\} {verbose("VARARGIN");return(VARARGIN);};
 
 [ ] {BEGIN(INITIAL);
 if(in_matrix>0){
