@@ -1,7 +1,2 @@
-s = api(8);
-
-function z = api(t)
-    z = 7;
-end
-
-
+B=[7 8 9;7 -85 4;7 1 2];
+I=isempty([]);

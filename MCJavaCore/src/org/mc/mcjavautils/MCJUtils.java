@@ -75,8 +75,9 @@ public class MCJUtils {
     public static MCJElemPosition kthElemPosition(double[][] a, int i){
         MCJElemPosition p = new MCJElemPosition();
         int j = i-1;
-        p.j = j/a.length;
-        p.i= j%a.length;
+        //System.out.println(a[0].length);
+        p.i = j/a[0].length;
+        p.j= j%a[0].length;
         return p;
     }
     

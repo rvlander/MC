@@ -1,9 +1,9 @@
 %{
 
-bool verb = true;
+bool verb = false;
 
 void verbose(string token){
-	if(verbose){	
+	if(verb){	
 		cout << token;
 	}
 	return;

@@ -676,13 +676,25 @@ void readPathFile(string path_file){
      } 
 }
 
+void readFunctionFile(string func_file){
+     ifstream fp(func_file.c_str());
+
+     char ligne[1024];
+
+     while(fp.getline(ligne,1024)){
+	string ll(ligne);
+        symrec sri;
+	sri.idtype = FUNC;
+	TDSinsert(ll,sri);   
+
+     } 
+}
+
+
 
 int main(int argc, const char ** argv){
 
-symrec sri;
-sri.idtype = FUNC;
 
-TDSinsert("size",sri);
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;
@@ -690,6 +702,7 @@ TDSinsert("size",sri);
  to_compile.push_back(argv[1]);
  
 	readPathFile("path_file");
+	readFunctionFile("func_file");
 
 
 

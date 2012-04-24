@@ -521,10 +521,10 @@ char *yytext;
 #line 1 "mc.lex"
 #line 2 "mc.lex"
 
-bool verb = true;
+bool verb = false;
 
 void verbose(string token){
-	if(verbose){	
+	if(verb){	
 		cout << token;
 	}
 	return;
