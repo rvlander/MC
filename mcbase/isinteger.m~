@@ -1,0 +1,6 @@
+function [res] = isinteger(X)
+
+
+
+end
+
