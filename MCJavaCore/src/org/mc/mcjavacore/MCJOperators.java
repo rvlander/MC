@@ -68,7 +68,7 @@ public class MCJOperators {
             for (int i = 0; i < t1.length; i++) {
                 for (int j = 0; j < t2[0].length; j++) {
                     for (int k = 0; k < t2.length; k++) {
-                        res[i][j] += t1[i][k] + t2[k][j];
+                        res[i][j] += t1[i][k]*t2[k][j];
                     }
                 }
             }

@@ -111,16 +111,16 @@ S : input {
 writeJavaFile($1.source,$$.ismain);
 }
 
-input : scriptMFile {$$.source = $1.source;$$.ismain= true}
-        |functionMFile {$$.source = $1.source;$$.ismain=false}
+input : scriptMFile {$$.source = $1.source;$$.ismain= true;}
+        |functionMFile {$$.source = $1.source;$$.ismain=false;}
 ;
 
 scriptMFile : opt_delimiter {$$.source = "";}
             | opt_delimiter statement_list {$$.source = $2.source;}
 ;
 
-functionMFile : empty_lines f_all opt_end{$$.source = $2.source}
-              | f_all opt_end{$$.source = $1.source}
+functionMFile : empty_lines f_all opt_end{$$.source = $2.source;}
+              | f_all opt_end{$$.source = $1.source;}
 ;
 opt_end : 
         | END opt_delimiter
@@ -334,7 +334,7 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
 int tn = $1.source.size();
 $1.source[0] = '"';
 $1.source[tn-1] = '"'; 
-$$.source = "matrixFromText("+$1.source+")" 
+$$.source = "matrixFromText("+$1.source+")" ;
 }
      | ID { $$.source = $1.source;
 		symrec sr;
@@ -394,15 +394,15 @@ comma_ref_list : ref_index {$$.source = $1.source;}
                | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;}
 ;
 
-matrix : '[' {in_matrix++} rows ']' {in_matrix--; $$.source = $3.source ;}
+matrix : '[' {in_matrix++;} rows ']' {in_matrix--; $$.source = $3.source ;}
 ;
 
 rows : {$$.source = "new double[0][0]";}
      | row { $$.source = $1.source;}
      | rows ';' { $$.source = $1.source;}
-     | rows ';' row { $$.source = "vertcat("+$1.source+","+$3.source+")"}
+     | rows ';' row { $$.source = "vertcat("+$1.source+","+$3.source+")";}
      | rows NEWLINE
-     | rows NEWLINE row { $$.source = "vertcat("+$1.source+","+$3.source+")"}
+     | rows NEWLINE row { $$.source = "vertcat("+$1.source+","+$3.source+")";}
 ;
 
 row : expr { $$.source = $1.source ;}
@@ -532,20 +532,20 @@ out_ref  :  ID {
 ref_info rinf;
 rinf.id = $1.source;
 rinf.is_simple = true;
-$$.ri = rinf	
+$$.ri = rinf;	
 }
 	|  '~' { 
 ref_info rinf;
 rinf.id = "ignored_arg";
 rinf.is_simple = true;
-$$.ri = rinf	
+$$.ri = rinf;
 }
          |  ID '('ref_expr_list ')'{ 
 ref_info rinf;
 rinf.id = $1.source;
 rinf.is_simple = false;
 rinf.ref_source = $3.source;
-$$.ri = rinf
+$$.ri = rinf;
 }
 ;
 
@@ -566,6 +566,11 @@ $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ 
 $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
 $$.source += $7.source;
 $$.source += "}\n}\n";
+
+if(TDSremove($2.source) !=1){
+	cerr << "problème de varaible dans al boucle interne" <<endl;
+};
+
 }
 
 if_command : if_block else_if_list else_block END {$$.source =$1.source+$2.source+$3.source;}

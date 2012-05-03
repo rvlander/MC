@@ -3,7 +3,7 @@ CPP = g++
 
 all : compile
 
-compile : mc.tab.c lex.yy.c
+compile : mc.tab.c lex.yy.c tds.cpp
 	${CPP} mc.tab.c -o compile
 
 mc.tab.c : mc.y

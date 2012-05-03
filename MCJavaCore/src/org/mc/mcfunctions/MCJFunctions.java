@@ -386,6 +386,30 @@ public class MCJFunctions {
         return res;
     }
 
+    
+    public static double[][] isequal(MCJOutputArg[] oargs, double[][][] iargs) {
+        
+        double[][] f = iargs[0];
+        
+        boolean bres = true;
+        
+        
+        
+        for(int i=1;i<iargs.length;i++){
+            bres = bres && MCJUtils.isEqual(f,iargs[i]);
+        }
+
+        double[][] res = MCJUtils.matrixFromBoolean(bres);
+        
+
+        if (oargs != null) {
+            if (oargs.length > 0) {
+                oargs[0].val = res;
+            }
+        }
+        return res;
+    }
+    
     public static double[][] message(MCJOutputArg[] oargs, double[][][] iargs) {
         double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);
         double[][] A = iargs[0];
