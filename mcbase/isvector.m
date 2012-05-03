@@ -1,7 +1,7 @@
 function [B]=isvector(V)
 
-        T = SIZE(V);
-        B = T==[1 n] ||  T==[n 1]; 
+        T = size(V);
+        B = T(1)==1 ||  T(2)==1; 
 
 
 end

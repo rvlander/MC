@@ -410,6 +410,21 @@ public class MCJFunctions {
         return res;
     }
     
+    public static double[][] NaN(MCJOutputArg[] oargs, double[][][] iargs) {
+        
+        double[][] res = new double[1][1];
+        res[0][0] = Double.NaN;
+
+        if (oargs != null) {
+            if (oargs.length > 0) {
+                oargs[0].val = res;
+            }
+        }
+        return res;
+    }
+    
+    
+    
     public static double[][] message(MCJOutputArg[] oargs, double[][][] iargs) {
         double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);
         double[][] A = iargs[0];
@@ -431,4 +446,6 @@ public class MCJFunctions {
 
         throw new Exception("Matlab error : " + MCJBaseFunctions.stringFromMatrix(A));
     }
+    
+    
 }
