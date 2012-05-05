@@ -81,8 +81,8 @@ public class MCJUtils {
         MCJElemPosition p = new MCJElemPosition();
         int j = i-1;
         //System.out.println(a[0].length);
-        p.i = j/a[0].length;
-        p.j= j%a[0].length;
+        p.i = j%a.length;
+        p.j= j/a.length;
         return p;
     }
     
