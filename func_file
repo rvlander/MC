@@ -13,3 +13,5 @@ max
 mod
 all
 any
+isequal
+NaN

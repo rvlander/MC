@@ -27,6 +27,12 @@ bool TDSinsert(string symbol, symrec sr){
 	return ret.second;
 }
 
+int TDSremove(string symbol){
+	int ret;
+	ret = tds.erase(symbol);
+	return ret;
+}
+
 /*int main(){
 	symrec sr,sr1;	
 	bool sm = TDSget("toto",&sr);

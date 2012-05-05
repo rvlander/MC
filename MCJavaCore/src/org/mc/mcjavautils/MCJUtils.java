@@ -34,6 +34,11 @@ public class MCJUtils {
         return res;
     }
     
+    public static double[][] matrixFromBoolean(boolean b){
+        if(b) return matrixFromDouble(1);
+        else  return matrixFromDouble(0);
+    }
+    
     public static boolean isVector(double[][] m){
         double[][] s = size(m);
         return (s[0][0] == 1 || s[0][1] ==1)&& (s[0][0]*s[0][1] >=1);
@@ -108,6 +113,28 @@ public class MCJUtils {
             }
             if(res) break;
         }
+        return res;
+    }
+    
+    public static boolean sameSize(double[][] a, double[][] b){
+        if(a.length == b.length) return a[0].length == b[0].length;
+        else return false;
+    }
+    
+    public static boolean isEqual(double[][] a, double[][] b){
+        boolean res = true;
+        
+        if(!sameSize(a,b)){
+            return false;
+        }
+        
+        for(int i=0;i<a.length;i++){
+            for(int j=0;j<a[0].length;j++){
+                res = res && (a[i][j]==b[i][j]);
+                if(!res) return res;
+            }
+        }
+        
         return res;
     }
     

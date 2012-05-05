@@ -1,0 +1,3 @@
+function R=lenght(X)
+	R = max(size(X));
+end
