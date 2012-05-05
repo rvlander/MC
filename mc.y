@@ -126,7 +126,7 @@ opt_end :
         | END opt_delimiter
 ;
 
-f_all : f_def_line f_body {$$.source = $1.source+" throws Exception{\n";
+f_all : f_def_line f_body {$$.source = $1.source+" throws Exception,Throwable{\n";
 
 $$.source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
 
@@ -335,6 +335,12 @@ int tn = $1.source.size();
 $1.source[0] = '"';
 $1.source[tn-1] = '"'; 
 $$.source = "matrixFromText("+$1.source+")" ;
+}
+     |'@' ID {
+int tn = $2.source.size();
+$2.source.insert(0,"\"");
+$2.source.append("\""); 
+$$.source = "matrixFromText("+$2.source+")" ;
 }
      | ID { $$.source = $1.source;
 		symrec sr;
@@ -620,7 +626,7 @@ void writeJavaFile(const string &source, bool ismain){
  
 	
 	
-	if(ismain) outfile << "public static void main(String args[]) throws Exception{" << endl;	
+	if(ismain) outfile << "public static void main(String args[]) throws Exception,Throwable{" << endl;	
 	outfile << source << endl;
 	
 	if(ismain){

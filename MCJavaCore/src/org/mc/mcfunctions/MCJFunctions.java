@@ -4,6 +4,9 @@
  */
 package org.mc.mcfunctions;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import org.mc.mcjavacore.MCJBaseFunctions;
 import org.mc.mcjavacore.MCJElemPosition;
 import org.mc.mcjavacore.MCJMatrixDimensionsException;
@@ -400,6 +403,37 @@ public class MCJFunctions {
         }
 
         double[][] res = MCJUtils.matrixFromBoolean(bres);
+        
+
+        if (oargs != null) {
+            if (oargs.length > 0) {
+                oargs[0].val = res;
+            }
+        }
+        return res;
+    }
+
+    public static double[][] bsxfun(MCJOutputArg[] oargs, double[][][] iargs) throws NoSuchMethodException, IllegalAccessException, Throwable {
+        
+        String func_name = MCJBaseFunctions.stringFromMatrix(iargs[0]);
+        double[][] A = iargs[1];
+        double[][] B = iargs[2];
+      
+        MethodType mt; MethodHandle mh;
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        mt = MethodType.methodType(double[][].class,double[][].class,double[][].class);
+        mh = lookup.findStatic(org.mc.mcjavacore.MCJOperators.class, func_name, mt);
+        
+        double[][] res= new double[A.length][A[0].length]; 
+        
+        for(int i=0;i<A.length;i++){
+            for(int j=0; j<A[0].length;j++){
+                res[i][j] = ((double [][])(mh.invoke(new double[][]{{A[i][j]}},new double[][]{{B[i][j]}})))[0][0];
+            }
+        }
+        
+     
+
         
 
         if (oargs != null) {

@@ -76,6 +76,7 @@ if(in_matrix>0){
 \.' {BEGIN(QuoteSC);verbose("TRANSPOSE");return(TRANSPOSE);}
 ' {BEGIN(QuoteSC);verbose("CTRANSPOSE");return(CTRANSPOSE);}
 ~ {BEGIN(INITIAL);verbose("~");return('~');}
+@ {BEGIN(INITIAL);verbose("@");return('@');}
 
 <INITIAL>'[^'\r\f\n]*' { yylval.source = yytext;verbose("TEXT"); return(TEXT);};
 
