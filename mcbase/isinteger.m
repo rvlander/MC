@@ -1,9 +1,9 @@
 function [res] = isinteger(X)
 
-I = mod(X,1);
 
 
-res = ~any(I);
+
+res = 0;
 
 end
 
