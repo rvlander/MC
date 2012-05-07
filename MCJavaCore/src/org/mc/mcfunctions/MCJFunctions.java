@@ -320,10 +320,12 @@ public class MCJFunctions {
             }
         }
 
-        double[][] dim = new double[0][0];
+      //  MCJUtils.printMatrix(iargs[1]);
+        
+        /*double[][] dim = new double[0][0];
         if (iargs.length == 2) {
             res = MCJBaseFunctions.matrixFromDouble(res[0][(int) iargs[1][0][0] - 1]);
-        }
+        }*/
 
         if (oargs != null) {
             if (oargs.length == 1) {
@@ -418,19 +420,26 @@ public class MCJFunctions {
         String func_name = MCJBaseFunctions.stringFromMatrix(iargs[0]);
         double[][] A = iargs[1];
         double[][] B = iargs[2];
+        
+        
+       /* MCJUtils.printMatrix(A);
+        System.out.println();
+        MCJUtils.printMatrix(B);*/
       
         MethodType mt; MethodHandle mh;
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         mt = MethodType.methodType(double[][].class,double[][].class,double[][].class);
         mh = lookup.findStatic(org.mc.mcjavacore.MCJOperators.class, func_name, mt);
         
-        double[][] res= new double[A.length][A[0].length]; 
+       /* double[][] res= new double[A.length][A[0].length]; 
         
         for(int i=0;i<A.length;i++){
             for(int j=0; j<A[0].length;j++){
                 res[i][j] = ((double [][])(mh.invoke(new double[][]{{A[i][j]}},new double[][]{{B[i][j]}})))[0][0];
             }
-        }
+        }*/
+        
+        double[][] res = (double [][])(mh.invoke(A,B));
         
      
 

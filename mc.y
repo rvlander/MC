@@ -43,6 +43,9 @@ typedef struct tagYYSTYPE{
   vector<ref_info> ivarg;
   //better delcaration
   vector<string> to_declare;
+  //used by ref_exprlist (outer var name)
+  string out_ref;
+
 } YYST;
 
 #define YYSTYPE YYST
@@ -356,6 +359,7 @@ expr : expr '+' expr {$$.source = "add("+$1.source+","+$3.source+")";}
      | colon_expr1 {$$.source = "colon("+$1.start+","+$1.stride+","+$1.stop+")";}				     
      | matrix {$$.source = $1.source;}
      | NBRE { $$.source = "matrixFromDouble("+$1.source+")";}
+     | END { $$.source = "end" ;}
      | TEXT {
 int tn = $1.source.size();
 $1.source[0] = '"';
@@ -374,7 +378,8 @@ $$.source = "matrixFromText("+$2.source+")" ;
 			cerr << " Symbol "+$1.source+" not declared" << endl;		
 		}
 		}
-	 | ID '(' ref_expr_list ')' {
+	 | ID '('  ref_expr_list ')' {
+	  
           symrec sr;
 		  if(!(TDSget($1.source, &sr))){
 			int t = searchFunction($1.source);
@@ -389,6 +394,7 @@ $$.source = "matrixFromText("+$2.source+")" ;
 			}		
 		  }
           if(sr.idtype == VAR) {
+                        
 		  	$$.source = "subsref("+$1.source+","+$3.source+")";
           }else{
           	$$.source = $1.source+"(null,"+$3.source+")";
@@ -830,6 +836,7 @@ while(!to_compile.empty()){
 	cout << "Compiling " << comp << endl;
 	fid = fopen(comp.c_str(),"r");
 	cout << "File opened" << endl; 	
+	in_matrix =0;
 	yyrestart(fid);
  	yyparse();
 cout << "File parsed" << endl;
