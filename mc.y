@@ -61,6 +61,8 @@ int in_matrix =0;
 %token END
 %token FUNCTION
 
+%token RETURN
+
 %token FOR
 
 %token IF
@@ -275,7 +277,9 @@ for(int i=0;i<$2.to_declare.size();i++){
 	$$.source += "double[][] "+$2.to_declare[i]+";\n";
 	TDSremove($2.to_declare[i]);
 }
+$$.source +="label:do{\n";
 $$.source +=  $2.source;
+$$.source += "}while(false);";
 } 
        | opt_delimiter {$$.source = "";} 
 ;
@@ -317,6 +321,7 @@ statement : expr { $$.source = $1.source+";\n";}
 	  | for_command  { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
 	  | if_command  { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
           | while_command  { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
+	  | RETURN  { $$.source = "break label;\n";}
 
 ;
        

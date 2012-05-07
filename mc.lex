@@ -22,6 +22,7 @@ identifier [a-zA-Z][_a-zA-Z0-9]*
 newline  \n|\r|\f
 %%
 
+return {verbose("RETURN");return(RETURN);};
 for {verbose("FOR");return(FOR);};
 end {verbose("END");return(END);};
 if {verbose("IF");return(IF);};
