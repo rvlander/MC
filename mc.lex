@@ -38,7 +38,14 @@ if(in_matrix>0){
 }
 \%[^\n\r\f]* {BEGIN(INITIAL);}
 {nombre} {BEGIN(QuoteSC);verbose("NBRE");yylval.source = yytext;return(NBRE);}
-{identifier} {BEGIN(QuoteSC);verbose("ID");yylval.source = yytext;return(ID);}
+{identifier} {BEGIN(QuoteSC);verbose("ID");
+
+yylval.source = yytext;
+if(yylval.source.compare("class")==0){
+yylval.source += "_reserved";
+}
+
+return(ID);}
 
 \[/[^=;\n\t\f]*]\ *=[^=] {BEGIN(INITIAL);verbose("LD");return(LD);}
 \]/\ *=[^=] {BEGIN(INITIAL);verbose("RD");return(RD);}

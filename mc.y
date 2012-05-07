@@ -41,6 +41,8 @@ typedef struct tagYYSTYPE{
   ref_info ri;
   vector<ref_info> varg;
   vector<ref_info> ivarg;
+  //better delcaration
+  vector<string> to_declare;
 } YYST;
 
 #define YYSTYPE YYST
@@ -116,7 +118,11 @@ input : scriptMFile {$$.source = $1.source;$$.ismain= true;}
 ;
 
 scriptMFile : opt_delimiter {$$.source = "";}
-            | opt_delimiter statement_list {$$.source = $2.source;}
+            | opt_delimiter statement_list {
+for(int i=0;i<$2.to_declare.size();i++){
+	$$.source += "double[][] "+$2.to_declare[i]+";\n";
+}
+$$.source += $2.source;}
 ;
 
 functionMFile : empty_lines f_all opt_end{$$.source = $2.source;}
@@ -263,7 +269,14 @@ $$.varg.push_back($2.ri);
 }
 ;
 
-f_body : delimiter statement_list {$$.source = $2.source;} 
+f_body : delimiter statement_list {
+$$.source ="";
+for(int i=0;i<$2.to_declare.size();i++){
+	$$.source += "double[][] "+$2.to_declare[i]+";\n";
+	TDSremove($2.to_declare[i]);
+}
+$$.source +=  $2.source;
+} 
        | opt_delimiter {$$.source = "";} 
 ;
 
@@ -287,15 +300,23 @@ empty_lines : NEWLINE
             | empty_lines NEWLINE
 ;
 
-statement_list : statement opt_delimiter {$$.source = $1.source;}
-               |statement delimiter statement_list {$$.source = $1.source+$3.source;}
+statement_list : statement opt_delimiter {$$.source = $1.source;$$.to_declare = $1.to_declare;}
+               |statement delimiter statement_list {$$.source = $1.source+$3.source;
+	$$.to_declare = $1.to_declare;
+        for(int i=0;i<$3.to_declare.size();i++){
+		$$.to_declare.push_back($3.to_declare[i]);
+	}
+/*for(int i=0;i<$$.to_declare.size();i++){
+		cout << $$.to_declare[i] << endl;
+	}*/
+}
 ;
 
 statement : expr { $$.source = $1.source+";\n";}
-          | assignement { $$.source = $1.source+";\n";}
-	  | for_command  { $$.source = $1.source+";\n";}
-	  | if_command  { $$.source = $1.source+";\n";}
-          | while_command  { $$.source = $1.source+";\n";}
+          | assignement { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
+	  | for_command  { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
+	  | if_command  { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
+          | while_command  { $$.source = $1.source+";\n";$$.to_declare = $1.to_declare;}
 
 ;
        
@@ -426,7 +447,7 @@ assignement : ID '=' expr {
 $$.source = "";
 symrec sr;
 if(!TDSget($1.source,&sr)){
- $$.source += "double[][] ";
+ $$.to_declare.push_back($1.source);
  sr.idtype = VAR;
  if(!TDSinsert($1.source,sr)){
   cerr << "pas possible assignement" << endl;
@@ -438,7 +459,7 @@ $$.source += $1.source + "=" + $3.source;
 $$.source = "";
 symrec sr;
 if(!TDSget($1.source,&sr)){
- $$.source += "double[][] " + $1.source +" ;\n";
+ $$.to_declare.push_back($1.source);
  sr.idtype = VAR;
  if(!TDSinsert($1.source,sr)){
   cerr << "pas possible assignement" << endl;
@@ -450,7 +471,7 @@ $$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.sour
 $$.source = "";
 symrec sr;
 if(!TDSget($2.source,&sr)){
- $$.source += "double[][] ";
+ $$.to_declare.push_back($1.source);
  sr.idtype = VAR;
  if(!TDSinsert($2.source,sr)){
   cerr << "pas possible assignement" << endl;
@@ -462,7 +483,7 @@ $$.source += $2.source + "=" + $5.source;
 $$.source = "";
 symrec sr;
 if(!TDSget($2.source,&sr)){
- $$.source += "double[][] " + $2.source +" ;\n";
+ $$.to_declare.push_back($1.source);
  sr.idtype = VAR;
  if(!TDSinsert($2.source,sr)){
   cerr << "pas possible assignement" << endl;
@@ -566,6 +587,9 @@ if(!TDSget($2.source,&sr)){
  }
 }}
 '=' expr opt_delimiter  statement_list END {
+
+$$.to_declare = $7.to_declare;
+
 $$.source  = " double[][] fortemp =" + $5.source +";\n";
 $$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
 $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
@@ -579,25 +603,46 @@ if(TDSremove($2.source) !=1){
 
 }
 
-if_command : if_block else_if_list else_block END {$$.source =$1.source+$2.source+$3.source;}
+if_command : if_block else_if_list else_block END {
+$$.to_declare = $1.to_declare;
+for(int i=0;i<$2.to_declare.size();i++){
+	$$.to_declare.push_back($2.to_declare[i]);
+}
+for(int i=0;i<$3.to_declare.size();i++){
+	$$.to_declare.push_back($3.to_declare[i]);
+}
+$$.source =$1.source+$2.source+$3.source;}
 ;  
 
-if_block : IF expr opt_delimiter statement_list {$$.source = "if(any("+$2.source+")){"+$4.source+"}";}
+if_block : IF expr opt_delimiter statement_list {
+$$.to_declare = $4.to_declare;
+$$.source = "if(any("+$2.source+")){"+$4.source+"}";}
 ;
 
 else_if_list: {$$.source ="";}
-            | elseif_block else_if_list {$$.source = $1.source + $2.source;}
+
+            | elseif_block else_if_list {
+$$.to_declare = $1.to_declare;
+for(int i=0;i<$2.to_declare.size();i++){
+	$$.to_declare.push_back($2.to_declare[i]);
+}
+$$.source = $1.source + $2.source;}
 ;
 
-elseif_block : ELSEIF expr opt_delimiter statement_list {$$.source = "else if(all("+$2.source+")){"+$4.source+"}";}
+elseif_block : ELSEIF expr opt_delimiter statement_list {
+$$.to_declare = $4.to_declare;
+$$.source = "else if(all("+$2.source+")){"+$4.source+"}";}
 ;
 
 else_block : {$$.source ="";}
-            |ELSE opt_delimiter statement_list {$$.source = "else{"+$3.source+"}";}
+            |ELSE opt_delimiter statement_list {
+$$.to_declare = $3.to_declare;
+$$.source = "else{"+$3.source+"}";}
 ;
 
 while_command: WHILE expr opt_delimiter statement_list END 
-{$$.source = "while(any("+$2.source+")){"+$4.source+"}";}
+{$$.to_declare = $4.to_declare;
+$$.source = "while(any("+$2.source+")){"+$4.source+"}";}
 ;
  
 
