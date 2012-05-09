@@ -44,7 +44,7 @@ typedef struct tagYYSTYPE{
   //better delcaration
   vector<string> to_declare;
   //used by ref_exprlist (outer var name)
-  string out_ref;
+  bool out_ref;
 
 } YYST;
 
@@ -396,6 +396,11 @@ $$.source = "matrixFromText("+$2.source+")" ;
           if(sr.idtype == VAR) {
                         
 		  	$$.source = "subsref("+$1.source+","+$3.source+")";
+			if($3.out_ref){
+			//renplacer end par A.lentght et A[0].length
+			}else{
+			//remplacer end par numal(A);
+			}
           }else{
           	$$.source = $1.source+"(null,"+$3.source+")";
           }
@@ -424,12 +429,12 @@ ref_index :':'  {$$.source = "null";}
 ;
 
 ref_expr_list : {$$.source = "null";}
-              | comma_ref_list {$$.source = "new double[][][]{"+ $1.source+"}";}
+              | comma_ref_list {$$.source = "new double[][][]{"+ $1.source+"}";$$.out_ref = $1.out_ref;}
               | VARARGIN {$$.source = "iargs";}
 ;
 
-comma_ref_list : ref_index {$$.source = $1.source;}
-               | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;}
+comma_ref_list : ref_index {$$.source = $1.source;$$.out_ref = false;}
+               | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;$$.out_ref = true;}
 ;
 
 matrix : '[' {in_matrix++;} rows ']' {in_matrix--; $$.source = $3.source ;}
@@ -477,6 +482,11 @@ if(!TDSget($1.source,&sr)){
  }
 }
 $$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
+if($3.out_ref){
+			//renplacer end par A.lentght et A[0].length
+			}else{
+			//remplacer end par numal(A);
+			}
 }
               |LD ID RD '=' expr {
 $$.source = "";
@@ -501,6 +511,11 @@ if(!TDSget($2.source,&sr)){
  }
 }
 $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.source+")";
+if($3.out_ref){
+			//renplacer end par A.lentght et A[0].length
+			}else{
+			//remplacer end par numal(A);
+			}
 } 
             | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
    symrec sr;
@@ -546,6 +561,7 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
 	ref_info ri = $2.varg[i];	
 	if(!ri.is_simple){
 		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
+		//ici aussi il faut faire gaffe au end.
 	}else{
 		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"].val";	
 	}
@@ -579,6 +595,8 @@ rinf.is_simple = true;
 $$.ri = rinf;
 }
          |  ID '('ref_expr_list ')'{ 
+
+// là aussi 
 ref_info rinf;
 rinf.id = $1.source;
 rinf.is_simple = false;
