@@ -28,6 +28,7 @@ int yylex(void);
 void yyerror (char const *s);
 void writeJavaFile(const string &s, bool);
 int searchFunction(const string &id);
+void replaceEnds(const string &var_name,int out_ref,string &source);
 
 typedef struct tagYYSTYPE{
   //type of programm
@@ -44,7 +45,7 @@ typedef struct tagYYSTYPE{
   //better delcaration
   vector<string> to_declare;
   //used by ref_exprlist (outer var name)
-  bool out_ref;
+  int out_ref=0;
 
 } YYST;
 
@@ -396,22 +397,7 @@ $$.source = "matrixFromText("+$2.source+")" ;
           if(sr.idtype == VAR) {
                         
 		  	$$.source = "subsref("+$1.source+","+$3.source+")";
-			if($3.out_ref){
-			//renplacer end par A.lentght et A[0].length
-		         int pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 string rep = "matrixFromDouble("+$1.source+".length)"; 
-			 $$.source.insert(pos,rep);
-			 pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 rep = "matrixFromDouble("+$1.source+"[0].length)"; 
-			 $$.source.insert(pos,rep);
-			}else{
-			 int pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 string rep = "numel("+$1.source+")"; 
-			 $$.source.insert(pos,rep);
-			}
+			replaceEnds($1.source,$3.out_ref,$$.source);
           }else{
           	$$.source = $1.source+"(null,"+$3.source+")";
           }
@@ -444,8 +430,8 @@ ref_expr_list : {$$.source = "null";}
               | VARARGIN {$$.source = "iargs";}
 ;
 
-comma_ref_list : ref_index {$$.source = $1.source;$$.out_ref = false;}
-               | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;$$.out_ref = true;}
+comma_ref_list : ref_index {$$.source = $1.source;$$.out_ref = 1;}
+               | ref_index ',' comma_ref_list {$$.source = $1.source + "," + $3.source;$$.out_ref = 2;}
 ;
 
 matrix : '[' {in_matrix++;} rows ']' {in_matrix--; $$.source = $3.source ;}
@@ -493,21 +479,7 @@ if(!TDSget($1.source,&sr)){
  }
 }
 $$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
-if($3.out_ref){
-		         int pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 string rep = "matrixFromDouble("+$1.source+".length)"; 
-			 $$.source.insert(pos,rep);
-			 pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 rep = "matrixFromDouble("+$1.source+"[0].length)"; 
-			 $$.source.insert(pos,rep);
-			}else{
- int pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 string rep = "numel("+$1.source+")"; 
-			 $$.source.insert(pos,rep);
-			}
+replaceEnds($1.source,$3.out_ref,$$.source);
 }
               |LD ID RD '=' expr {
 $$.source = "";
@@ -532,21 +504,7 @@ if(!TDSget($2.source,&sr)){
  }
 }
 $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.source+")";
-if($3.out_ref){
-		         int pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 string rep = "matrixFromDouble("+$2.source+".length)"; 
-			 $$.source.insert(pos,rep);
-			 pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 rep = "matrixFromDouble("+$2.source+"[0].length)"; 
-			 $$.source.insert(pos,rep);
-			}else{
- int pos = $$.source.find("end");
-			 $$.source.erase(pos,3);
-			 string rep = "numel("+$2.source+")"; 
-			 $$.source.insert(pos,rep);
-			}
+replaceEnds($2.source,$4.out_ref,$$.source);
 } 
             | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
    symrec sr;
@@ -708,6 +666,32 @@ $$.source = "while(any("+$2.source+")){"+$4.source+"}";}
    
 %%
 #include "lex.yy.c"
+
+
+void replaceEnds(const string &var_name,int out_ref,string &source){
+if(out_ref == 2){
+			//renplacer end par A.lentght et A[0].length
+		         int pos = source.find("end");
+				if(pos !=-1){	
+			 source.erase(pos,3);
+			 string rep = "matrixFromDouble("+var_name+".length)"; 
+			 source.insert(pos,rep);
+}
+			 pos = source.find("end");
+				if(pos !=-1){	
+			 source.erase(pos,3);
+			 string rep = "matrixFromDouble("+var_name+"[0].length)"; 
+			 source.insert(pos,rep);
+}
+			}else if(out_ref == 1){
+			 int pos = source.find("end");
+if(pos !=-1){	
+			 source.erase(pos,3);
+			 string rep = "numel("+var_name+")"; 
+			 source.insert(pos,rep);
+}
+			}
+}
 
 void yyerror (char const *s){
    printf("%s\n",s);
