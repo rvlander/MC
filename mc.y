@@ -398,8 +398,19 @@ $$.source = "matrixFromText("+$2.source+")" ;
 		  	$$.source = "subsref("+$1.source+","+$3.source+")";
 			if($3.out_ref){
 			//renplacer end par A.lentght et A[0].length
+		         int pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 string rep = "matrixFromDouble("+$1.source+".length)"; 
+			 $$.source.insert(pos,rep);
+			 pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 rep = "matrixFromDouble("+$1.source+"[0].length)"; 
+			 $$.source.insert(pos,rep);
 			}else{
-			//remplacer end par numal(A);
+			 int pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 string rep = "numel("+$1.source+")"; 
+			 $$.source.insert(pos,rep);
 			}
           }else{
           	$$.source = $1.source+"(null,"+$3.source+")";
@@ -483,9 +494,19 @@ if(!TDSget($1.source,&sr)){
 }
 $$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
 if($3.out_ref){
-			//renplacer end par A.lentght et A[0].length
+		         int pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 string rep = "matrixFromDouble("+$1.source+".length)"; 
+			 $$.source.insert(pos,rep);
+			 pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 rep = "matrixFromDouble("+$1.source+"[0].length)"; 
+			 $$.source.insert(pos,rep);
 			}else{
-			//remplacer end par numal(A);
+ int pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 string rep = "numel("+$1.source+")"; 
+			 $$.source.insert(pos,rep);
 			}
 }
               |LD ID RD '=' expr {
@@ -512,9 +533,19 @@ if(!TDSget($2.source,&sr)){
 }
 $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.source+")";
 if($3.out_ref){
-			//renplacer end par A.lentght et A[0].length
+		         int pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 string rep = "matrixFromDouble("+$2.source+".length)"; 
+			 $$.source.insert(pos,rep);
+			 pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 rep = "matrixFromDouble("+$2.source+"[0].length)"; 
+			 $$.source.insert(pos,rep);
 			}else{
-			//remplacer end par numal(A);
+ int pos = $$.source.find("end");
+			 $$.source.erase(pos,3);
+			 string rep = "numel("+$2.source+")"; 
+			 $$.source.insert(pos,rep);
 			}
 } 
             | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
@@ -561,7 +592,6 @@ if($3.out_ref){
 	ref_info ri = $2.varg[i];	
 	if(!ri.is_simple){
 		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
-		//ici aussi il faut faire gaffe au end.
 	}else{
 		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"].val";	
 	}

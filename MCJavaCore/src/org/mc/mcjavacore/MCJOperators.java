@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.mc.mcjavacore.MCJBaseFunctions.*;
+import org.mc.mcjavautils.MCJUtils;
 import static org.mc.mcjavautils.MCJUtils.*;
 
 /**
@@ -427,6 +428,9 @@ public class MCJOperators {
             }
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
+            
+            MCJUtils.printMatrix(indexes[0]);
+            MCJUtils.printMatrix(indexes[1]);
 
             if (!isScalar(B) && (iIndex.length != B.length || jIndex.length != B[0].length)) {
                 throw new MCJIndexExceedsMatrixDimensions();
@@ -446,9 +450,9 @@ public class MCJOperators {
                         A = temp;
                     }
                     if (isScalar(B)) {
-                        A[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[0][0];
+                        A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[0][0];
                     } else {
-                        A[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[i][j];
+                        A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[i][j];
                     }
                 }
             }
