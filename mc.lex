@@ -1,6 +1,6 @@
 %{
 
-bool verb = true;
+bool verb = false;
 
 void verbose(string token){
 	if(verb){	
@@ -24,7 +24,8 @@ newline  \n|\r|\f
 
 return {verbose("RETURN");return(RETURN);};
 for {verbose("FOR");return(FOR);};
-end {verbose("END");return(END);};
+end/\ *{newline} {verbose("END");return(END);};
+end {verbose("EXEND");return(EXEND);};
 if {verbose("IF");return(IF);};
 elseif {verbose("ELSEIF");return(ELSEIF);};
 else {verbose("ELSE");return(ELSE);};
