@@ -483,11 +483,37 @@ public class MCJFunctions {
         return res;
     }
     
-    public static double[][] error(MCJOutputArg[] oargs, double[][][] iargs) throws Exception {
+   public static double[][] eps(MCJOutputArg[] oargs, double[][][] iargs) {
+        double[][] arg = iargs[0];
+        double[][] res;
+        if (MCJBaseFunctions.numel(arg)[0][0] != 0) {
+            int m = arg.length;
+            int n = arg[0].length;
+            res = new double[m][n];
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    res[i][j] = Math.ulp(Math.abs(arg[i][j]));
+                }
+            }
+
+        } else {
+            res = new double[0][0];
+        }
+
+
+        if (oargs != null) {
+            if (oargs.length == 1) {
+                oargs[0].val = res;
+            }
+        }
+        return res;
+    }
+    
+    public static void error(MCJOutputArg[] oargs, double[][][] iargs) throws Exception {
         double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);
         double[][] A = iargs[0];
-
-        throw new Exception("Matlab error : " + MCJBaseFunctions.stringFromMatrix(A));
+        if(MCJBaseFunctions.numel(A)[0][0]!=0)
+            throw new Exception("Matlab error : " + MCJBaseFunctions.stringFromMatrix(A));
     }
     
     

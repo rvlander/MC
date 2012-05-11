@@ -1,4 +1,8 @@
 ToDo
 résoudre le problème de portée :
- -> symbole aparaissant pour la première fois dans une boucle; 
  -> nargin dans la tds au debut d'une fonction;
+
+autour de END :
+ -> fichier qui fini par end EOF
+
+->meilleuir gestion du _reserved.

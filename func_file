@@ -16,3 +16,4 @@ any
 isequal
 NaN
 bsxfun
+eps
