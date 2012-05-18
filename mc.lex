@@ -33,7 +33,8 @@ while {verbose("WHILE");return(WHILE);};
 function {verbose("FUNCTION");return(FUNCTION);};
 varargin\{:\} {verbose("VARARGIN");return(VARARGIN);};
 
-[ ] {BEGIN(INITIAL);
+
+\  {BEGIN(INITIAL);
 if(in_matrix>0){
 	verbose("MSPACE");return(MSPACE);
 }
@@ -66,8 +67,8 @@ return(ID);}
 \^ {BEGIN(INITIAL);verbose("^");return('^');}
 \.\^ {BEGIN(INITIAL);verbose("POWER");return(POWER);}
 : {BEGIN(INITIAL);verbose(":");return(':');}
-; {BEGIN(INITIAL);verbose(";");return(';');}
-, {BEGIN(INITIAL);verbose(",");return(',');}
+;\ |; {BEGIN(INITIAL);verbose(";");return(';');}
+,\ |, {BEGIN(INITIAL);verbose(",");return(',');}
 \[ {BEGIN(INITIAL);verbose("[");return('[');}
 \] {BEGIN(QuoteSC);verbose("]");return(']');}
 == {BEGIN(INITIAL);verbose("EQ");return(EQ);}

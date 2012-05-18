@@ -524,7 +524,7 @@ replaceEnds($2.source,$4.out_ref,$$.source);
         cerr << "Too many output arguments : " + $5.source + " is not a function !" << endl;
    }
    ostringstream oss;
-   oss << "MCJOutputArg[] oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
+   oss << "oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
    for(int i=0;i<$2.varg.size();i++){
 	ref_info ri = $2.varg[i];	
 	oss << "oa[" << i << "]= new MCJOutputArg();\n";	
@@ -707,6 +707,7 @@ outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class "<<classname<<"{" << endl;
 	outfile << "static final double[][] pi = matrixFromDouble(Math.PI);" << endl;
+	outfile << "static MCJOutputArg[] oa;" << endl;
 
 }
 
@@ -773,8 +774,8 @@ int searchFunction(const string &id){
 	pdir = opendir(lepath.c_str());
 
  	if(pdir == NULL){
-		cerr << "Le répertoire " << lepath << " n'a pu être ouvert!" << endl;	
-	}
+		//cerr << "Directory " << lepath << " could not be opened :ignored" << endl;	
+	}else{
 
 	while(res==0 && (pdirent = readdir(pdir)) != NULL){
 		if(target.compare(pdirent->d_name)==0){
@@ -787,6 +788,7 @@ int searchFunction(const string &id){
 			}	
 		}	
 	}
+}
 	i++;
 	}
 
