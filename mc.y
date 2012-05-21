@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdio.h>
+#include <errno.h>
 #include <map>
 #include <fstream>
 #include <vector>
@@ -127,7 +128,7 @@ input : scriptMFile {$$.source = $1.source;$$.ismain= true;}
 scriptMFile : opt_delimiter {$$.source = "";}
             | opt_delimiter statement_list {
 for(int i=0;i<$2.to_declare.size();i++){
-	$$.source += "double[][] "+$2.to_declare[i]+";\n";
+	$$.source += "double[][] "+$2.to_declare[i]+" = new double[0][0];\n";
 }
 $$.source += $2.source;}
 ;
@@ -141,6 +142,9 @@ opt_end :
 
 f_all : f_def_line f_body {$$.source = $1.source+" throws Exception,Throwable{\n";
 
+
+symrec sr;
+sr.idtype =VAR;
 $$.source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
 
 for(int i=0;i<$1.ivarg.size();i++){
@@ -148,10 +152,12 @@ ostringstream oss;
 oss << i;
 string li = oss.str();
 $$.source += "double[][] " + $1.ivarg[i].id +"= new double[0][0];\nif(nargin[0][0]>"+li+")"+$1.ivarg[i].id+ "= iargs["+oss.str()+"];\n";
+TDSinsert($1.ivarg[i].id,sr);
 }
 
 for(int i=0;i<$1.varg.size();i++){
 $$.source += "double[][] " + $1.varg[i].id +"= new double[0][0];\n";
+TDSinsert($1.varg[i].id,sr);
 }
 $$.source += $2.source+"\n";
 $$.source += "if(oargs !=null){\n";
@@ -279,7 +285,7 @@ $$.varg.push_back($2.ri);
 f_body : delimiter statement_list {
 $$.source ="";
 for(int i=0;i<$2.to_declare.size();i++){
-	$$.source += "double[][] "+$2.to_declare[i]+";\n";
+	$$.source += "double[][] "+$2.to_declare[i]+" = new double[0][0];\n";
 	TDSremove($2.to_declare[i]);
 }
 $$.source +="label:do{\n";
@@ -508,6 +514,7 @@ $$.source += $2.source + " = subsasgn("+$2.source + "," + $4.source +","+$8.sour
 replaceEnds($2.source,$4.out_ref,$$.source);
 } 
             | LD output_ref_list RD '=' ID  '(' ref_expr_list ')' {
+	$$.to_declare = $2.to_declare;
    symrec sr;
    if(!TDSget($5.source,&sr)){
 	int t = searchFunction($5.source);
@@ -562,12 +569,32 @@ replaceEnds($2.source,$4.out_ref,$$.source);
 ;  
     
 
-output_ref_list :  out_ref ',' out_ref  { $$.varg.push_back($1.ri); $$.varg.push_back($3.ri);}
+output_ref_list :  out_ref ',' out_ref  { $$.varg.push_back($1.ri); $$.varg.push_back($3.ri);
+symrec sr;
+if(!TDSget($1.ri.id,&sr)){
+$$.to_declare.push_back($1.ri.id);
+sr.idtype = VAR;
+TDSinsert($1.ri.id,sr);
+
+}
+if(!TDSget($3.ri.id,&sr)){
+$$.to_declare.push_back($3.ri.id);
+sr.idtype = VAR;
+TDSinsert($3.ri.id,sr);
+}}
 		 |  output_ref_list ',' out_ref { 
+
 for(int i=0;i<$1.varg.size();i++){
 	$$.varg.push_back($1.varg[i]);
 }
 $$.varg.push_back($3.ri);
+$$.to_declare = $1.to_declare;
+symrec sr;
+if(!TDSget($3.ri.id,&sr)){
+$$.to_declare.push_back($3.ri.id);
+sr.idtype = VAR;
+TDSinsert($3.ri.id,sr);
+}
 }
 ;
 
@@ -774,13 +801,14 @@ int searchFunction(const string &id){
 	pdir = opendir(lepath.c_str());
 
  	if(pdir == NULL){
-		//cerr << "Directory " << lepath << " could not be opened :ignored" << endl;	
+		cout << strerror(errno) << endl;	
 	}else{
 
 	while(res==0 && (pdirent = readdir(pdir)) != NULL){
 		if(target.compare(pdirent->d_name)==0){
 			res =1;	
 			string path = lepath+ "/" + target;
+
 			if(!isBuiltin(path)){
 				cout << path << " not built-in "<< endl;
 				to_compile.push_back(path);
@@ -788,9 +816,15 @@ int searchFunction(const string &id){
 			}	
 		}	
 	}
+	
 }
+closedir(pdir);
 	i++;
 	}
+	
+	if(!res){
+		cout << "function "<< id << " not found !" << endl;	
+	} 
 
 	return res;
 }

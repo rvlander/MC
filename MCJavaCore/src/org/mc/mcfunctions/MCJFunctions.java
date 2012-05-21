@@ -389,7 +389,8 @@ public class MCJFunctions {
 
 
         if (MCJUtils.isVector(A)) {
-            double calc_max = Double.MIN_VALUE;
+            //System.out.println(Double.MIN_VALUE);
+            double calc_max = -Double.MAX_VALUE;
             double indi =1;
             for (int i = 1; i <= MCJBaseFunctions.numel(A)[0][0]; i++) {
                 double val = MCJUtils.kthElemValue(A, i);
@@ -554,6 +555,13 @@ public class MCJFunctions {
         double[][] A = iargs[0];
         if(MCJBaseFunctions.numel(A)[0][0]!=0)
             throw new Exception("Matlab error : " + MCJBaseFunctions.stringFromMatrix(A));
+    }
+    
+    public static void warning(MCJOutputArg[] oargs, double[][][] iargs){
+        /*double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);
+        double[][] A = iargs[0];
+        if(MCJBaseFunctions.numel(A)[0][0]!=0)
+            throw new Exception("Matlab error : " + MCJBaseFunctions.stringFromMatrix(A));*/
     }
     
     
