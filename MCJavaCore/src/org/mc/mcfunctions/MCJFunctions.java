@@ -303,7 +303,9 @@ public class MCJFunctions {
 
         double[][] res;
 
-
+        if(MCJBaseFunctions.numel(A)[0][0] == 0){
+            return new double[1][1];
+        }else
         if (MCJUtils.isVector(A)) {
             double somme = 0;
             for (int i = 1; i <= MCJBaseFunctions.numel(A)[0][0]; i++) {

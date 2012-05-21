@@ -23,6 +23,14 @@ struct ref_info{
     string ref_source; 
 };
 
+bool isIn(string s,vector<ref_info> &varg){
+	bool res = false;
+	for(int i=0;i<varg.size();i++){
+	   res = res | s.compare(varg[i].id)==0;	
+	}	
+	return res;
+}
+
 
 
 int yylex(void);
@@ -152,12 +160,16 @@ ostringstream oss;
 oss << i;
 string li = oss.str();
 $$.source += "double[][] " + $1.ivarg[i].id +"= new double[0][0];\nif(nargin[0][0]>"+li+")"+$1.ivarg[i].id+ "= iargs["+oss.str()+"];\n";
-TDSinsert($1.ivarg[i].id,sr);
+//cout << $1.ivarg[i].id<< endl;
+TDSremove($1.ivarg[i].id);
 }
 
 for(int i=0;i<$1.varg.size();i++){
+if(!isIn($1.varg[i].id,$1.ivarg)){
 $$.source += "double[][] " + $1.varg[i].id +"= new double[0][0];\n";
-TDSinsert($1.varg[i].id,sr);
+TDSremove($1.varg[i].id);
+}
+//cout << "#" << $1.varg[i].id<< endl;
 }
 $$.source += $2.source+"\n";
 $$.source += "if(oargs !=null){\n";
@@ -398,7 +410,7 @@ $$.source = "matrixFromText("+$2.source+")" ;
  }
 			}else {
 			cerr << " Symbol "+$1.source+" not declared" << endl;
-				//YYERROR;                         
+				sr.idtype = FUNC;  
 			}		
 		  }
           if(sr.idtype == VAR) {
@@ -635,7 +647,7 @@ if(!TDSget($2.source,&sr)){
 
 $$.to_declare = $7.to_declare;
 
-$$.source  = " double[][] fortemp =" + $5.source +";\n";
+$$.source  = " fortemp =" + $5.source +";\n";
 $$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
 $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
 $$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
@@ -712,13 +724,18 @@ if(out_ref == 2){
 			 source.insert(pos,rep);
 }
 			}else if(out_ref == 1){
-			 int pos = source.find("end");
-if(pos !=-1){	
+			int pos =1;
+			while(pos!=-1){			
+
+			pos = source.find("end");
+			if(pos !=-1){	
 			 source.erase(pos,3);
 			 string rep = "numel("+var_name+")"; 
 			 source.insert(pos,rep);
-}
 			}
+			}
+			
+		}
 }
 
 void yyerror (char const *s){
@@ -735,6 +752,7 @@ outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "public class "<<classname<<"{" << endl;
 	outfile << "static final double[][] pi = matrixFromDouble(Math.PI);" << endl;
 	outfile << "static MCJOutputArg[] oa;" << endl;
+	outfile << "static double[][] fortemp;" << endl;
 
 }
 

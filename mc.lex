@@ -1,6 +1,6 @@
 %{
 
-bool verb = true;
+bool verb = false;
 
 void verbose(string token){
 	if(verb){	
@@ -15,7 +15,8 @@ void verbose(string token){
 
 
 digit  [0-9]
-nombre {digit}+
+virgule \.{digit}+
+nombre {digit}+{virgule}?
 identifier [a-zA-Z][_a-zA-Z0-9]*
 
 

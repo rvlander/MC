@@ -172,6 +172,8 @@ public class MCJOperators {
 
     public static double[][] times(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
+       // printMatrix(size(t1));
+        //printMatrix(size(t2));
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
         } else if (numel(t2)[0][0] == 1) {
@@ -183,6 +185,8 @@ public class MCJOperators {
                     res[i][j] = t1[i][j] * t2[i][j];
                 }
             }
+        }else if(numel(t1)[0][0] == 0 || numel(t2)[0][0]==0){
+            res = new double[0][0];
         } else {
             throw new MCJMatrixDimensionsException();
         }
@@ -250,7 +254,7 @@ public class MCJOperators {
 
     public static double[][] colon(double[][] start, double[][] stride, double[][] stop) {
         double[][] res;
-        if (contains(size(start), 0) | contains(size(stride), 0) | contains(size(stop), 0) | stop[0][0] < start[0][0]) {
+        if (contains(size(start), 0) | contains(size(stride), 0) | contains(size(stop), 0)) {
             res = new double[1][0];
         } else {
             double deb = start[0][0];
@@ -258,6 +262,9 @@ public class MCJOperators {
             double fin = stop[0][0];
             double delta = fin - deb;
             int n = (int) (1 + Math.floor(delta / step));
+            if(n==0){
+                return new double[1][0];
+            }
             res = new double[1][n];
             res[0][0] = deb;
             for (int i = 1; i < res[0].length; i++) {
@@ -304,6 +311,9 @@ public class MCJOperators {
     }
 
     public static double[][] subsref(double[][] A, double[][][] indexes) throws MCJIndexExceedsMatrixDimensions {
+       
+       // printMatrix(size(A));
+        
         if (indexes == null) {
             return duplicate(A);
         }
