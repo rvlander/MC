@@ -69,7 +69,7 @@ public class MCJOperators {
             for (int i = 0; i < t1.length; i++) {
                 for (int j = 0; j < t2[0].length; j++) {
                     for (int k = 0; k < t2.length; k++) {
-                        res[i][j] += t1[i][k]*t2[k][j];
+                        res[i][j] += t1[i][k] * t2[k][j];
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class MCJOperators {
 
         return res;
     }
-    
+
     private static double[][] mod(double a, double[][] t) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
@@ -129,7 +129,7 @@ public class MCJOperators {
         }
         return res;
     }
-    
+
     private static double[][] mod(double[][] t, double a) {
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
@@ -163,17 +163,19 @@ public class MCJOperators {
     public static double[][] ldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         return rdivide(t2, t1);
     }
+
     public static double[][] mldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
     public static double[][] mrdivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public static double[][] times(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
-       // printMatrix(size(t1));
-        //printMatrix(size(t2));
+        printMatrix(size(t1));
+        printMatrix(size(t2));
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
         } else if (numel(t2)[0][0] == 1) {
@@ -185,7 +187,7 @@ public class MCJOperators {
                     res[i][j] = t1[i][j] * t2[i][j];
                 }
             }
-        }else if(numel(t1)[0][0] == 0 || numel(t2)[0][0]==0){
+        } else if (numel(t1)[0][0] == 0 || numel(t2)[0][0] == 0) {
             res = new double[0][0];
         } else {
             throw new MCJMatrixDimensionsException();
@@ -247,7 +249,7 @@ public class MCJOperators {
 
         return res;
     }
-    
+
     public static double[][] mpower(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -262,7 +264,7 @@ public class MCJOperators {
             double fin = stop[0][0];
             double delta = fin - deb;
             int n = (int) (1 + Math.floor(delta / step));
-            if(n==0){
+            if (n == 0) {
                 return new double[1][0];
             }
             res = new double[1][n];
@@ -296,6 +298,8 @@ public class MCJOperators {
 
     public static double[][] horzcat(double[][] left, double[][] right) throws MCJMatrixDimensionsException {
         double[][] res;
+        //printMatrix(size(left));
+        //printMatrix(size(right));
         if (numel(left)[0][0] == 0) {
             res = duplicate(right);
         } else if (numel(right)[0][0] == 0) {
@@ -311,9 +315,9 @@ public class MCJOperators {
     }
 
     public static double[][] subsref(double[][] A, double[][][] indexes) throws MCJIndexExceedsMatrixDimensions {
-       
-       // printMatrix(size(A));
-        
+
+        // printMatrix(size(A));
+
         if (indexes == null) {
             return duplicate(A);
         }
@@ -321,7 +325,7 @@ public class MCJOperators {
             double[][] m;
             if (indexes[0] == null) {
                 m = colon(matrixFromDouble(1), matrixFromDouble(1), numel(A));
-                m = transpose(m);
+                //  m = transpose(m);
             } else {
                 m = indexes[0];
             }
@@ -334,9 +338,13 @@ public class MCJOperators {
 
             }
 
+            if(isVector(A) && A.length>1){
+                res =transpose(res);
+            }
+            
             return res;
         }
-        if (indexes.length == 1) {
+        /*if (indexes.length == 1) {
             if (indexes[0] == null) {
                 return duplicate(A);
             } else {
@@ -355,7 +363,7 @@ public class MCJOperators {
                 }
                 return res;
             }
-        }
+        }*/
         if (indexes.length == 2) {
             if (indexes[0] == null) {
                 indexes[0] = colon(matrixFromDouble(1), matrixFromDouble(1), matrixFromDouble(A.length));
@@ -438,7 +446,7 @@ public class MCJOperators {
             }
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
-            
+
             MCJUtils.printMatrix(indexes[0]);
             MCJUtils.printMatrix(indexes[1]);
 

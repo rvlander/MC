@@ -10,9 +10,9 @@ y = zeros(numel(x),1);
 for n=1:numel(x)
     
     if(n-nb<=0)
-        p1 = sum(b(1:n).*x(n:-1:1)); %trouvé pourquoi il faut enlever le ctranspose
+        p1 = sum(b(1:n).*x(n:-1:1)'); %trouvé pourquoi il faut enlever le ctranspose
     else
-        p1 = sum(b.*x(n:-1:n-nb));
+        p1 = sum(b.*x(n:-1:n-nb)');
     end
     
     
