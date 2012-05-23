@@ -66,6 +66,7 @@ vector<string> to_compile;
 
 int in_matrix =0;
 
+bool testing = true;
 
 %}
 
@@ -756,6 +757,53 @@ outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 
 }
 
+string root_file;
+vector<string> readtestHeader(string path){
+char ligne[1024];
+string ll;
+ifstream fp(path.c_str());
+vector<string> args;
+    int posi, posf;
+    bool stop = false;
+
+    //reading header %A,B,C
+    fp.getline(ligne, 1024);
+    ll = ligne;
+    ll.erase(0, 1);
+
+    posi = 0;
+    posf = 0;
+    while (!stop) {
+        posf = ll.find(",", posi);
+        //cout << posf << endl;
+        if (posf == -1)
+            stop = true;
+        else {
+            args.push_back(ll.substr(posi, posf -posi));
+            posi = posf + 1;
+        }
+    }
+    args.push_back(ll.substr(posi, ll.size()));
+    return args;
+}
+
+void includeTesting(){
+char ligne[1024];
+string lpath = root_file +".java.in";
+ifstream fp(lpath.c_str());
+while(fp.getline(ligne,1024)){
+       string ll(ligne);
+       outfile << ligne <<endl;
+    }
+vector<string> vs = readtestHeader(root_file);
+
+for(int i=0;i<vs.size();i++){
+	outfile << "printMatrix(eq("<< vs[i]<< "," << vs[i] <<"_matlab_result" <<"));"<< endl;
+}
+
+    
+}
+
 void writeJavaFile(const string &source, bool ismain){
 	
  
@@ -765,12 +813,17 @@ void writeJavaFile(const string &source, bool ismain){
 	outfile << source << endl;
 	
 	if(ismain){
+	if(!testing){
 	map<string,symrec>::iterator it;
 	for (it = tds.begin(); it != tds.end(); it++){
 		if ((it->second).idtype == VAR){		
 			outfile << "System.out.println(\""+it->first+"=\");"+"\nprintMatrix("+it->first +");"<<endl;
 			outfile << "System.out.println();" <<endl;
 		}			
+	}
+	}
+	else{
+		includeTesting();	
 	}
 	outfile << "}" << endl;
 	}
@@ -896,6 +949,7 @@ int main(int argc, const char ** argv){
  int externalfile=0;
  externalfile = argc>1;	
  FILE *fid;
+ root_file = argv[1];
 
  to_compile.push_back(argv[1]);
  
