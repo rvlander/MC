@@ -16,6 +16,14 @@ using namespace std;
 
 #include "tds.cpp"
 
+#define ROUGE "\\033[1;31m" 
+#define VERT "\\033[1;32m" 
+#define NORMAL "\\033[0;39m"
+#define BLEU "\\033[1;34m" 
+
+
+/*ROSE="\\033[1;35m" BLEU="\\033[1;34m" BLANC="\\033[0;02m" BLANCLAIR="\\033[1;08m" JAUNE="\\033[1;33m" CYAN="\\033[1;36m"*/
+
 
 struct ref_info{
     string id;
@@ -67,6 +75,8 @@ vector<string> to_compile;
 int in_matrix =0;
 
 bool testing = true;
+
+string class_name;
 
 %}
 
@@ -797,8 +807,12 @@ while(fp.getline(ligne,1024)){
     }
 vector<string> vs = readtestHeader(root_file);
 
-for(int i=0;i<vs.size();i++){
-	outfile << "printMatrix(eq("<< vs[i]<< "," << vs[i] <<"_matlab_result" <<"));"<< endl;
+outfile <<"System.out.println(\""<< BLEU <<"Testing : "<< root_file <<" "<< NORMAL <<"\");"<< endl;
+outfile <<"boolean res;\nString color;"<< endl;
+for(int i=0;i<vs.size();i++){	
+	outfile << "res = all(eq("<< vs[i]<< "," << vs[i] <<"_matlab_result" <<"));" <<endl;
+	outfile << "color = res?\""<<VERT << "\":\"" << ROUGE <<"\";"<< endl;
+	outfile <<"System.out.println(\"   "<< vs[i]<< " test (true is ok): \"+color+res+\""<< NORMAL <<"\");"<< endl;
 }
 
     
@@ -957,15 +971,19 @@ int main(int argc, const char ** argv){
 	readFunctionFile("func_file");
 readFunctionFile("globals_file");
 
+	int pos = root_file.find_last_of(".");
+	class_name = root_file.substr(0,pos);
 
-
-	outfile.open("MatCode.java",fstream::out);
+	string outf = class_name +".java";
+	outfile.open(outf.c_str(),fstream::out);
 
 	if (!outfile.is_open()){
 		cerr << "can't open file" << endl;	
 	}
 
-writeJavaFileHeader("MatCode");
+
+pos = class_name.find_last_of("/");
+writeJavaFileHeader(class_name.substr(pos+1,class_name.npos-pos));
 
 
 cout << "Begin compiling ..." << endl;

@@ -1,13 +1,22 @@
 #!/bin/bash
 
+MC_HOME=/home/rvlander/MC/
+MC_CORE=$MC_HOME/MCJavaCore/dist/MCJavaCore.jar
+
 make
 
 if [ -z $1]
 then
-./compile exemples/test.m
+infile=exemples/test.m
 else
-./compile "$1"
+infile="$1"
 fi
-javac -cp MCJavaCore/dist/MCJavaCore.jar MatCode.java
-java -cp MCJavaCore/dist/MCJavaCore.jar:. MatCode 
+
+./compile $infile
+
+javac -cp $MC_CORE `echo $infile|sed "s/\.m$/.java/"`
+cd `dirname $infile`
+basefile=`basename $infile`
+java -cp $MC_CORE:. `echo $basefile |sed "s/\.m$//"`
+cd $MC_HOME
 
