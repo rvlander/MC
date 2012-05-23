@@ -168,9 +168,47 @@ public class MCJOperators {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public static double[][] mrdivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static double[][] mrdivide(double a, double[][] t) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = a / t[i][j];
+            }
+        }
+        return res;
     }
+
+    private static double[][] mrdivide(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = t[i][j] / a;
+            }
+        }
+        return res;
+    }
+
+    public static double[][] mrdivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = mrdivide(t1[0][0], t2);
+        } else if (numel(t2)[0][0] == 1) {
+            res = mrdivide(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            /*res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = t1[i][j] % t2[i][j];
+                }
+            }*/
+            throw new UnsupportedOperationException("Not supported yet.");
+        } else {
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
+    }
+    
 
     public static double[][] times(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
@@ -207,6 +245,8 @@ public class MCJOperators {
     }
 
     public static double[][] minus(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+       // printMatrix(size(t1));
+        //printMatrix(size(t2));
         return add(t1, uminus(t2));
     }
 

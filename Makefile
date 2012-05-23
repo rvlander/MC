@@ -1,10 +1,13 @@
 CPP = g++
 
 
-all : compile
+all : compile lmsrj
+	
+lmsrj : lmsrj.cpp
+	${CPP} $^ -o $@
 
 compile : mc.tab.c lex.yy.c tds.cpp
-	${CPP} mc.tab.c -o compile
+	${CPP} mc.tab.c -o $@
 
 mc.tab.c : mc.y
 	bison mc.y --report=state

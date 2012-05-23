@@ -1,7 +1,2 @@
-%B = filtfilt([4 5 6 85 21 6 97 4]);
-%B = eye([15 10]);
-
-data = [1:0.2:4]';
-windowSize = 5;
-C=filter(ones(1,windowSize)./windowSize,1,data)
+B = filtfilt(ones(1,6)/6,1,[4 4 5 6 2 4 8 6 6 5 2 63 6 5 2 6 2 5 1 5 6 85 21 6 97 4]')
 
