@@ -304,7 +304,7 @@ public class MCJOperators {
             double fin = stop[0][0];
             double delta = fin - deb;
             int n = (int) (1 + Math.floor(delta / step));
-            if (n == 0) {
+            if (n <= 0) {
                 return new double[1][0];
             }
             res = new double[1][n];

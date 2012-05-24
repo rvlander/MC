@@ -19,7 +19,7 @@ matlab -nodesktop < tomatlab > matlaboutput &
 for i in $files; do
 #    echo $i
     ./lmsrj $i >tomatlab
-    ./compile $i > compile.log
+    ./compile $i > compiler.log
     basefile=`basename $i`
     dirfile=`dirname $i`
     sourc=`echo $i|sed "s/\.m$/.java/"`
