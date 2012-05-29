@@ -14,15 +14,19 @@ import static org.mc.mcjavacore.MCJBaseFunctions.*;
  */
 public class MCJUtils {
     
-    public static void printMatrix(double[][] a){
+    public static void printMatrix(double[][] a,String pre){
         for(int i=0;i<a.length;i++){
-            String s= "[";
+            String s= pre +"[";
             for(int j=0;j<a[0].length;j++){
                 s += " "+a[i][j];
             }
             s+= " ]";
             System.out.println(s);
         }
+    }
+    
+    public static void printMatrix(double[][] a){
+        printMatrix(a,"");
     }
     public static boolean contains(double[][] a,double v){
         boolean res = false;

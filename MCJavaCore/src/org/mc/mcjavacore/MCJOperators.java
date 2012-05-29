@@ -30,6 +30,8 @@ public class MCJOperators {
 
     public static double[][] add(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
+        /*printMatrix(size(t1));
+        printMatrix(size(t2));*/
         if (numel(t1)[0][0] == 1) {
             res = add(t2, t1[0][0]);
         } else if (numel(t2)[0][0] == 1) {
@@ -212,8 +214,8 @@ public class MCJOperators {
 
     public static double[][] times(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
         double[][] res;
-        printMatrix(size(t1));
-        printMatrix(size(t2));
+        /*printMatrix(size(t1));
+        printMatrix(size(t2));*/
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
         } else if (numel(t2)[0][0] == 1) {
@@ -487,8 +489,8 @@ public class MCJOperators {
             double[] iIndex = vectorToDoubleArray(indexes[0]);
             double[] jIndex = vectorToDoubleArray(indexes[1]);
 
-            MCJUtils.printMatrix(indexes[0]);
-            MCJUtils.printMatrix(indexes[1]);
+           /* MCJUtils.printMatrix(indexes[0]);
+            MCJUtils.printMatrix(indexes[1]);*/
 
             if (!isScalar(B) && (iIndex.length != B.length || jIndex.length != B[0].length)) {
                 throw new MCJIndexExceedsMatrixDimensions();
