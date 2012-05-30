@@ -166,8 +166,46 @@ public class MCJOperators {
         return rdivide(t2, t1);
     }
 
+    private static double[][] mldivide(double a, double[][] t) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = t[i][j]/a;
+            }
+        }
+        return res;
+    }
+
+    private static double[][] mldivide(double[][] t, double a) {
+        double[][] res = new double[t.length][t[0].length];  // /!\
+        for (int i = 0; i < t.length; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                res[i][j] = a/t[i][j];
+            }
+        }
+        return res;
+    }
+
     public static double[][] mldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        double[][] res;
+        if (numel(t1)[0][0] == 1) {
+            res = mrdivide(t1[0][0], t2);
+        } else if (numel(t2)[0][0] == 1) {
+            res = mrdivide(t1, t2[0][0]);
+        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
+            /*res = new double[t1.length][t1[0].length];
+            for (int i = 0; i < t1.length; i++) {
+                for (int j = 0; j < t1[0].length; j++) {
+                    res[i][j] = t1[i][j] % t2[i][j];
+                }
+            }*/
+            throw new UnsupportedOperationException("Not supported yet.");
+        } else {
+            //printMatrix(t1,"t1 :");
+            throw new MCJMatrixDimensionsException();
+        }
+
+        return res;
     }
 
     private static double[][] mrdivide(double a, double[][] t) {
@@ -247,8 +285,6 @@ public class MCJOperators {
     }
 
     public static double[][] minus(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
-       // printMatrix(size(t1));
-        //printMatrix(size(t2));
         return add(t1, uminus(t2));
     }
 
@@ -367,7 +403,7 @@ public class MCJOperators {
             double[][] m;
             if (indexes[0] == null) {
                 m = colon(matrixFromDouble(1), matrixFromDouble(1), numel(A));
-                //  m = transpose(m);
+                m = transpose(m);
             } else {
                 m = indexes[0];
             }
@@ -443,6 +479,16 @@ public class MCJOperators {
         System.err.println("subsref : pas là");
         return new double[0][0];
     }
+    
+    public static double[][] assign(double[][] A,double val ,int i,int j){
+        double[][] s = size(A);
+        double[][] res;
+        res = new double[(int)Math.max(i+1, s[0][0])][(int)Math.max(j+1, s[0][1])];
+        copy(A,res,0,0);
+        //printMatrix(size(res));
+        res[i][j] = val;
+        return res;
+    }
 
     public static double[][] subsasgn(double[][] A, double[][][] indexes, double[][] B) throws MCJMatrixDimensionsException, MCJIndexExceedsMatrixDimensions {
 
@@ -463,10 +509,10 @@ public class MCJOperators {
             for (int i = 1; i <= n; i++) {
                 MCJElemPosition p = kthElemPosition(A, (int) kthElemValue(m, i));
                 if (isScalar(B)) {
-                    A[p.i][p.j] = B[0][0];
+                    A = assign(A,B[0][0],p.i,p.j);
                 } else {
                     MCJElemPosition q = kthElemPosition(B, i);
-                    A[p.i][p.j] = B[q.i][q.j];
+                    A = assign(A,B[q.i][q.j],p.i,p.j);
                 }
             }
 
@@ -498,21 +544,10 @@ public class MCJOperators {
 
             for (int i = 0; i < iIndex.length; i++) {
                 for (int j = 0; j < jIndex.length; j++) {
-                    if ((int) iIndex[i] > A.length) {
-                        double[][] temp = new double[(int) iIndex[i]][A[0].length];
-                        copy(A, temp, 0, 0);
-                        A = temp;
-                    }
-                    if ((int) jIndex[j] > A[0].length) {
-                        double[][] temp = new double[A.length][(int) jIndex[j]];
-                        System.out.println("in" + numel(A)[0][0]);
-                        copy(A, temp, 0, 0);
-                        A = temp;
-                    }
                     if (isScalar(B)) {
-                        A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[0][0];
+                        A = assign(A,B[0][0],(int) iIndex[i] - 1,(int) jIndex[j] - 1);
                     } else {
-                        A[(int) iIndex[i] - 1][(int) jIndex[j] - 1] = B[i][j];
+                        A = assign(A,B[i][j],(int) iIndex[i] - 1,(int) jIndex[j] - 1);
                     }
                 }
             }

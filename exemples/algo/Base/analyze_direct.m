@@ -3,7 +3,7 @@ clear all;
 close all;
 
 
-[inds,T,X,Y] = readTR_sep('trace_');
+[inds,T,X,Y] = readTR_sep('/home/rvlander/Desktop/trace_enregistree_');
 %  [inds,T,X,Y] = readTR_sep('../traces/marseille/marseille.tr');
 % 
 % T = T(inds(2):inds(3)-1);
@@ -26,33 +26,33 @@ sampling = t0ys(1):20:t0ys(end);
 [nX,nY,signalx,signaly,slant,psi] = resample_hw_sin(sampling,t0xs,t0ys,a,b,wx,wy,phix,phiy,c,X(1),Y(1));
 
 
-figure(1)
-plot(X,Y,'b');
-hold on;
-plot(nX,nY,'r');
-
-
-figure(2)
-plot(nT,dXsdT,'LineWidth',1, 'LineSmoothing','on');
-hold on;
-plot(t0xs,x0s,'g*');
-hold on;
-plot(sampling,signalx,'c','LineWidth',1, 'LineSmoothing','on');
-hold on;
-plot(nT,filtfilt(ones(1,2)/2,1,dXsdT),'r','LineWidth',1, 'LineSmoothing','on');
-
-
-figure(3);
-plot(nT,dYsdT,'r','LineWidth',1, 'LineSmoothing','on');
-hold on;
-plot(sampling,signaly,'m','LineWidth',1, 'LineSmoothing','on');
-
-
-figure(4)
-plot(T,X);
-
-figure(5)
-plot(T,Y);
+% figure(1)
+% plot(X,Y,'b');
+% hold on;
+% plot(nX,nY,'r');
+% 
+% 
+% figure(2)
+% plot(nT,dXsdT,'LineWidth',1, 'LineSmoothing','on');
+% hold on;
+% plot(t0xs,x0s,'g*');
+% hold on;
+% plot(sampling,signalx,'c','LineWidth',1, 'LineSmoothing','on');
+% hold on;
+% plot(nT,filtfilt(ones(1,2)/2,1,dXsdT),'r','LineWidth',1, 'LineSmoothing','on');
+% 
+% 
+% figure(3);
+% plot(nT,dYsdT,'r','LineWidth',1, 'LineSmoothing','on');
+% hold on;
+% plot(sampling,signaly,'m','LineWidth',1, 'LineSmoothing','on');
+% 
+% 
+% figure(4)
+% plot(T,X);
+% 
+% figure(5)
+% plot(T,Y);
 
 
 
