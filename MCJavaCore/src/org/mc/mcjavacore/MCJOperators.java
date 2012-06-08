@@ -252,6 +252,10 @@ public class MCJOperators {
         double[][] res;
         /*printMatrix(size(t1));
         printMatrix(size(t2));*/
+        
+        if(numel(t1)[0][0]==0 || numel(t2)[0][0]==0){
+            return new double[0][0];
+        }
         if (numel(t1)[0][0] == 1) {
             res = times(t2, t1[0][0]);
         } else if (numel(t2)[0][0] == 1) {
@@ -263,9 +267,7 @@ public class MCJOperators {
                     res[i][j] = t1[i][j] * t2[i][j];
                 }
             }
-        } else if (numel(t1)[0][0] == 0 || numel(t2)[0][0] == 0) {
-            res = new double[0][0];
-        } else {
+        }else {
             throw new MCJMatrixDimensionsException();
         }
 

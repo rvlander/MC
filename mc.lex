@@ -1,6 +1,6 @@
 %{
 
-bool verb = true;
+bool verb = false;
 
 void verbose(string token){
 	if(verb){	

@@ -74,7 +74,7 @@ vector<string> to_compile;
 
 int in_matrix =0;
 
-bool testing = true;
+bool testing = false;
 
 string class_name;
 
@@ -997,13 +997,13 @@ while(!to_compile.empty()){
 	to_compile.pop_back();
 	cout << "Compiling " << comp << endl;
 	fid = fopen(comp.c_str(),"r");
-	cout << "File opened" << endl; 	
+	//cout << "File opened" << endl; 	
 	in_matrix =0;
 	yyrestart(fid);
  	yyparse();
-cout << "File parsed" << endl;
+//cout << "File parsed" << endl;
 	fclose(fid);
-cout << "File closed" << endl;
+//cout << "File closed" << endl;
 }
 writeJavaFileFooter();
 outfile.close();
