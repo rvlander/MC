@@ -4,6 +4,7 @@
  */
 package org.mc.mcjavacore;
 
+import Jama.Matrix;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -192,17 +193,18 @@ public class MCJOperators {
             res = mrdivide(t1[0][0], t2);
         } else if (numel(t2)[0][0] == 1) {
             res = mrdivide(t1, t2[0][0]);
-        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
-            /*res = new double[t1.length][t1[0].length];
-            for (int i = 0; i < t1.length; i++) {
-                for (int j = 0; j < t1[0].length; j++) {
-                    res[i][j] = t1[i][j] % t2[i][j];
-                }
-            }*/
-            throw new UnsupportedOperationException("Not supported yet.");
         } else {
-            //printMatrix(t1,"t1 :");
-            throw new MCJMatrixDimensionsException();
+            
+            Matrix A = new Matrix(t1,t1.length,t1[0].length);
+            Matrix B = new Matrix(t2,t2.length,t2[0].length);
+            
+           // printMatrix(size(t1));
+           // System.out.println(A.rank());
+            
+            Matrix C = A.inverse().times(B);
+            res = C.getArray();
+            
+//            throw new MCJMatrixDimensionsException();
         }
 
         return res;
@@ -234,16 +236,12 @@ public class MCJOperators {
             res = mrdivide(t1[0][0], t2);
         } else if (numel(t2)[0][0] == 1) {
             res = mrdivide(t1, t2[0][0]);
-        } else if (Arrays.equals(size(t1)[0], size(t2)[0])) {
-            /*res = new double[t1.length][t1[0].length];
-            for (int i = 0; i < t1.length; i++) {
-                for (int j = 0; j < t1[0].length; j++) {
-                    res[i][j] = t1[i][j] % t2[i][j];
-                }
-            }*/
-            throw new UnsupportedOperationException("Not supported yet.");
         } else {
-            throw new MCJMatrixDimensionsException();
+            Matrix A = new Matrix(t1,t1.length,t1[0].length);
+            Matrix B = new Matrix(t2,t2.length,t2[0].length);
+            
+            Matrix C = A.times(B.inverse());
+            res = C.getArray();
         }
 
         return res;

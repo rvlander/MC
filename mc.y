@@ -78,6 +78,8 @@ bool testing = true;
 
 string class_name;
 
+int aonumber=0;
+
 %}
 
 %token TEXT
@@ -554,10 +556,11 @@ replaceEnds($2.source,$4.out_ref,$$.source);
         cerr << "Too many output arguments : " + $5.source + " is not a function !" << endl;
    }
    ostringstream oss;
-   oss << "oa = new MCJOutputArg[" << $2.varg.size() << "];\n";
+   oss  << "MCJOutputArg[] oa" <<aonumber <<";"<<endl;
+   oss << "oa"<<aonumber<<" = new MCJOutputArg[" << $2.varg.size() << "];\n";
    for(int i=0;i<$2.varg.size();i++){
 	ref_info ri = $2.varg[i];	
-	oss << "oa[" << i << "]= new MCJOutputArg();\n";	
+	oss << "oa"<<aonumber<<"[" << i << "]= new MCJOutputArg();\n";	
 	/*if(!ri.is_simple){
 		oss << "double[][] " << ri.id << i << ";\n";
 		oss << "oa[" << i << "].val=" << ri.id <<i<< ";\n";	
@@ -575,18 +578,19 @@ replaceEnds($2.source,$4.out_ref,$$.source);
    	
 	 
    }
-   oss << $5.source << "(oa," + $7.source +")";
+   oss << $5.source << "(oa"<<aonumber<<"," + $7.source +")";
 	
    for(int i=0;i<$2.varg.size();i++){
 	ref_info ri = $2.varg[i];	
 	if(!ri.is_simple){
-		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa[" << i <<"].val" << ")";
+		oss << ";\nsubsasgn(" <<ri.id <<"," << ri.ref_source <<"," << "oa"<<aonumber<<"[" << i <<"].val" << ")";
 	}else{
-		oss << ";\n"<< ri.id <<"=" << "oa[" << i <<"].val";	
+		oss << ";\n"<< ri.id <<"=" << "oa"<<aonumber<<"[" << i <<"].val";	
 	}
    }
 	
    $$.source = oss.str();
+   aonumber++;
 
 }
 ;  
@@ -607,9 +611,9 @@ TDSinsert($3.ri.id,sr);
 }}
 		 |  output_ref_list ',' out_ref { 
 
-for(int i=0;i<$1.varg.size();i++){
+/*for(int i=0;i<$1.varg.size();i++){
 	$$.varg.push_back($1.varg[i]);
-}
+}*/
 $$.varg.push_back($3.ri);
 $$.to_declare = $1.to_declare;
 symrec sr;
@@ -762,7 +766,6 @@ outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class "<<classname<<"{" << endl;
 	outfile << "static final double[][] pi = matrixFromDouble(Math.PI);" << endl;
-	outfile << "static MCJOutputArg[] oa;" << endl;
 	outfile << "static double[][] fortemp;" << endl;
 
 }
