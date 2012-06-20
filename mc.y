@@ -81,6 +81,8 @@ string class_name;
 int aonumber=0;
 int fornumber=0;
 
+bool need_declare;
+
 %}
 
 %token TEXT
@@ -654,8 +656,9 @@ for_command : FOR ID  {
 
 
 symrec sr;
+need_declare = false;
 if(!TDSget($2.source,&sr)){
- 
+ need_declare = true;
  sr.idtype = VAR;
  if(!TDSinsert($2.source,sr)){
   cerr << "pas possible assignement" << endl;
@@ -669,7 +672,9 @@ oss << fornumber;
 $$.source  = "double[][] fortemp"+oss.str()+" =" + $5.source +";\n";
 $$.source += " for(int posdfo=0;posdfo<fortemp"+oss.str()+".length;posdfo++){ \n";
 $$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp"+oss.str()+"[0].length;sdfgsdfgdf++){ \n";
-$$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp"+oss.str()+"[posdfo][sdfgsdfgdf]);\n";
+
+if(need_declare) $$.source += "double[][] ";
+$$.source += $2.source + " = matrixFromDouble(fortemp"+oss.str()+"[posdfo][sdfgsdfgdf]);\n";
 $$.source += $7.source;
 $$.source += "}\n}\n";
 

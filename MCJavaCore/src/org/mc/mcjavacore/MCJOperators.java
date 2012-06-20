@@ -119,6 +119,8 @@ public class MCJOperators {
                 }
             }
         } else {
+            printMatrix(size(t1),"t1");
+            printMatrix(size(t1),"t2");
             throw new MCJMatrixDimensionsException();
         }
 
@@ -136,6 +138,7 @@ public class MCJOperators {
     }
 
     private static double[][] mod(double[][] t, double a) {
+        //printMatrix(size(t),"t");
         double[][] res = new double[t.length][t[0].length];  // /!\
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < t[0].length; j++) {
@@ -163,6 +166,9 @@ public class MCJOperators {
         }
 
         return res;
+    }
+    public static double[][] rem(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {
+        return mod(add(mod(t1,t2),t2),t2);
     }
 
     public static double[][] ldivide(double[][] t1, double[][] t2) throws MCJMatrixDimensionsException {

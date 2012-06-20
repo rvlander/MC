@@ -75,6 +75,18 @@ public class MCJFunctions {
         }
         return res;
     }
+    
+      public static double[][] rem(MCJOutputArg[] out_args, double[][][] in_args) throws MCJMatrixDimensionsException {
+        double[][] a = in_args[0];
+        double[][] b = in_args[1];
+        double[][] res = MCJOperators.rem(a, b);
+        if (out_args != null) {
+            if (out_args.length == 1) {
+                out_args[0].val = res;
+            }
+        }
+        return res;
+    }
 
     public static double[][] size(MCJOutputArg[] oargs, double[][][] iargs) {
         double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);

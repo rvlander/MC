@@ -2,16 +2,18 @@ function [a,b,wx,wy,phix,phiy] = direct_method(dXsdT,dYsdT,t0xs,t0ys,ind0xs,ind0
 
 
 %calcul de R/a
-magic = (1/2)*(4+sqrt(2)*sqrt(-8+pi^2))/pi;
+magic = (1/2)*(4+sqrt(2)*sqrt(-8+pi.^2))/pi;
 % magic = 1
 
 
 
 % calculs des parametres
-nb_arcs = size(t0ys,2)-1;
+nb_arcs = numel(t0ys)-1;
+%pm('nb_arcs',nb_arcs);
 
 %pour y
 wy = pi./diff(t0ys);
+%pm('wy',wy);
 phiy = mod(-wy.*t0ys(1:nb_arcs),2*pi);
 
 %t1s = zeros(nb_arcs,1);
@@ -44,7 +46,7 @@ end
 
 % calculs des parametres
 
-nb_arcs = size(t0xs,2)-1;
+nb_arcs = numel(t0xs)-1;
 %pour x
 wx = pi./diff(t0xs);
 phix = mod(-wx.*t0xs(1:nb_arcs),2*pi);
