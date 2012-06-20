@@ -14,9 +14,10 @@ import static org.mc.mcjavacore.MCJBaseFunctions.*;
  */
 public class MCJUtils {
     
-    public static void printMatrix(double[][] a,String pre){
+    public static void printMatrix(double[][] a,String name){
+        System.out.println(name+" = ");
         for(int i=0;i<a.length;i++){
-            String s= pre +"[";
+            String s= "   [";
             for(int j=0;j<a[0].length;j++){
                 s += " "+a[i][j];
             }

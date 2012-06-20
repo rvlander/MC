@@ -509,6 +509,16 @@ public class MCJFunctions {
         return res;
     }
     
+    public static void pm(MCJOutputArg[] oargs, double[][][] iargs) {
+        double[][] nargin = MCJBaseFunctions.matrixFromDouble(iargs.length);
+        int n = (int)nargin[0][0];
+    
+        for(int i=0;i<n/2;i++){
+            MCJUtils.printMatrix(iargs[2*i+1],MCJBaseFunctions.stringFromMatrix(iargs[2*i]));       
+        }
+        
+    }
+    
     
     
     public static double[][] message(MCJOutputArg[] oargs, double[][][] iargs) {

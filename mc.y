@@ -79,6 +79,7 @@ bool testing = false;
 string class_name;
 
 int aonumber=0;
+int fornumber=0;
 
 %}
 
@@ -650,6 +651,8 @@ $$.ri = rinf;
 
 for_command : FOR ID  {
 
+
+
 symrec sr;
 if(!TDSget($2.source,&sr)){
  
@@ -661,17 +664,20 @@ if(!TDSget($2.source,&sr)){
 '=' expr opt_delimiter  statement_list END {
 
 $$.to_declare = $7.to_declare;
-
-$$.source  = " fortemp =" + $5.source +";\n";
-$$.source += " for(int posdfo=0;posdfo<fortemp.length;posdfo++){ \n";
-$$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp[0].length;sdfgsdfgdf++){ \n";
-$$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp[posdfo][sdfgsdfgdf]);\n";
+ostringstream oss;
+oss << fornumber;
+$$.source  = "double[][] fortemp"+oss.str()+" =" + $5.source +";\n";
+$$.source += " for(int posdfo=0;posdfo<fortemp"+oss.str()+".length;posdfo++){ \n";
+$$.source += " for(int sdfgsdfgdf=0;sdfgsdfgdf<fortemp"+oss.str()+"[0].length;sdfgsdfgdf++){ \n";
+$$.source += "double[][] "+ $2.source + " = matrixFromDouble(fortemp"+oss.str()+"[posdfo][sdfgsdfgdf]);\n";
 $$.source += $7.source;
 $$.source += "}\n}\n";
 
 if(TDSremove($2.source) !=1){
 	cerr << "problème de varaible dans al boucle interne" <<endl;
 };
+
+fornumber++;
 
 }
 
@@ -766,7 +772,7 @@ outfile << "import static org.mc.mcjavacore.MCJOperators.*;" << endl;
 	outfile << "import static org.mc.mcjavacore.MCJBaseFunctions.*;" << endl;
 	outfile << "public class "<<classname<<"{" << endl;
 	outfile << "static final double[][] pi = matrixFromDouble(Math.PI);" << endl;
-	outfile << "static double[][] fortemp;" << endl;
+	//outfile << "static double[][] fortemp;" << endl;
 
 }
 

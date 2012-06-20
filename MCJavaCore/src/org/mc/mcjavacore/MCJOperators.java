@@ -77,6 +77,8 @@ public class MCJOperators {
                 }
             }
         } else {
+            printMatrix(size(t1));
+            printMatrix(size(t2));
             throw new MCJMatrixDimensionsException();
         }
 
@@ -268,6 +270,8 @@ public class MCJOperators {
                 }
             }
         }else {
+            printMatrix(size(t1));
+            printMatrix(size(t2));
             throw new MCJMatrixDimensionsException();
         }
 
@@ -464,6 +468,8 @@ public class MCJOperators {
             for (int i = 0; i < iIndex.length; i++) {
                 for (int j = 0; j < jIndex.length; j++) {
                     if ((int) iIndex[i] > A.length || (int) jIndex[j] > A[0].length) {
+                        System.out.println(iIndex[i] +" "+ A.length);
+                        System.out.println(jIndex[j] +" "+ A[0].length);
                         throw new MCJIndexExceedsMatrixDimensions();
                     }
                     res[i][j] = A[(int) iIndex[i] - 1][(int) jIndex[j] - 1];

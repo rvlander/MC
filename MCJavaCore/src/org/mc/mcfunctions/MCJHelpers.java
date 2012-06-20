@@ -22,7 +22,7 @@ public class MCJHelpers {
         int n = (int) MCJBaseFunctions.numel(vect)[0][0];
         double[] res = new double[n];
         for (int i = 1; i <= n; i++) {
-            res[i] = MCJUtils.kthElemValue(vect, i);
+            res[i-1] = MCJUtils.kthElemValue(vect, i);
         }
         return res;
     }
