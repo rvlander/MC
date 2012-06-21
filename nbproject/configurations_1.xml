@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="80">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="MC" root=".">
+      <df name="cpptests">
+        <in>strings_test.cpp</in>
+      </df>
+      <df name="exemples">
+        <df name="algo">
+          <df name="Base">
+            <in>analyze_direct.m</in>
+            <in>crossing.m</in>
+            <in>crossing1.m</in>
+            <in>direct_method.m</in>
+            <in>export2strace.m</in>
+            <in>extrema.m</in>
+            <in>extrema2.m</in>
+            <in>hilb2.m</in>
+            <in>hilbert_prel.m</in>
+            <in>init.m</in>
+            <in>mfcsvread.m</in>
+            <in>readSTR_sep.m</in>
+            <in>readTR_sep.m</in>
+            <in>resample_hw_sin.m</in>
+            <in>test_straceimport.m</in>
+          </df>
+          <df name="Divers">
+            <in>loop_direct.m</in>
+          </df>
+          <df name="Energie">
+            <in>analyze_energie.m</in>
+          </df>
+          <df name="Forme">
+            <in>analyze_direct_parab.m</in>
+            <in>analyze_direct_triangle.m</in>
+            <in>direct_method_parab.m</in>
+            <in>direct_method_triangle.m</in>
+            <in>resample_hw_parab.m</in>
+            <in>resample_hw_triangle.m</in>
+          </df>
+          <df name="Old">
+            <in>add_vect.m</in>
+            <in>analyse_last.m</in>
+            <in>analyse_last_filt.m</in>
+            <in>analyse_last_filt_fortablette.m</in>
+            <in>analyse_last_perturbe.m</in>
+            <in>fminsearch_test.m</in>
+            <in>infini.m</in>
+            <in>is_phi_cst.m</in>
+            <in>plot_trace.m</in>
+            <in>readTR.m</in>
+            <in>readTR_ori.m</in>
+            <in>read_marseille.m</in>
+            <in>resample_hw_sin_zeros.m</in>
+          </df>
+          <df name="Optimisation">
+            <df name="oldies">
+              <in>analyze_lsqnonlin_fortablette.m</in>
+              <in>analyze_lsqnonlin_fortablette_sin.m</in>
+              <in>bigfun.m</in>
+              <in>bigfuntguess.m</in>
+              <in>brute_force.m</in>
+              <in>comparing.m</in>
+              <in>fastbigfun.m</in>
+              <in>fminunc_test.m</in>
+              <in>fminunc_test_tguess.m</in>
+              <in>fullvecbigfun.m</in>
+              <in>ga_test.m</in>
+              <in>lsqnonlin_method.m</in>
+              <in>lsqnonlin_method_split.m</in>
+              <in>lsqnonlin_test.m</in>
+              <in>recuit_test.m</in>
+              <in>resample_hw_cos.m</in>
+              <in>simplefun.m</in>
+              <in>vecbigfun.m</in>
+            </df>
+            <in>comparing_long.m</in>
+            <in>comparing_stat_nostat.m</in>
+            <in>comparing_view.m</in>
+            <in>etude_stat.m</in>
+            <in>fullvecbigfun_sin.m</in>
+            <in>lsqnonlin_method_1run.m</in>
+            <in>lsqnonlin_method_sin.m</in>
+          </df>
+          <df name="Stat">
+            <in>directmethode_etude_stat.m</in>
+            <in>directmethode_etude_stat_2.m</in>
+            <in>etude_period.m</in>
+          </df>
+          <df name="Temps">
+            <in>animate.m</in>
+            <in>compare_machine.m</in>
+            <in>compare_machine_rand.m</in>
+            <in>compare_machine_rand_graph.m</in>
+            <in>resampleXY.m</in>
+            <in>resampleXYrand.m</in>
+          </df>
+          <df name="Vitesse">
+            <in>etude_effet_vitesse.m</in>
+            <in>etudemuscle.m</in>
+          </df>
+          <in>import_path.m</in>
+        </df>
+        <in>funqui.m</in>
+        <in>test.m</in>
+      </df>
+      <df name="javatests">
+      </df>
+      <df name="mcbase">
+        <in>class_reserved.m</in>
+        <in>diff.m</in>
+        <in>eye.m</in>
+        <in>filter.m</in>
+        <in>isa.m</in>
+        <in>isempty.m</in>
+        <in>isinteger.m</in>
+        <in>isscalar.m</in>
+        <in>isvector.m</in>
+        <in>length.m</in>
+        <in>nargchk.m</in>
+        <in>ndims.m</in>
+        <in>ones.m</in>
+        <in>permute.m</in>
+        <in>reshape.m</in>
+        <in>sparse.m</in>
+        <in>strcmp.m</in>
+      </df>
+      <df name="MCJavaCore">
+        <df name="build">
+          <df name="classes">
+            <df name="org">
+              <df name="mc">
+                <df name="mcfunctions">
+                </df>
+                <df name="mcjavacore">
+                </df>
+                <df name="mcjavautils">
+                </df>
+              </df>
+            </df>
+          </df>
+          <df name="empty">
+          </df>
+          <df name="generated-sources">
+            <df name="ap-source-output">
+            </df>
+          </df>
+        </df>
+        <df name="dist">
+          <df name="lib">
+          </df>
+        </df>
+        <df name="lib">
+          <df name="CopyLibs">
+          </df>
+          <df name="junit">
+          </df>
+          <df name="junit_4">
+          </df>
+        </df>
+        <df name="src">
+          <df name="org">
+            <df name="mc">
+              <df name="mcfunctions">
+              </df>
+              <df name="mcjavacore">
+              </df>
+              <df name="mcjavautils">
+              </df>
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="test_Matlab">
+        <in>filter_nu.m</in>
+        <in>fitlfilt.m</in>
+        <in>test.m</in>
+      </df>
+      <df name="test_suite">
+        <df name="Operators">
+          <in>colon_test.m</in>
+          <in>matrix_declaration_test.m</in>
+          <in>subasgn_test.m</in>
+        </df>
+      </df>
+      <df name="utils">
+        <in>create_path_file.m</in>
+      </df>
+      <in>exportVar.m</in>
+      <in>lex.yy.c</in>
+      <in>lmsrj.cpp</in>
+      <in>mc.tab.c</in>
+      <in>tds.cpp</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <itemPath>launch_test.sh</itemPath>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>lmsrj</executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="cpptests/strings_test.cpp" ex="true" tool="1" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/analyze_direct.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/crossing.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/crossing1.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/direct_method.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/export2strace.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/extrema.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/extrema2.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/hilb2.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/hilbert_prel.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/init.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/mfcsvread.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/readSTR_sep.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/readTR_sep.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/resample_hw_sin.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Base/test_straceimport.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Divers/loop_direct.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Energie/analyze_energie.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Forme/analyze_direct_parab.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Forme/analyze_direct_triangle.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Forme/direct_method_parab.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Forme/direct_method_triangle.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Forme/resample_hw_parab.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Forme/resample_hw_triangle.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Old/add_vect.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/analyse_last.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/analyse_last_filt.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Old/analyse_last_filt_fortablette.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Old/analyse_last_perturbe.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Old/fminsearch_test.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/infini.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/is_phi_cst.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/plot_trace.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/readTR.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/readTR_ori.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/read_marseille.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Old/resample_hw_sin_zeros.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/comparing_long.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/comparing_stat_nostat.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/comparing_view.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/etude_stat.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/fullvecbigfun_sin.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/lsqnonlin_method_1run.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/lsqnonlin_method_sin.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/analyze_lsqnonlin_fortablette.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/analyze_lsqnonlin_fortablette_sin.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/bigfun.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/bigfuntguess.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/brute_force.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/comparing.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/fastbigfun.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/fminunc_test.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/fminunc_test_tguess.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/fullvecbigfun.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/ga_test.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/lsqnonlin_method.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/lsqnonlin_method_split.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/lsqnonlin_test.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/recuit_test.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/resample_hw_cos.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/simplefun.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Optimisation/oldies/vecbigfun.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Stat/directmethode_etude_stat.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Stat/directmethode_etude_stat_2.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Stat/etude_period.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Temps/animate.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Temps/compare_machine.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Temps/compare_machine_rand.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Temps/compare_machine_rand_graph.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Temps/resampleXY.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Temps/resampleXYrand.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/Vitesse/etude_effet_vitesse.m"
+            ex="true"
+            tool="0"
+            flavor="0">
+      </item>
+      <item path="exemples/algo/Vitesse/etudemuscle.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/algo/import_path.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/funqui.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="exemples/test.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="lex.yy.c" ex="false" tool="3" flavor="0">
+      </item>
+      <item path="mcbase/class_reserved.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/diff.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/eye.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/filter.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/isa.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/isempty.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/isinteger.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/isscalar.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/isvector.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/length.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/nargchk.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/ndims.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/ones.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/reshape.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/sparse.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="mcbase/strcmp.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="tds.cpp" ex="false" tool="3" flavor="0">
+      </item>
+      <item path="test_Matlab/filter_nu.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="test_Matlab/fitlfilt.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="test_Matlab/test.m" ex="true" tool="0" flavor="0">
+      </item>
+      <item path="utils/create_path_file.m" ex="true" tool="0" flavor="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
