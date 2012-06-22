@@ -12,6 +12,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>tds.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -23,6 +24,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="build" displayName="build" projectFiles="true">
+        <itemPath>build/lex.yy.c</itemPath>
         <itemPath>build/mc.tab.c</itemPath>
       </logicalFolder>
       <itemPath>lmsrj.cpp</itemPath>
@@ -58,6 +60,8 @@
           </cTool>
         </makeTool>
       </makefileType>
+      <item path="build/lex.yy.c" ex="false" tool="3" flavor="0">
+      </item>
       <item path="func_file" ex="true" tool="3" flavor="0">
       </item>
       <item path="globals_file" ex="true" tool="3" flavor="0">
@@ -65,6 +69,13 @@
       <item path="lex.yy.c" ex="false" tool="3" flavor="0">
       </item>
       <item path="path_file" ex="true" tool="3" flavor="0">
+      </item>
+      <item path="tds.cpp" ex="false" tool="1" flavor="0">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
       </item>
     </conf>
   </confs>

@@ -10,11 +10,13 @@
 #include <fstream>
 #include <vector>
 
+#include <libgen.h>
 #include <dirent.h>
 
 using namespace std;
 
-#include "tds.cpp"
+#include "tds.h"
+#include "compiler.h"
 
 #define ROUGE "\\033[1;31m" 
 #define VERT "\\033[1;32m" 
@@ -842,13 +844,13 @@ void writeJavaFile(const string &source, bool ismain){
 	
 	if(ismain){
 	if(!testing){
-	map<string,symrec>::iterator it;
+/*	map<string,symrec>::iterator it;
 	for (it = tds.begin(); it != tds.end(); it++){
 		if ((it->second).idtype == VAR){		
 			outfile << "System.out.println(\""+it->first+"=\");"+"\nprintMatrix("+it->first +");"<<endl;
 			outfile << "System.out.println();" <<endl;
 		}			
-	}
+	}*/
 	}
 	else{
 		includeTesting();	
@@ -969,15 +971,87 @@ void readGlobalsFile(string globals_file){
      } 
 }
 
+void includeBeforeHeader(const char * filepath){
+     ifstream fp(filepath);
+
+     char ligne[1024];
+
+     while(fp.getline(ligne,1024)){
+	string ll(ligne);
+        outfile<< ll <<endl;
+
+     } 
+}
+
+void compile(const char * matlab_src, const char * output_dir, const char * header_file) {
+
+    FILE * fid;
+    
+    root_file = matlab_src;
+
+    to_compile.push_back(root_file);
+
+    readPathFile("path_file");
+    readFunctionFile("func_file");
+    readFunctionFile("globals_file");
+
+    int pos = root_file.find_last_of(".");
+    class_name = root_file.substr(0, pos);
+
+    string outf = class_name + ".java";
+    if(output_dir != NULL){
+        char p[1024];
+        strcpy(p,outf.c_str());
+        char * base = basename(p);
+        outf = string(output_dir) +"/"+base;
+    }
+    outfile.open(outf.c_str(), fstream::out);
+
+    if (!outfile.is_open()) {
+        cerr << "can't open file" << endl;
+    }
 
 
-int main(int argc, const char ** argv){
+    pos = class_name.find_last_of("/");
+    if (header_file != NULL) {
+        includeBeforeHeader(header_file);
+    }
+    writeJavaFileHeader(class_name.substr(pos + 1, class_name.npos - pos));
 
 
- int externalfile=0;
- externalfile = argc>1;	
+    cout << "Begin compiling ..." << endl;
+
+
+    while (!to_compile.empty()) {
+        string comp = to_compile.back();
+        to_compile.pop_back();
+        cout << "Compiling " << comp << endl;
+        fid = fopen(comp.c_str(), "r");
+        //cout << "File opened" << endl; 	
+        in_matrix = 0;
+        yyrestart(fid);
+        yyparse();
+        //cout << "File parsed" << endl;
+        fclose(fid);
+        //cout << "File closed" << endl;
+    }
+    writeJavaFileFooter();
+    outfile.close();
+
+}
+
+
+/*int main(int argc, const char ** argv){
+
+
+
  FILE *fid;
  root_file = argv[1];
+ 
+ 
+ 
+ 
+ 
 
  to_compile.push_back(argv[1]);
  
@@ -997,6 +1071,9 @@ readFunctionFile("globals_file");
 
 
 pos = class_name.find_last_of("/");
+if(argc>2){
+    includeBeforeHeader(argv[2]);
+}
 writeJavaFileHeader(class_name.substr(pos+1,class_name.npos-pos));
 
 
@@ -1020,5 +1097,5 @@ writeJavaFileFooter();
 outfile.close();
 
  return 0;
-}
+}*/
 

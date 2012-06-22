@@ -1,14 +1,17 @@
-/*#include<map>
+#include<map>
 #include<iostream>
-#include<string>
-using namespace std;*/
 
-enum IDType {FUNC,VAR};
+
+#include"tds.h"
+
+using namespace std;
+
+/*enum IDType {FUNC,VAR};
 
 struct symrec {
 	IDType idtype;
 	string source;
-};
+};*/
 
 map<string,symrec> tds;
 
