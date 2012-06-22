@@ -892,6 +892,7 @@ int searchFunction(const string &id){
 	struct dirent *pdirent;
 
 	string target = id+".m";
+       
 
 	int n = les_path.size();
 	int i=0;	
@@ -991,9 +992,9 @@ void compile(const char * matlab_src, const char * output_dir, const char * head
 
     to_compile.push_back(root_file);
 
-    readPathFile("path_file");
-    readFunctionFile("func_file");
-    readFunctionFile("globals_file");
+    readPathFile("/home/rvlander/MC/path_file");
+    readFunctionFile("/home/rvlander/MC/func_file");
+    readFunctionFile("/home/rvlander/MC/globals_file");
 
     int pos = root_file.find_last_of(".");
     class_name = root_file.substr(0, pos);
@@ -1008,7 +1009,7 @@ void compile(const char * matlab_src, const char * output_dir, const char * head
     outfile.open(outf.c_str(), fstream::out);
 
     if (!outfile.is_open()) {
-        cerr << "can't open file" << endl;
+        cerr << "can't open file : "<< outf << endl;
     }
 
 
@@ -1025,13 +1026,13 @@ void compile(const char * matlab_src, const char * output_dir, const char * head
     while (!to_compile.empty()) {
         string comp = to_compile.back();
         to_compile.pop_back();
-        cout << "Compiling " << comp << endl;
+        //cout << "Compiling " << comp << endl;
         fid = fopen(comp.c_str(), "r");
-        //cout << "File opened" << endl; 	
+       // cout << "File opened" <<fid  << endl; 	
         in_matrix = 0;
         yyrestart(fid);
         yyparse();
-        //cout << "File parsed" << endl;
+       // cout << "File parsed" << endl;
         fclose(fid);
         //cout << "File closed" << endl;
     }

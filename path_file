@@ -1,7 +1,7 @@
 ./
-./exemples
-./exemples/algo/Base
-./mcbase
+/home/rvlander/MC/exemples
+/home/rvlander/MC/exemples/algo/Base
+/home/rvlander/MC/mcbase
 /usr/local/MATLAB/R2012a/toolbox/hdlcoder/matlabhdlcoder/matlabhdlcoder
 /usr/local/MATLAB/R2012a/toolbox/hdlcoder/matlabhdlcoder
 /usr/local/MATLAB/R2012a/toolbox/matlab/optimfun

@@ -13,11 +13,11 @@ int main (int argc, char **argv) {
         int this_option_optind = optind ? optind : 1;
         switch (c) {
         case 'o':
-            printf ("option c with value '%s'\n", optarg);
+            printf ("option o with value '%s'\n", optarg);
             output_dir = optarg;
             break;
         case 'h':
-            printf ("option d with value '%s'\n", optarg);
+            printf ("option h with value '%s'\n", optarg);
             header = optarg;
             break;
         case '?':
