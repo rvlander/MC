@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="80">
-    <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-        <logicalFolder name="HeaderFiles"
-                       displayName="Header Files"
-                       projectFiles="true">
-        </logicalFolder>
-        <logicalFolder name="ResourceFiles"
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="ConfigFiles"
+                   displayName="Config Files"
+                   projectFiles="true">
+      <itemPath>func_file</itemPath>
+      <itemPath>globals_file</itemPath>
+      <itemPath>lex.yy.c</itemPath>
+      <itemPath>path_file</itemPath>
+    </logicalFolder>
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-        </logicalFolder>
-        <logicalFolder name="ConfigFiles"
-                       displayName="Config Files"
-                       projectFiles="true">
-        </logicalFolder>
-        <logicalFolder name="SourceFiles"
+      <itemPath>mc.lex</itemPath>
+      <itemPath>mc.y</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-        </logicalFolder>
-        <logicalFolder name="ExternalFiles"
+      <itemPath>lmsrj.cpp</itemPath>
+      <itemPath>mc.tab.c</itemPath>
+      <itemPath>tds.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
-            <itemPath>Makefile</itemPath>
-            <itemPath>launch.sh</itemPath>
-            <itemPath>launch_test.sh</itemPath>   
-        </logicalFolder>
+      <itemPath>Makefile</itemPath>
+      <itemPath>TODO</itemPath>
+      <itemPath>launch.sh</itemPath>
+      <itemPath>launch_test.sh</itemPath>
     </logicalFolder>
-    <projectmakefile>Makefile</projectmakefile>
-    <confs>
-        <conf name="Default" type="0">
-            <toolsSet>
-                <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
-                <compilerSet>default</compilerSet>
-            </toolsSet>
-            <makefileType>
-                <makeTool>
-                    <buildCommandWorkingDir>.</buildCommandWorkingDir>
-                    <buildCommand>${MAKE} -f Makefile</buildCommand>
-                    <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-                    <executablePath>lmsrj</executablePath>
-                </makeTool>
-            </makefileType>
-        </conf>
-    </confs>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>lmsrj</executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="func_file" ex="true" tool="3" flavor="0">
+      </item>
+      <item path="globals_file" ex="true" tool="3" flavor="0">
+      </item>
+      <item path="lex.yy.c" ex="false" tool="3" flavor="0">
+      </item>
+      <item path="path_file" ex="true" tool="3" flavor="0">
+      </item>
+    </conf>
+  </confs>
 </configurationDescriptor>
