@@ -15,8 +15,7 @@ ${OBJ_DIR}/mc.tab.c : mc.y
 	bison mc.y --report=state --report-file=logs/mc.output -o $@
 
 ${OBJ_DIR}/lex.yy.c : mc.lex
-	flex mc.lex
-	mv lex.yy.c ${OBJ_DIR}
+	flex -o ${OBJ_DIR}/lex.yy.c mc.lex
 
 clean:
 	rm ${OBJ_DIR}/mc.tab.c ${OBJ_DIR}/lex.yy.c
