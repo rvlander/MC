@@ -942,6 +942,12 @@ void readPathFile(string path_file){
         les_path.push_back(ligne);     
 
      } 
+     
+     char p[1024];
+     strcpy(p,root_file.c_str());
+     char * base = dirname(p);
+     string ss(base);
+     les_path.push_back(ss);
 }
 
 void readFunctionFile(string func_file){
