@@ -21,4 +21,6 @@ sort
 warning
 pm
 rem
+log
+isfinite
 

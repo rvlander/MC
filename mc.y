@@ -903,7 +903,7 @@ int searchFunction(const string &id){
 	pdir = opendir(lepath.c_str());
 
  	if(pdir == NULL){
-		cout << strerror(errno) << endl;	
+		//cout << strerror(errno) << endl;	
 	}else{
 
 	while(res==0 && (pdirent = readdir(pdir)) != NULL){

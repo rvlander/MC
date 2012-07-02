@@ -190,7 +190,61 @@ public class MCJFunctions {
         }
         return res;
     }
+    
+    public static double[][] log(MCJOutputArg[] oargs, double[][][] iargs) {
+        double[][] arg = iargs[0];
+        double[][] res;
+        if (MCJBaseFunctions.numel(arg)[0][0] != 0) {
+            int m = arg.length;
+            int n = arg[0].length;
+            res = new double[m][n];
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    res[i][j] = Math.log(arg[i][j]);
+                }
+            }
 
+        } else {
+            res = new double[0][0];
+        }
+
+
+        if (oargs != null) {
+            if (oargs.length == 1) {
+                oargs[0].val = res;
+            }
+        }
+        return res;
+    }
+
+    public static double[][] isfinite(MCJOutputArg[] oargs, double[][][] iargs) {
+        double[][] arg = iargs[0];
+        double[][] res;
+        if (MCJBaseFunctions.numel(arg)[0][0] != 0) {
+            int m = arg.length;
+            int n = arg[0].length;
+            res = new double[m][n];
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    boolean tmp = arg[i][j]!=Double.NaN&&arg[i][j]!=Double.NEGATIVE_INFINITY&&arg[i][j]!=Double.POSITIVE_INFINITY;
+                    res[i][j] = tmp?1:0;
+                }
+            }
+
+        } else {
+            res = new double[0][0];
+        }
+
+
+        if (oargs != null) {
+            if (oargs.length == 1) {
+                oargs[0].val = res;
+            }
+        }
+        return res;
+    }
+    
+    
     public static double[][] sign(MCJOutputArg[] oargs, double[][][] iargs) {
         double[][] arg = iargs[0];
         double[][] res;
