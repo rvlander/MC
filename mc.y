@@ -990,9 +990,13 @@ void includeBeforeHeader(const char * filepath){
      } 
 }
 
-void compile(const char * matlab_src, const char * output_dir, const char * header_file) {
+void compile(const char * matlab_src, const char * output_dir, const char * header_file, bool test) {
 
+    testing = test;
+    
+    
     FILE * fid;
+    
     
     root_file = matlab_src;
 
