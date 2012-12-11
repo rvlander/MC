@@ -1,2 +1,4 @@
-B = isfinite(7);
-pm('B',B);
+T = 1:10;
+X =1:10;
+T1 = 1:0.5:10;
+Y= interp1(T,X,T1)

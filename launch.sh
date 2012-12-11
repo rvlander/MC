@@ -12,7 +12,7 @@ else
 infile="$1"
 fi
 
-./compile $infile
+./compile -v $infile
 
 javac -cp $MC_CORE `echo $infile|sed "s/\.m$/.java/"`
 cd `dirname $infile`

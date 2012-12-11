@@ -9,8 +9,9 @@ int main(int argc, char **argv) {
     char * source = 0;
     char * output_dir = 0;
     char * header = 0;
-    bool t =false;
-    while ((c = getopt(argc, argv, "to:h:")) != -1) {
+    bool t = false;
+    bool v = false;
+    while ((c = getopt(argc, argv, "vto:h:")) != -1) {
         int this_option_optind = optind ? optind : 1;
         switch (c) {
             case 'o':
@@ -23,6 +24,9 @@ int main(int argc, char **argv) {
                 break;
             case 't':
                 t = true;
+                break;
+            case 'v':
+                v = true;
                 break;
             case '?':
                 break;
@@ -38,7 +42,7 @@ int main(int argc, char **argv) {
         printf ("\n");*/
     }
 
-    compile(source, output_dir, header,t);
+    compile(source, output_dir, header, t, v);
 
     exit(0);
 }
