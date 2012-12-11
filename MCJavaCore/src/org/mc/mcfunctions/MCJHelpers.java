@@ -42,6 +42,13 @@ public class MCJHelpers {
         return res;
     }
     
+     public static double[][] MatrixFromDouble(double d) throws MCJMatrixDimensionsException {
+        
+        double[][] res = {{d}};
+     
+        return res;
+    }
+    
     public static MCJOutputArg[] createOutputArgArray(int i){
         MCJOutputArg[] res = new MCJOutputArg[i];
         for(int j=0; j<i; j++){
