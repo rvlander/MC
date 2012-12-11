@@ -492,6 +492,10 @@ public class MCJOperators {
         return new double[0][0];
     }
     
+     public static double[][] cell_subsref(double[][][] A, double[][] index) throws MCJIndexExceedsMatrixDimensions {
+        return A[(int)index[0][0]];
+    }
+    
     public static double[][] assign(double[][] A,double val ,int i,int j){
         double[][] s = size(A);
         double[][] res;

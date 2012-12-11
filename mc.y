@@ -85,6 +85,9 @@ int fornumber=0;
 
 bool need_declare;
 
+int no_line=1;
+
+
 %}
 
 %token TEXT
@@ -122,7 +125,7 @@ bool need_declare;
 %token MSPACE
 
 
-%token VARARGIN
+//%token VARARGIN
 
 
 %left LOR
@@ -172,7 +175,7 @@ f_all : f_def_line f_body {$$.source = $1.source+" throws Exception,Throwable{\n
 symrec sr;
 sr.idtype =VAR;
 $$.source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
-
+$$.source += "double[][][] varargin = iargs;\n";
 for(int i=0;i<$1.ivarg.size();i++){
 ostringstream oss;
 oss << i;
@@ -416,29 +419,43 @@ $$.source = "matrixFromText("+$2.source+")" ;
 			cerr << " Symbol "+$1.source+" not declared" << endl;		
 		}
 		}
-	 | ID '('  ref_expr_list ')' {
-	  
-          symrec sr;
-		  if(!(TDSget($1.source, &sr))){
-			int t = searchFunction($1.source);
+	 | ID '('  ref_expr_list ')' {	  
+                symrec sr;
+		if(!(TDSget($1.source, &sr))){
+                        int t = searchFunction($1.source);
 			if(t != false) {
-				sr.idtype = FUNC;
-                              if(!TDSinsert($1.source,sr)){
-  cerr << "pas possible assignement" << endl;
- }
+                                sr.idtype = FUNC;
+                                if(!TDSinsert($1.source,sr)){
+                                        cerr << "pas possible assignement" << endl;
+                                }
 			}else {
-			cerr << " Symbol "+$1.source+" not declared" << endl;
+                                cerr << " Symbol "+$1.source+" not declared" << endl;
 				sr.idtype = FUNC;  
 			}		
-		  }
-          if(sr.idtype == VAR) {
-                        
-		  	$$.source = "subsref("+$1.source+","+$3.source+")";
+                }
+                if(sr.idtype == VAR) {
+                        $$.source = "subsref("+$1.source+","+$3.source+")";
 			replaceEnds($1.source,$3.out_ref,$$.source);
-          }else{
-          	$$.source = $1.source+"(null,"+$3.source+")";
-          }
-		}      
+                }else{
+                        $$.source = $1.source+"(null,"+$3.source+")";
+                }
+	}
+         
+        | ID '{' ref_index '}'{
+                symrec sr;
+		if(!(TDSget($1.source, &sr))){
+                        cerr << " Symbol "+$1.source+" not declared" << endl;		
+                }
+                if(sr.idtype == VAR) {
+                    if($3.source =="null")
+                        $$.source = $1.source;
+                    else{
+                        $$.source = "cell_subsref("+$1.source+","+$3.source+")";
+			replaceEnds($1.source,1,$$.source);
+                    }
+                }
+        } 
+         
 ;
 
 
@@ -464,7 +481,7 @@ ref_index :':'  {$$.source = "null";}
 
 ref_expr_list : {$$.source = "null";}
               | comma_ref_list {$$.source = "new double[][][]{"+ $1.source+"}";$$.out_ref = $1.out_ref;}
-              | VARARGIN {$$.source = "iargs";}
+//              | VARARGIN {$$.source = "iargs";}
 ;
 
 comma_ref_list : ref_index {$$.source = $1.source;$$.out_ref = 1;}
@@ -1041,6 +1058,8 @@ void compile(const char * matlab_src, const char * output_dir, const char * head
        // cout << "File opened" <<fid  << endl; 	
         in_matrix = 0;
         yyrestart(fid);
+        no_line=1;
+      //  verbose("1> ");
         yyparse();
        // cout << "File parsed" << endl;
         fclose(fid);

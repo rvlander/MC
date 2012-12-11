@@ -9,6 +9,7 @@ void verbose(string token){
 	return;
 }
 
+
 %}
 %option noyywrap
 %s QuoteSC
@@ -32,7 +33,6 @@ elseif {verbose("ELSEIF");return(ELSEIF);};
 else {verbose("ELSE");return(ELSE);};
 while {verbose("WHILE");return(WHILE);};
 function {verbose("FUNCTION");return(FUNCTION);};
-varargin\{:\} {verbose("VARARGIN");return(VARARGIN);};
 
 
 \  {BEGIN(INITIAL);
@@ -65,6 +65,8 @@ return(ID);}
 \.\\ {BEGIN(INITIAL);verbose("LDEVIDE");return(LDIVIDE);}
 \( {BEGIN(INITIAL);verbose("(");return('(');}
 \) {BEGIN(INITIAL);verbose(")");return(')');}
+\} {BEGIN(INITIAL);verbose("}");return('}');}
+\{ {BEGIN(INITIAL);verbose("{");return('{');}
 \^ {BEGIN(INITIAL);verbose("^");return('^');}
 \.\^ {BEGIN(INITIAL);verbose("POWER");return(POWER);}
 : {BEGIN(INITIAL);verbose(":");return(':');}
@@ -83,7 +85,12 @@ return(ID);}
 \|\| {BEGIN(INITIAL);verbose("LOR");return(LOR);}
 && {BEGIN(INITIAL);verbose("LAND");return(LAND);}
 = {BEGIN(INITIAL);verbose("=");return('=');}
-{newline} {BEGIN(INITIAL);verbose("NEWLINE\n");return(NEWLINE);}
+{newline} {BEGIN(INITIAL);
+        no_line++;
+ostringstream oss;
+         oss <<"NEWLINE\n" <<no_line <<"> ";
+         
+        verbose(oss.str());return(NEWLINE);}
 \.' {BEGIN(QuoteSC);verbose("TRANSPOSE");return(TRANSPOSE);}
 ' {BEGIN(QuoteSC);verbose("CTRANSPOSE");return(CTRANSPOSE);}
 ~ {BEGIN(INITIAL);verbose("~");return('~');}
