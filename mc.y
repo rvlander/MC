@@ -175,7 +175,7 @@ f_all : f_def_line f_body {$$.source = $1.source+" throws Exception,Throwable{\n
 symrec sr;
 sr.idtype =VAR;
 $$.source += "double[][] nargin = matrixFromDouble(iargs.length);\n";
-$$.source += "double[][][] varargin = iargs;\n";
+//$$.source += "double[][][] varargin = iargs;\n";
 for(int i=0;i<$1.ivarg.size();i++){
 ostringstream oss;
 oss << i;
@@ -534,6 +534,20 @@ if(!TDSget($1.source,&sr)){
 }
 $$.source += $1.source + " = subsasgn("+$1.source + "," + $3.source +","+$6.source+")";
 replaceEnds($1.source,$3.out_ref,$$.source);
+}
+            
+            | ID '{'expr '}'  '=' expr{
+$$.source = "";
+symrec sr;
+if(!TDSget($1.source,&sr)){
+ $$.to_declare.push_back($1.source);
+ sr.idtype = VAR;
+ if(!TDSinsert($1.source,sr)){
+  cerr << "pas possible assignement" << endl;
+ }
+}
+$$.source += $1.source+"[(int)" + $3.source +"]" + " = " + $6.source; 
+//replaceEnds($1.source,$3.out_ref,$$.source);
 }
               |LD ID RD '=' expr {
 $$.source = "";
