@@ -6,7 +6,7 @@
 # Created on 23 mai 2012, 11:04:42
 #
 
-MC_HOME=/home/rvlander/MC/
+MC_HOME=`pwd`
 MC_CORE=$MC_HOME/MCJavaCore/dist/MCJavaCore.jar
 
 files=`find test_suite/ |grep .m$`

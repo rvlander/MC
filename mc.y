@@ -1002,9 +1002,9 @@ void compile(const char * matlab_src, const char * output_dir, const char * head
 
     to_compile.push_back(root_file);
 
-    readPathFile("/home/rvlander/MC/path_file");
-    readFunctionFile("/home/rvlander/MC/func_file");
-    readFunctionFile("/home/rvlander/MC/globals_file");
+    readPathFile("/home/rvlander/These/MatlabCompiler/MC/path_file");
+    readFunctionFile("/home/rvlander/These/MatlabCompiler/MC/func_file");
+    readFunctionFile("/home/rvlander/These/MatlabCompiler/MC/globals_file");
 
     int pos = root_file.find_last_of(".");
     class_name = root_file.substr(0, pos);

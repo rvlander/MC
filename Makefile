@@ -1,4 +1,4 @@
-PROJECT_DIR = /home/rvlander/MC
+PROJECT_DIR = `pwd`
 CPP = g++
 OBJ_DIR=build
 SRC=tds.cpp main.cpp

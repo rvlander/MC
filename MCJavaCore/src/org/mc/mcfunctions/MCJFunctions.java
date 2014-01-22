@@ -13,6 +13,7 @@ import org.mc.mcjavacore.MCJElemPosition;
 import org.mc.mcjavacore.MCJMatrixDimensionsException;
 import org.mc.mcjavacore.MCJOperators;
 import org.mc.mcjavautils.MCJUtils;
+import static org.mc.mcjavautils.MCJUtils.*;
 
 /**
  *
@@ -94,8 +95,9 @@ public class MCJFunctions {
         if (nargin[0][0] > 0) {
             A = iargs[0];
         }
+        //printMatrix(A);
         double[][] res = MCJBaseFunctions.size(A);
-        double[][] dim = new double[0][0];
+        //printMatrix(res);
         if (iargs.length == 2) {
             res = MCJBaseFunctions.matrixFromDouble(res[0][(int) iargs[1][0][0] - 1]);
         }

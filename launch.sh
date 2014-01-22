@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MC_HOME=/home/rvlander/MC/
+MC_HOME=`pwd`
 MC_CORE=$MC_HOME/MCJavaCore/dist/MCJavaCore.jar
 
 make
