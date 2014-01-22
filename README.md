@@ -2,6 +2,7 @@ MC
 ==
 
 OVERVIEW
+________
 
 MC is a prototype, a proof of concept that MATLAB code can be converted to another programming language automatically. Currently, only Java as a target language is supported.
 
@@ -13,6 +14,7 @@ However, MC currently meets my needs and was able to translate a sub-domain of t
 
 
 CLONE AND RUN
+_____________
 
 Requirements:
 
@@ -22,22 +24,29 @@ Earlier revisions of MC also supported Windows via cygwin (at least for compilat
 
 Configure:
 
-1/ Modify mc.y line 1036-1038 to make it match your configuration.
+  1. Modify mc.y line 1036-1038 to make it match your configuration.
 
 Compile and Run:
 
-You'd better be in the MC directory.
-Just execute the launch.sh script passing the file you want to translate as an argument. If no argument is passed the default exemple/test.m is launched. As it is the test on which we are currently developping to add more support to MC, errors might occur. However, MC might work on your matlab code provided that it (or its dependancies) use only the subdomain of MATLAB supported by MC.
+  1. You'd better be in the MC directory.
+  2. Just execute the launch.sh script passing the file you want to translate as an argument. If no argument is passed the default exemple/test.m is launched. As it is the test on which we are currently developping to add more support to MC, errors might occur. However, MC might work on your matlab code provided that it (or its dependancies) use only the subdomain of MATLAB supported by MC.
 
 SUPPORTED MATLAB FEATURES
+_________________________
 
--- All (?) langage basics and operators
--- Up to 2 dimension matrices
--- function calls
--- ... TODO : be more specific
+  * All (?) langage basics and operators
+  * Up to 2 dimension matrices
+  * function calls
+  * ... TODO : be more specific
 
 TODO
+____
 
-1/ Rework the code (to make it clean and tidy)
-2/ Add support for more MATLAB features
-3/ Add support for more target languages  
+  1. Rework the code (to make it clean and tidy)
+  2. Add support for more MATLAB features
+  3. Add support for more target languages
+
+AUTHOR
+______
+
+Gaëtan André <gaetan.andre@gmail.com>  
